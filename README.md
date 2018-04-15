@@ -12,21 +12,21 @@ to tinker with it on most any platform.
 
 The following worked for me on Ubuntu 16.04 LTS:
 
-sudo apt install wget gksu perl-tk
-wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
-tar -xzf install-tl-unx.tar.gz
-cd install-tl-20180303
-sudo ./install-tl
+    sudo apt install wget gksu perl-tk
+    wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+    tar -xzf install-tl-unx.tar.gz
+    cd install-tl-20180303
+    sudo ./install-tl
 
 [Take all the defaults and press I at the install prompt... have a cup of 
 coffee, do some laundry...]
 
 Put the following into .bashrc:
 
-export PATH=/usr/local/texlive/2017/bin/x86_64-linux:$PATH    
-export INFOPATH=$INFOPATH:/usr/local/texlive/2017/texmf-dist/doc/info
-export MANPATH=$MANPATH:/usr/local/texlive/2017/texmf-dist/doc/man
+    export PATH=/usr/local/texlive/2017/bin/x86_64-linux:$PATH    
+    export INFOPATH=$INFOPATH:/usr/local/texlive/2017/texmf-dist/doc/info
+    export MANPATH=$MANPATH:/usr/local/texlive/2017/texmf-dist/doc/man
 
-git clone git@github.com:johnwinans/rvalp.git
-cd rvalp
-make world
+    git clone git@github.com:johnwinans/rvalp.git
+    cd rvalp
+    make world
