@@ -7,8 +7,8 @@ turning into a book on RISC-V programming in assembly language.
 
 Pull requests are welcome.
 
-I developed this using texlive.  LaTex is very portable, you should be able 
-to tinker with it on most any platform.  
+I developed this using LaTeX via texlive.  LaTex is very portable, you should 
+be able to tinker with it on most any platform.  
 
 The following worked for me on Ubuntu 16.04 LTS:
 
