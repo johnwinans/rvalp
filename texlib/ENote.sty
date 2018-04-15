@@ -1,0 +1,26 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{ENote}
+        [2002/03/23 v1
+    John Winans's editor notes facilities%
+                   ]
+%
+% A simple way to provide book-editor notes that can be 
+% automatically turned off.
+%
+%\newcommand{\enote}[1]{\marginpar{\raggedright\small\sffamily \ding{209} Note: \vskip 3pt \hrule \vskip 1pt \scriptsize\slshape #1 \vskip 1pt \hrule}}
+%\newcommand{\enote}[1]{\mbox{}\marginpar{\raggedright\small\sffamily Editor's Note: \vskip 3pt \hrule \vskip 1pt \scriptsize\slshape #1 \vskip 1pt \hrule}}
+\newcommand{\enote}[1]{\mbox{}\marginpar{\raggedright\small\sffamily \ding{253} Fix Me:\vskip 3pt \hrule \vskip 1pt \scriptsize\slshape #1 \vskip 1pt \hrule}}
+
+\newcommand{\marginwarn}[1]{\mbox{}\marginpar{\raggedright\small\sffamily Warning: \vskip 3pt \hrule \vskip 1pt \scriptsize\slshape #1 \vskip 1pt \hrule}}
+
+\newcommand{\margingood}[1]{\mbox{}\marginpar{\raggedright\small\sffamily Handy Tip: \vskip 3pt \hrule \vskip 1pt \scriptsize\slshape #1 \vskip 1pt \hrule}}
+
+\newcommand{\marginnote}[1]{\mbox{}\marginpar{\raggedright\small\sffamily Note: \vskip 3pt \hrule \vskip 1pt \scriptsize\slshape #1 \vskip 1pt \hrule}}
+
+\newcommand\markbad{\ding{209} }
+\newcommand\markgood{\ding{253} }
+
+\newcommand\dmarginwarn[1]{\mbox{}\marginpar{\fbox{\parbox{\marginparwidth}{\raggedright\markbad #1}}}}
+\newcommand\dmargingood[1]{\mbox{}\marginpar{\fbox{\parbox{\marginparwidth}{\raggedright\markgood #1}}}}
+
+\endinput

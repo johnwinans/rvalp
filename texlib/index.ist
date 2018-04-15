@@ -1,0 +1,5 @@
+% Style for makeindex
+% This style simply adds a bolded letter for each part of the alphabet
+heading_prefix	"{\\bfseries "
+heading_suffix	"\\hfil}\\nopagebreak\n"
+headings_flag	1

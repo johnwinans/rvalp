@@ -1,0 +1,47 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{MyFigs}
+        [2002/03/23 v1
+    John Winans's graphic figure includer facilities%
+                   ]
+%
+% #1 = file name
+% #2 = caption
+% #3 = label
+%
+\newenvironment{EpsFig}[3]{%
+	\begin{figure} \begin{center} \includegraphics[]{#1} \end{center} \caption{#2} \label{#3}}%
+	{\end{figure}}
+\newenvironment{EpsFig1}[3]{%
+	\begin{figure} \includegraphics[width=\textwidth]{#1} \caption{#2} \label{#3}}%
+	{\end{figure}}
+
+\newenvironment{EpsFig2}[3]{%
+	\begin{figure} \includegraphics[width=\fullwidth]{#1} \caption{#2} \label{#3}}%
+	{\end{figure}}
+
+\newenvironment{EpsFigRot}[3]{%
+	\begin{sidewaysfigure}\epsfig{height=\MySidewaysFigWidth,file=#1} \caption{#2} \label{#3}}%
+	{\end{sidewaysfigure}}
+
+
+% #1 = file name
+% #2 = caption
+% #3 = includegraphics parms
+\newcommand{\GraphicFigFloating}[3]{%
+	\begin{figure} \begin{center} \includegraphics[#3]{#1} \end{center} \caption{#2} \label{detokenize{Graphic:#2}}%
+	\end{figure}}
+
+\newcommand{\GraphicFig}[3]{%
+	\begin{minipage}{\textwidth} \begin{center} \includegraphics[#3]{#1} \captionof{figure}{#2}\label{detokenize{Graphic:#1}} \end{center} \end{minipage}%
+	}
+
+\newcommand{\xGraphicFig}[3]{%
+	\begin{center} \includegraphics[#3]{#1} \captionof{figure}{#2}\label{detokenize{Graphic:#1}} \end{center} %
+	}
+
+\newcommand{\GraphicFigRef}[1]{%
+	\autoref{detokenize{Graphic:#1}}%
+	}
+
+
+\endinput

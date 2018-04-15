@@ -1,0 +1,60 @@
+TEXLIB=$(TOP)/texlib
+
+# BEFORE including this file, you must define: TEXPATH
+
+
+# This only works if there is at least one tag in the git repo
+#LATEXFLAGS="\newcommand\GitFileName{"`pwd | sed -e 's|${HOME}/|\\\textasciitilde/|'`/"}\newcommand\GitDescription{"`git show -s --format='%ae %ci'; git describe --long --dirty;`"}\newcommand\GitRevision{"`git describe --long`"}\input{$<}"
+LATEXFLAGS="\newcommand\GitFileName{"`pwd | sed -e 's|^.*rvalp/|\\\textasciitilde/rvalp/|'`/"}\newcommand\GitDescription{"`git show -s --format='%ae %ci'; git describe --long --dirty;`"}\newcommand\GitRevision{"`git describe --long`"}\input{$<}"
+
+CLEANFILES = *.aux *.log *.dvi *.toc *.lof *.bbl *.blg *.ind *.ilg *.idx *.glo *.glg *.gls *.glsdefs *.out *.ist *.brf
+
+.SUFFIXES: .tex .pdf .eps .fig .dot .png
+
+.tex.pdf:
+		( export TEXINPUTS=$(TEXPATH):$(TEXLIB)::; \
+		BIBINPUTS=${TEXINPUTS}; export BIBINPUTS; \
+		pdflatex $(LATEXFLAGS) $<; \
+		bibtex ${<:.tex=}; \
+		makeindex -s $(TEXLIB)/index.ist ${<:.tex=}; \
+		pdflatex $(LATEXFLAGS) $<; \
+		pdflatex $(LATEXFLAGS) $<; )
+
+#makeglossaries ${<:.tex=}; \
+
+.fig.eps:
+	fig2dev -L eps $< > $@
+
+.fig.pdf:
+	fig2dev -L pdftex $< > $@
+
+
+# Rules for converting dot files into png files
+.dot.png:
+	dot -Tpng -o $@ $<
+
+.dot.pdf:
+	dot -Tpdf -o $@ $<
+
+
+
+# Rules for walking a tree of Makefiles
+# Add a prefix to each directory name to make unique versions for all, clean,...
+CLEAN_DIRS=$(SUBDIRS:%=clean-%)
+ALL_DIRS=$(SUBDIRS:%=all-%)
+
+.PHONY: all clean world doc $(CLEAN_DIRS) $(ALL_DIRS) 
+
+all:: $(ALL_DIRS)
+
+clean:: $(CLEAN_DIRS)
+
+# for each dir, do a make all
+$(ALL_DIRS)::
+	$(MAKE) -C $(@:all-%=%) all
+
+# for each dir, do a make clean
+$(CLEAN_DIRS)::
+	$(MAKE) -C $(@:clean-%=%) clean
+
+world:: clean all

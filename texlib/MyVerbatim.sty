@@ -1,0 +1,88 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{MyVerbatim}
+        [2002/03/23 v1
+    John Winans's verbatim facilities%
+                   ]
+\newlength{\bvwidth}
+\setlength{\bvwidth}{\textwidth}
+%\addtolength{\bvwidth}{\marginparsep}
+%\addtolength{\bvwidth}{\marginparwidth}
+%\addtolength{\bvwidth}{-7pt}
+\addtolength{\bvwidth}{-1pt}
+
+% A low quality boxed verbatim environment
+%\newenvironment{boxedverbatim}%
+%    {\VerbatimEnvironment \begin{Sbox}\begin{minipage}{\bvwidth}\footnotesize\begin{Verbatim}}%
+%    {\end{Verbatim}\end{minipage}\end{Sbox} \setlength{\fboxsep}{1mm}\noindent\fbox{\TheSbox}}
+
+% A figure-generating boxed verbatim environment
+%
+% #1: Filename
+% #2: Caption
+% #3: Label
+\newcommand\VFTitle{X}
+\newcommand\VFCaption{X}
+\newcommand\VFLabel{X}
+
+% \begin{Code}{The Title}
+% xxx
+% \end{Code}
+\newenvironment{Code}[1]{%
+	\renewcommand\VFTitle{#1}%
+	\VerbatimEnvironment%
+	\begin{Sbox}\begin{minipage}{\bvwidth}\footnotesize\begin{Verbatim}}%
+	{\end{Verbatim}\end{minipage}\end{Sbox} \bigskip\noindent\setlength{\fboxsep}{.5mm}\framebox[\bvwidth][l]{\textsf{\small\bfseries\VFTitle}}\\
+	\framebox[\bvwidth][l]{\TheSbox}\bigskip}
+
+% This only exists so that we can show a Code environment within one
+\newenvironment{CodeAlt}[1]{%
+	\renewcommand\VFTitle{#1}%
+	\VerbatimEnvironment%
+	\begin{Sbox}\begin{minipage}{\bvwidth}\footnotesize\begin{Verbatim}}%
+	{\end{Verbatim}\end{minipage}\end{Sbox} \bigskip\noindent\setlength{\fboxsep}{.5mm}\framebox[\bvwidth][l]{\textsf{\small\bfseries\VFTitle}}\\
+	\framebox[\bvwidth][l]{\TheSbox}\bigskip}
+
+\newenvironment{CodeFig}[3]{%
+    \renewcommand\VFTitle{#1}%
+    \renewcommand\VFCaption{#2}%
+    \renewcommand\VFLabel{#3}%
+    \VerbatimEnvironment%
+    \begin{Sbox}\begin{minipage}{\bvwidth}\footnotesize\begin{Verbatim}}%
+    {\end{Verbatim}\end{minipage}\end{Sbox} \setlength{\fboxsep}{.5mm}\begin{figure}[ht]\framebox[\bvwidth][l]{\textsf{\small\bfseries\VFTitle}}\\
+    \framebox[\bvwidth][l]{\TheSbox}\caption{\VFCaption}\label{\VFLabel}\end{figure}}
+
+% This only exists so that we can show a CodeFig environment within one
+\newenvironment{CodeFigAlt}[3]{%
+    \renewcommand\VFTitle{#1}%
+    \renewcommand\VFCaption{#2}%
+    \renewcommand\VFLabel{#3}%
+    \VerbatimEnvironment%
+    \begin{Sbox}\begin{minipage}{\bvwidth}\footnotesize\begin{Verbatim}}%
+    {\end{Verbatim}\end{minipage}\end{Sbox} \setlength{\fboxsep}{.5mm}\begin{figure}[ht]\framebox[\bvwidth][l]{\textsf{\small\bfseries\VFTitle}}\\
+    \framebox[\bvwidth][l]{\TheSbox}\caption{\VFCaption}\label{\VFLabel}\end{figure}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newenvironment{CodeFigB}[2]{%
+    \renewcommand\VFCaption{#1}%
+    \renewcommand\VFLabel{#2}%
+    \VerbatimEnvironment%
+    \begin{Sbox}\begin{minipage}{\bvwidth}\footnotesize\begin{Verbatim}}%
+    {\end{Verbatim}\end{minipage}\end{Sbox} \setlength{\fboxsep}{.5mm}\begin{figure}[ht]\framebox[\bvwidth][l]{\TheSbox}\caption{\VFCaption}\label{\VFLabel}\end{figure}}
+
+\newenvironment{CodeFigBAlt}[2]{%
+    \renewcommand\VFCaption{#1}%
+    \renewcommand\VFLabel{#2}%
+    \VerbatimEnvironment%
+    \begin{Sbox}\begin{minipage}{\bvwidth}\footnotesize\begin{Verbatim}}%
+    {\end{Verbatim}\end{minipage}\end{Sbox} \setlength{\fboxsep}{.5mm}\begin{figure}[ht]\framebox[\bvwidth][l]{\TheSbox}\caption{\VFCaption}\label{\VFLabel}\end{figure}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Define verbatim things each with their own type.
+%
+
+\newcommand\email{\begingroup \urlstyle{sf}\Url}
+\newcommand\filename{\begingroup \urlstyle{sf}\Url}
+\newcommand\code{\begingroup \urlstyle{tt}\Url}
+
+\endinput
