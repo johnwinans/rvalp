@@ -4,10 +4,11 @@ TEXLIB=$(TOP)/texlib
 
 
 # This only works if there is at least one tag in the git repo
-#LATEXFLAGS="\newcommand\GitFileName{"`pwd | sed -e 's|${HOME}/|\\\textasciitilde/|'`/"}\newcommand\GitDescription{"`git show -s --format='%ae %ci'; git describe --long --dirty;`"}\newcommand\GitRevision{"`git describe --long`"}\input{$<}"
-LATEXFLAGS="\newcommand\GitFileName{"`pwd | sed -e 's|^.*rvalp/|\\\textasciitilde/rvalp/|'`/"}\newcommand\GitDescription{"`git show -s --format='%ae %ci'; git describe --long --dirty;`"}\newcommand\GitRevision{"`git describe --long`"}\input{$<}"
+#GIT_SHOW_FORMAT=%ae %ci
+GIT_SHOW_FORMAT=%ci
+LATEXFLAGS="\newcommand\GitFileName{"`pwd | sed -e 's|^.*rvalp/|\\\textasciitilde/rvalp/|'`/"}\newcommand\GitDescription{"`git describe --long --dirty; git show -s --format='$(GIT_SHOW_FORMAT)';`"}\newcommand\GitRevision{"`git describe --long --dirty`"}\input{$<}"
 
-CLEANFILES = *.aux *.log *.dvi *.toc *.lof *.bbl *.blg *.ind *.ilg *.idx *.glo *.glg *.gls *.glsdefs *.out *.ist *.brf
+LATEX_CLEANFILES = *.aux *.log *.dvi *.toc *.lof *.bbl *.blg *.ind *.ilg *.idx *.glo *.glg *.gls *.glsdefs *.out *.ist *.brf
 
 .SUFFIXES: .tex .pdf .eps .fig .dot .png
 
