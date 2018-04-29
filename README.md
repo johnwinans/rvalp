@@ -7,6 +7,9 @@ turning into a book on RISC-V programming in assembly language.
 
 Pull requests are welcome.
 
+I will commit PDFs of useful versions into the /releases directory for those 
+that don't care to compile their own copies.
+
 I developed this using LaTeX via texlive.  LaTeX is very portable, you should 
 be able to tinker with it on most any platform.  
 
