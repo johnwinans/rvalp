@@ -1,0 +1,442 @@
+
+\def\SignBoxCornerRadius{.75mm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\BeginTikzPicture{
+    \begin{tikzpicture}[x=.4cm,y=.3cm]
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\EndTikzPicture{
+    \end{tikzpicture}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Print the characters within a string evenly spaced at integral node positions
+%
+% #1 The number of characters in the string
+\newcommand\DrawBitstring[2]{
+\foreach \x in {1,...,#1}%
+   	\draw(\x,0) node{\substring{#2}{\x}{\x}};%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 The total size
+% #2 The string to print
+% #3 The value to use when extending to left
+\newcommand\DrawLeftExtendedBitstring[3]{
+	\StrLen{#2}[\numchars]
+
+	\pgfmathsetmacro\leftpadd{int(#1-\numchars)}
+	\foreach \x in {1,...,\leftpadd}
+    	\draw(\x,0) node{#3};
+
+	\pgfmathsetmacro\leftpadd{int(\leftpadd+1)}
+	\foreach \x in {\leftpadd,...,#1}
+		\pgfmathsetmacro\ix{int(\x-\leftpadd+1)}
+		\draw(\x,0) node{\substring{#2}{\ix}{\ix}};
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% If the string is shorter than expected, extend with #5 to the right.
+%
+% #1 The total size
+% #2 Num chars to extend on the right
+% #3 The string to print
+% #4 The value to use when extending to left
+% #5 The value to use when extending to right
+\newcommand\DrawDoubleExtendedBitstring[5]{
+	\StrLen{#3}[\numchars]
+
+	\pgfmathsetmacro\leftpadd{int(#1-#2-\numchars)}
+	\ifthenelse{1 > \leftpadd}
+	{}
+	{
+		\foreach \x in {1,...,\leftpadd}
+    		\draw(\x,0) node{#4};
+	}
+
+	\pgfmathsetmacro\leftpadd{int(\leftpadd+1)}
+	\pgfmathsetmacro\rightpadd{int(\leftpadd+\numchars)}
+	\foreach \x in {\leftpadd,...,\rightpadd}
+		\pgfmathsetmacro\ix{int(\x-\leftpadd+1)}
+		\draw(\x,0) node{\substring{#3}{\ix}{\ix}};
+
+
+	%\pgfmathsetmacro\rightpadd{int(\rightpadd+1)}
+	\ifthenelse{\rightpadd > #1}	
+	{}
+	{
+		\foreach \x in {\rightpadd,...,#1}
+			\draw(\x,0) node{#5};
+	}
+}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Draw a box suitable to show the given number of bits in a 
+% labeled box suitable for showing expanded binary numbers.
+%
+% #1 The number of characters to display
+\newcommand\DrawBitBox[1]{
+    \draw (.5,-.75) -- (#1+.5,-.75);		% box bottom
+    \draw (.5,.75) -- (#1+.5,.75);			% box top
+    \draw (.5,-.75) -- (.5, 1.5);			% left end
+    \draw (#1+.5,-.75) -- (#1+.5, 1.5);		% right end
+    \pgfmathsetmacro\result{int(#1-1)}		% calc high bit 
+    \node at (1,1.2) {\tiny\result};		% high bit label
+    \draw(#1,1.2) node{\tiny0};				% low bit label
+
+    \pgfmathsetmacro\result{#1/2}
+    \node at (\result,-1.2) {\tiny#1};		% size below the box
+
+    \pgfmathsetmacro\result{#1/2}
+    \draw[->] (\result+.6,-1.2) -- (#1+.5,-1.2);
+    \draw[->] (\result-.6,-1.2) -- (.5,-1.2);
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\DrawBitBoxUnsigned[1]{
+	\StrLen{#1}[\numchars]
+	\DrawBitBox{\numchars}
+	\DrawBitstring{\numchars}{#1}		% show the bits
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\DrawBitBoxUnsignedPicture[1]{
+	\BeginTikzPicture
+	\DrawBitBoxUnsigned{#1}
+	\EndTikzPicture
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\DrawBitBoxSignedPicture[1]{
+    \BeginTikzPicture
+    \DrawBitBoxUnsigned{#1}
+	% draw a box around the sign bit
+	\draw {[rounded corners=\SignBoxCornerRadius] (1.35, -.6) -- (1.35, .6) -- (.65, .6) -- (.65, -.6) -- cycle};
+    \EndTikzPicture
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 The total (extended) size
+% #2 The value to use for left-side padding
+% #3 The string to extend
+\newcommand\DrawBitBoxLeftExtended[3]{
+	\StrLen{#3}[\numchars]
+	\pgfmathsetmacro\fill{int(#1-\numchars)}
+	\begin{scope}[shift={(\fill,3.5)}]
+    \DrawBitBoxUnsigned{#3}
+
+   	% XXX IFF not zero-extending then draw a box around the sign bit
+   	\draw {[rounded corners=\SignBoxCornerRadius] (1.35, -.6) -- (1.35, .6) -- (.65, .6) -- (.65, -.6) -- cycle};
+	\end{scope}
+
+	\DrawBitBox{#1}
+	\DrawDoubleExtendedBitstring{#1}{0}{#3}{#2}{x}
+	
+   	% XXX IFF not zero-extending then draw a box around the sign bit
+   	\draw {[rounded corners=\SignBoxCornerRadius] (\fill+1.35, -.6) -- (\fill+1.35, .6) -- (\fill+.65, .6) -- (\fill+.65, -.6) -- cycle};
+    % draw a box around the extended sign bits
+    \draw (.65, -.6) -- (.65, .6) -- (\fill+.35, .6) -- (\fill+.35, -.6) -- cycle;
+
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\DrawBitBoxSignExtendedPicture[2]{
+	\BeginTikzPicture
+	\DrawBitBoxLeftExtended{#1}{\substring{#2}{1}{1}}{#2}
+    \EndTikzPicture
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\DrawBitBoxZeroExtendedPicture[2]{
+	\BeginTikzPicture
+	\DrawBitBoxLeftExtended{#1}{0}{#2}
+    \EndTikzPicture
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 Total bit length
+% #2 The string to print
+% #3 Right-side padding length
+\newcommand\DrawBitBoxSignLeftZeroRightExtendedPicture[3]{
+	\BeginTikzPicture
+
+	\StrLen{#2}[\numchars]
+	\pgfmathsetmacro\fill{int(#1-\numchars-#3)}
+	\begin{scope}[shift={(\fill,3.5)}]
+    \DrawBitBoxUnsigned{#2}
+    % draw a box around the sign bit
+    %\draw (1.35, -.6) -- (1.35, .6) -- (.65, .6) -- (.65, -.6) -- cycle;
+    \draw {[rounded corners=\SignBoxCornerRadius] (1.35, -.6) -- (1.35, .6) -- (.65, .6) -- (.65, -.6) -- cycle};
+	\end{scope}
+
+	\DrawBitBox{#1}
+	\DrawDoubleExtendedBitstring{#1}{#3}{#2}{\substring{#2}{1}{1}}{0}
+
+	% Box the sign bit
+    \draw {[rounded corners=\SignBoxCornerRadius] (\fill+1.35, -.6) -- (\fill+1.35, .6) -- (\fill+.65, .6) -- (\fill+.65, -.6) -- cycle};
+
+	\ifthenelse{\fill > 0}
+	{
+    	% Box the left-extended sign bits
+    	\draw (.65, -.6) -- (.65, .6) -- (\fill+.35, .6) -- (\fill+.35, -.6) -- cycle;
+		% \fill[blue!40!white] (.65, -.6) rectangle (\fill-.25, 1.2);
+	}
+	{}
+	\ifthenelse{#3 > 0}
+	{
+    	% Box the right-extended sign bits
+		\pgfmathsetmacro\posn{int(\numchars+\fill)}
+    	\draw (\posn+.65, -.6) -- (\posn+.65, .6) -- (\posn+#3+.35, .6) -- (\posn+#3+.35, -.6) -- cycle;
+	}
+	{}
+	
+
+    \EndTikzPicture
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Print the characters within a string evenly spaced at integral node positions
+%
+% #1 The number of characters in the string
+% #2 The string of characters to plot
+\newcommand\DrawInsnBitstring[3]{
+	\pgfmathsetmacro\num{int(#1-1)}
+	\foreach \x in {1,2,...,#1}
+    	\draw(\x,0) node{\substring{#2}{\x}{\x}};
+
+	\draw(#1+1,0) node[right]{#3};
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Draw a bit-separator line with labels at the given bit-offset (from the right)
+%
+% #1 Total box width
+% #2 The position that the sepatator will be drawn to the left.
+\newcommand\DrawInsnBoxSep[2]{
+	\draw (#1-#2-.5,-.75) -- (#1-#2-.5, 1.5);
+	\node at (#1-#2,1.2) {\tiny#2};
+	\pgfmathsetmacro\result{int(#2+1)}
+	\node at (#1-#2-1,1.2) {\tiny\result};
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 total characters/width
+% #2 MSB position
+% #3 LSB position
+% #4 the segment label
+\newcommand\DrawInsnBoxSeg[4]{
+	\pgfmathsetmacro\leftpos{int(#1-#2)}
+	\pgfmathsetmacro\rightpos{int(#1-#3)}
+
+	\draw (\leftpos-.5,-.75) -- (\rightpos+.5,-.75);	% box bottom
+	\draw (\leftpos-.5,1.75) -- (\rightpos+.5,1.75);	% box top
+	\draw (\leftpos-.5,-.75) -- (\leftpos-.5, 2.5);		% left end
+	\draw (\rightpos+.5,-.75) -- (\rightpos+.5, 2.5);	% right end
+	\node at (\leftpos,2.2) {\tiny#2};
+	\draw(\rightpos,2.2) node{\tiny#3};
+
+	\pgfmathsetmacro\posn{#1-#2+(#2-#3)/2}
+	\pgfmathsetmacro\range{int(#2-#3+1)}
+	\node at (\posn,-1.4) {\small\range};		% the field width
+	\node at (\posn,1.2) {\small#4};			% the field label
+
+%	% arrows showing the span of the bits... meh
+%    \draw[->] (\posn+.5,-1.4) -- (\rightpos+.2,-1.4);
+%    \draw[->] (\posn-.5,-1.4) -- (\leftpos-.2,-1.4);
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\InsnStatement[1]{
+%	\textbf{\large #1}\\
+%	\textbf{#1}\\
+	{\large #1}\\
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 the binary encoding
+\newcommand\DrawInsnTypeBTikz[1]{
+	\BeginTikzPicture
+	\StrLen{#1}[\numchars]
+	\DrawInsnBitstring{\numchars}{#1}{\hyperref[insnformat:btype]{B-type}}
+	\DrawInsnBoxSeg{\numchars}{31}{25}{imm[12\textbar10:5]}
+	\DrawInsnBoxSeg{\numchars}{24}{20}{rs2}
+	\DrawInsnBoxSeg{\numchars}{19}{15}{rs1}
+	\DrawInsnBoxSeg{\numchars}{14}{12}{funct3}
+	\DrawInsnBoxSeg{\numchars}{11}{7}{imm[4:1\textbar11]}
+	\DrawInsnBoxSeg{\numchars}{6}{0}{opcode}
+
+	% add some hint bits in for imm fields
+	\draw {[rounded corners=\SignBoxCornerRadius] (1.35, -.6) -- (1.35, .6) -- (.65, .6) -- (.65, -.6) -- cycle};	% sign bit
+	\draw (32-7-.5, -.75) -- (32-7-.5, .1);		% imm[11]
+
+	\EndTikzPicture
+}
+
+\newcommand\DrawInsnTypeBPicture[2]{
+	\InsnStatement{#1}\\
+	\DrawInsnTypeBTikz{#2}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 the binary encoding
+\newcommand\DrawInsnTypeUTikz[1]{
+	\BeginTikzPicture
+	\StrLen{#1}[\numchars]
+	\DrawInsnBitstring{\numchars}{#1}{\hyperref[insnformat:utype]{U-type}}
+	\DrawInsnBoxSeg{\numchars}{31}{12}{imm[31:12]}
+	\DrawInsnBoxSeg{\numchars}{11}{7}{rd}
+	\DrawInsnBoxSeg{\numchars}{6}{0}{opcode}
+
+	% add some hint bits in for imm fields
+	\draw {[rounded corners=\SignBoxCornerRadius] (1.35, -.6) -- (1.35, .6) -- (.65, .6) -- (.65, -.6) -- cycle};	% sign bit
+
+	\EndTikzPicture
+}
+
+\newcommand\DrawInsnTypeUPicture[2]{
+	\InsnStatement{#1}\\
+	\DrawInsnTypeUTikz{#2}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 the binary encoding
+\newcommand\DrawInsnTypeJTikz[1]{
+	\BeginTikzPicture
+	\StrLen{#1}[\numchars]
+	\DrawInsnBitstring{\numchars}{#1}{\hyperref[insnformat:jtype]{J-type}}
+	\DrawInsnBoxSeg{\numchars}{31}{12}{imm[20\textbar10:1\textbar11\textbar19:12]}
+	\DrawInsnBoxSeg{\numchars}{11}{7}{rd}
+	\DrawInsnBoxSeg{\numchars}{6}{0}{opcode}
+
+	% add some hint bits in for imm fields
+	\draw {[rounded corners=\SignBoxCornerRadius] (1.35, -.6) -- (1.35, .6) -- (.65, .6) -- (.65, -.6) -- cycle};	% sign bit
+	\draw (32-19-.5, -.75) -- (32-19.5, .1);		% imm[19:12]
+	\draw (32-20-.5, -.75) -- (32-20.5, .1);		% imm[11]
+
+	\EndTikzPicture
+}
+
+\newcommand\DrawInsnTypeJPicture[2]{
+	\InsnStatement{#1}\\
+	\DrawInsnTypeJTikz{#2}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 the binary encoding
+\newcommand\DrawInsnTypeI[1]{
+	\StrLen{#1}[\numchars]
+	\DrawInsnBitstring{\numchars}{#1}{\hyperref[insnformat:itype]{I-type}}
+	\DrawInsnBoxSeg{\numchars}{31}{20}{imm[11:0]}
+	\DrawInsnBoxSeg{\numchars}{19}{15}{rs1}
+	\DrawInsnBoxSeg{\numchars}{14}{12}{funct3}
+	\DrawInsnBoxSeg{\numchars}{11}{7}{rd}
+	\DrawInsnBoxSeg{\numchars}{6}{0}{opcode}
+
+	% add some hint bits in for imm fields
+	\draw {[rounded corners=\SignBoxCornerRadius] (1.35, -.6) -- (1.35, .6) -- (.65, .6) -- (.65, -.6) -- cycle};	% sign bit
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 the binary encoding
+\newcommand\DrawInsnTypeITikz[1]{
+	\BeginTikzPicture
+	\DrawInsnTypeI{#1}
+	\EndTikzPicture
+}
+\newcommand\DrawInsnTypeIPicture[2]{
+	\InsnStatement{#1}\\
+	\DrawInsnTypeITikz{#2}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 the binary encoding
+\newcommand\DrawInsnTypeSTikz[1]{
+	\BeginTikzPicture
+	\StrLen{#1}[\numchars]
+	\DrawInsnBitstring{\numchars}{#1}{\hyperref[insnformat:stype]{S-type}}
+	\DrawInsnBoxSeg{\numchars}{31}{25}{imm[11:5]}
+	\DrawInsnBoxSeg{\numchars}{24}{20}{rs2}
+	\DrawInsnBoxSeg{\numchars}{19}{15}{rs1}
+	\DrawInsnBoxSeg{\numchars}{14}{12}{funct3}
+	\DrawInsnBoxSeg{\numchars}{11}{7}{imm[4:0]}
+	\DrawInsnBoxSeg{\numchars}{6}{0}{opcode}
+
+	% add some hint bits in for imm fields
+	\draw {[rounded corners=\SignBoxCornerRadius] (1.35, -.6) -- (1.35, .6) -- (.65, .6) -- (.65, -.6) -- cycle};	% sign bit
+
+	\EndTikzPicture
+}
+
+\newcommand\DrawInsnTypeSPicture[2]{
+	\InsnStatement{#1}\\
+	\DrawInsnTypeSTikz{#2}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 the binary encoding
+\newcommand\DrawInsnTypeRShiftTikz[1]{
+	\BeginTikzPicture
+	\StrLen{#1}[\numchars]
+	\DrawInsnBitstring{\numchars}{#1}{\hyperref[insnformat:rtype]{R-type}}
+	\DrawInsnBoxSeg{\numchars}{31}{25}{funct7}
+	\DrawInsnBoxSeg{\numchars}{24}{20}{shamt}
+	\DrawInsnBoxSeg{\numchars}{19}{15}{rs1}
+	\DrawInsnBoxSeg{\numchars}{14}{12}{funct3}
+	\DrawInsnBoxSeg{\numchars}{11}{7}{rd}
+	\DrawInsnBoxSeg{\numchars}{6}{0}{opcode}
+
+	\EndTikzPicture
+}
+
+\newcommand\DrawInsnTypeRShiftPicture[2]{
+	\InsnStatement{#1}\\
+	\DrawInsnTypeRShiftTikz{#2}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 the binary encoding
+\newcommand\DrawInsnTypeRTikz[1]{
+	\BeginTikzPicture
+	\StrLen{#1}[\numchars]
+	\DrawInsnBitstring{\numchars}{#1}{\hyperref[insnformat:rtype]{R-type}}
+	\DrawInsnBoxSeg{\numchars}{31}{25}{funct7}
+	\DrawInsnBoxSeg{\numchars}{24}{20}{rs2}
+	\DrawInsnBoxSeg{\numchars}{19}{15}{rs1}
+	\DrawInsnBoxSeg{\numchars}{14}{12}{funct3}
+	\DrawInsnBoxSeg{\numchars}{11}{7}{rd}
+	\DrawInsnBoxSeg{\numchars}{6}{0}{opcode}
+
+	\EndTikzPicture
+}
+
+\newcommand\DrawInsnTypeRPicture[2]{
+	\InsnStatement{#1}\\
+	\DrawInsnTypeRTikz{#2}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% print a register name in typewriter font
+\newcommand\reg[1]{{\tt #1}}
+
+

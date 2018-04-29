@@ -1,0 +1,750 @@
+\chapter{Number Systems}
+\label{chapter:NumberSystems}
+
+RISC-V systems represent information using binary values stored in 
+little-endian order.\footnote{See\cite{IEN137} for some history of 
+the big/little-endian ``controversy.''}
+
+\section{Integers}
+
+A binary integer is constructed with only 1s and 0s in the same
+manner as decimal numbers are constructed with values from 0 to 9.
+
+Counting in binary is the same as in decimal.  For example, when
+adding 1 to 9, the carry is added to the next place value.  When
+subtracting 1 from 0, a borrow is required and so on.
+
+Figure~\autoref{Figure:integers} shows an abridged table of the 
+decimal, binary and hexadecimal values from 0 to 129.
+
+\begin{figure}[ht]
+\begin{center}
+\begin{tabular}{|c|c|c||c|c|c|c|c|c|c|c||c|c|}
+\hline
+\multicolumn{3}{|c||}{Decimal} & \multicolumn{8}{|c||}{Binary} & \multicolumn{2}{|c|}{Hex}\\
+\hline
+$10^2$	& $10^1$	& $10^0$	& $2^7$ & $2^6$ & $2^5$ & $2^4$ & $2^3$ & $2^2$ & $2^1$ & $2^0$		& $16^1$ & $16^0$	\\
+\hline
+100		&	10		& 1			& 128	& 64	& 32	& 16	& 8		& 4		& 2		& 1			& 16	& 1			\\
+\hline \hline
+0		&	0		&	0		& 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0		& 0 & 0 \\
+0		&	0		&	1		& 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1		& 0 & 1 \\
+0		&	0		&	2		& 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0		& 0 & 2 \\
+0		&	0		&	3		& 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1		& 0 & 3 \\
+0		&	0		&	4		& 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0		& 0 & 4 \\
+0		&	0		&	5		& 0 & 0 & 0 & 0 & 0 & 1 & 0 & 1		& 0 & 5 \\
+0		&	0		&	6		& 0 & 0 & 0 & 0 & 0 & 1 & 1 & 0		& 0 & 6 \\
+0		&	0		&	7		& 0 & 0 & 0 & 0 & 0 & 1 & 1 & 1		& 0 & 7 \\
+0		&	0		&	8		& 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0		& 0 & 8 \\
+0		&	0		&	9		& 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1		& 0 & 9 \\
+0		&	1		&	0		& 0 & 0 & 0 & 0 & 1 & 0 & 1 & 0		& 0 & a \\
+0		&	1		&	1		& 0 & 0 & 0 & 0 & 1 & 0 & 1 & 1		& 0 & b \\
+0		&	1		&	2		& 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0		& 0 & c \\
+0		&	1		&	3		& 0 & 0 & 0 & 0 & 1 & 1 & 0 & 1		& 0 & d \\
+0		&	1		&	4		& 0 & 0 & 0 & 0 & 1 & 1 & 1 & 0		& 0 & e \\
+0		&	1		&	5		& 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1		& 0 & f \\
+0		&	1		&	6		& 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0		& 1 & 0 \\
+0		&	1		&	7		& 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1		& 1 & 1 \\
+\hline
+\multicolumn{3}{|c||}{\ldots} & \multicolumn{8}{|c||}{\ldots} & \multicolumn{2}{|c|}{\ldots}\\
+\hline
+1       &   2       &   5		& 0 & 1 & 1 & 1 & 1 & 1 & 0 & 1		& 7 & d \\
+1       &   2       &   6		& 0 & 1 & 1 & 1 & 1 & 1 & 1 & 0		& 7 & e \\
+1       &   2       &   7		& 0 & 1 & 1 & 1 & 1 & 1 & 1 & 1		& 7 & f \\
+1       &   2       &   8		& 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0		& 8 & 0 \\
+\hline
+\end{tabular}
+\end{center}
+\captionof{figure}{Counting in decimal, binary and hexadecimal.}
+\label{Figure:integers}
+\end{figure}
+
+
+One way to look at this table is on a per--row basis where each place 
+value is represented by the base raised to the power of the place value
+position (shown in the column headings.)  This is useful when
+converting arbitrary values between bases.  For example to interpret
+the decimal value on the fourth row: 
+\[ 0 \times 10^2 + 0 \times 10^1 + 3 \times 10^0 = 3_{10} \]
+And to interpret binary value on the same row by converting it to decimal:
+\[ 0 \times 2^7 + 0 \times 2^6 +0 \times 2^5 +0 \times 2^4 +0 \times 2^3 +0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 = 3_{10} \]
+And the same for the hexadecimal value:
+\[ 0 \times 16^1 + 3 \times 16^0 = 3_{10} \]
+
+
+Another way to look at this table is on a per--column basis.  When
+tasked with drawing such a table by hand, it might be useful 
+to observe that, just as in decimal, the right--most column will
+cycle through all of the values represented in the chosen base
+then cycle back to zero and repeat.  (For example, in binary this
+pattern is 0-1-0-1-0-1-0-\ldots) The next column in each base
+will cycle in the same manner except each of the values is repeated
+as many times as is represented by the place value (in the case of 
+decimal, $10^1$ times, binary $2^1$ times, hex $16^1$ times.  Again,
+the for binary numbers this pattern is  0-0-1-1-0-0-1-1-\ldots)
+This continues for as many columns as are needed to represent the 
+magnitude of the desired number.
+
+Another item worth noting is that any even binary number will always
+have a 0 LSB and odd numbers will always have a 1 LSB.
+
+As is customary in decimal, leading zeroes are sometimes not shown 
+for readability.
+
+The relationship between binary and hex values is also worth taking
+note.  Because $2^4 = 16$, there is a clean and simple grouping
+of 4 \gls{bit}s to 1 \gls{hit}.  There is no such relationship
+between binary and decimal.  
+
+Writing and reading numbers in binary that are longer than 8 bits 
+is cumbersome and prone to error.  The simple conversion between 
+binary and hex makes hex a convenient shorthand for expressing 
+binary values in many situations.  
+
+For example, consider the following value expressed in binary, 
+hexadecimal and decimal (spaced to show the relationship
+between binary and hex):
+
+\begin{verbatim}
+Binary value:       0010 0111 1011 1010 1100 1100 1111 0101
+Hex Value:             2    7    B    A    C    C    F    5
+Decimal Value:                                    666553589
+\end{verbatim}
+
+Empirically we can see that grouping the bits into sets of four
+allows an easy conversion to hex and expressing it as such is
+$\frac{1}{4}$ as long as in binary while at the same time
+allowing for easy conversion back to binary.
+
+The decimal value in this example does not easily convey a sense
+of the binary value.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Converting Between Bases}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{From Binary to Decimal}
+\label{section:bindec}
+
+Alas, it is occasionally necessary to convert between decimal,
+binary and/or hex.
+
+To convert from binary to decimal, put the decimal value of the place values 
+{\ldots8 4 2 1} over the binary digits like this:
+
+\begin{verbatim}
+    128 64 32 16  8  4  2  1
+      0  0  0  1  1  0  1  1
+\end{verbatim}
+
+Now sum the place--values that are expressed in decimal for each 
+bit with the value of 1: $16+8+2+1$.  The integer binary value
+$00011011_2$ represents the decimal value $27_{10}$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{From Binary to Hexadecimal}
+\label{section:binhex}
+
+Conversion from binary to hex involves grouping the bits into
+sets of four and then performing the same summing process as 
+shown above.  If there is not a multiple of four bits then
+extend the binary to the left with zeroes to make it so.
+
+Grouping the bits into sets of four and summing:
+
+\begin{verbatim}
+Place:         8 4 2 1     8 4 2 1     8 4 2 1     8 4 2 1
+Binary:        0 1 1 0     1 1 0 1     1 0 1 0     1 1 1 0
+Decimal:         4+2  =6   8+4+  1=13  8+  2  =10  8+4+2  =14
+\end{verbatim}
+
+After the summing, convert each decimal value to hex.  The decimal
+values from 0--9 are the same values in hex.  Because we don't have any
+more numerals to represent the values from 10-15, we use the first 6
+letters (See the right--most column of \autoref{Figure:integers}.)
+Fortunately there are only six hex mappings involving letters.  Thus 
+it is reasonable to memorize them.
+
+Continuing this example:
+
+\begin{verbatim}
+Decimal:               6           13          10          14
+Hex:                   6           D           A           E
+\end{verbatim}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{From Hexadecimal to Binary}
+
+Again, the four--bit mapping between binary and hex makes this
+task as straight forward as using a look-up table.
+
+For each \gls{hit} (Hex digIT), translate it to its unique four--bit pattern.
+Perform this task either by memorizing each of the 16 patterns 
+or by converting each hit to decimal first and then converting
+each four--bit binary value to decimal using the place--value summing 
+method discussed in \autoref{section:bindec}.
+
+For example:
+
+\begin{verbatim}
+Hex:           4            C
+Binary:        0  1  0  0   1 1 0 0
+Decimal:     128 64 32 16   8 4 2 1
+Sum:             64+        8+4       = 76
+\end{verbatim}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{From Decimal to Binary}
+
+To convert arbitrary decimal numbers to binary, extend the list 
+of binary place values until it exceeds the value of the decimal 
+number being converted.  Then make successive subtractions of each 
+of the place values that would yield a non-negative result.
+
+For example, to convert $1234_{10}$ to binary:
+
+\begin{verbatim}
+Place values: 2048-1024-512-256-128-64-32-16-8-4-2-1
+
+   0          2048      (too big)
+   1   1234 - 1024 = 210
+   0          512       (too big)
+   0          256       (too big)
+   1    210 - 128  = 82
+   1     82 - 64   = 18
+   0          32        (too big)
+   1     18 - 16   = 2
+   0          8         (too big)
+   0          4         (too big)
+   1      2 - 2    = 0
+   0          1         (too big)
+\end{verbatim}
+
+The answer using this notation is listed vertically
+in the left column with the \acrshort{msb} on the top and 
+the \acrshort{lsb} on the bottom line: $010011010010_2$.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{From Decimal to Hex}
+
+Conversion from decimal to hex can be done by using the place
+values for base--16 and the same math as from decimal to binary
+or by first converting the decimal value to binary and then
+from binary to hex by using the methods discussed above.
+
+Because binary and hex are so closely related, performing
+a conversion by way of binary is quite straight forward.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Addition of Binary Numbers}
+
+The addition of binary numbers can be performed long--hand the
+same way decimal addition is taught in grade school.  In fact binary
+addition is easier since it only involves adding 0 or 1.
+
+The first thing to note that in any number base $0+0=0$, $0+1=1$, and 
+$1+0=1$.  Since there is no ``two'' in binary (just like there is 
+no ``ten'' decimal) adding $1+1$ results in a zero with a carry as
+in: $1+1=10_2$ and in: $1+1+1=11_2$.  Using these five sums, any two
+binary integers can be added.
+
+For example:
+
+\begin{verbatim}
+        111111  1111  <== carries
+     0110101111001111 <== addend
+   + 0000011101100011 <== addend
+   ------------------
+     0111001100110010 <== sum
+\end{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Signed Numbers}
+
+There are multiple methods used to represent signed binary integers.
+The method used by most modern computers is called ``two's complement.''
+
+A two's complement number is encoded in such a manner as to simplify
+the hardware used to add, subtract and compare integers.  
+
+A simple method of thinking about two's complement numbers is to
+negate the place value of the \acrshort{msb}.  For example, the 
+number one is represented the same as discussed before:
+
+\begin{verbatim}
+   -128 64 32 16  8  4  2  1
+      0  0  0  0  0  0  0  1
+\end{verbatim}
+
+The \acrshort{msb} of any negative number in this format will always
+be 1.  For example the value $-1_{10}$ is:
+
+\begin{verbatim}
+   -128 64 32 16  8  4  2  1
+      1  1  1  1  1  1  1  1
+\end{verbatim}
+
+\ldots because: $-128+64+32+16+8+4+2+1=-1$.
+
+This format has the virtue of allowing the same addition logic 
+discussed above to be used to calculate $-1+1=0$.
+
+\begin{verbatim}
+   -128 64 32 16  8  4  2  1 <== place value
+   1  1  1  1  1  1  1  1  0 <== carries
+      1  1  1  1  1  1  1  1 <== addend (-1)
+    + 0  0  0  0  0  0  0  1 <== addend (1)
+      ----------------------
+   1  0  0  0  0  0  0  0  0 <== sum (0 with an overflow)
+\end{verbatim}
+
+In order for this to work, the \gls{overflow} carry out of the 
+sum of the MSBs is ignored.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Converting between Positive and Negative}
+
+Changing the sign on two's complement numbers can be described as
+inverting all of the bits (which is also known as the one's complement)
+and then add one.
+
+For example, inverting the number {\em four}:
+
+\begin{verbatim}
+   -128 64 32 16  8  4  2  1
+      0  0  0  0  0  1  0  0 <== 4
+
+                     1  1    <== carries
+      1  1  1  1  1  0  1  1 <== one's complement of 4
+    + 0  0  0  0  0  0  0  1 <== plus 1
+      ----------------------
+      1  1  1  1  1  1  0  0 <== -4
+\end{verbatim}
+
+This can be verified by adding 5 to the result and observe that
+the sum is 1:
+
+\begin{verbatim}
+   -128 64 32 16  8  4  2  1
+      1  1  1  1  1          <== carries
+      1  1  1  1  1  1  0  0 <== -4
+    + 0  0  0  0  0  1  0  1 <== 5
+      ----------------------
+   1  0  0  0  0  0  0  0  1
+\end{verbatim}
+
+Note that the changing of the sign using this method is symmetric
+in that it is identical when converting from negative to positive
+and when converting from positive to negative: flip the bits and
+add 1.
+
+For example, changing the value -4 to 4 to illustrate the
+reverse of the conversion above:
+
+\begin{verbatim}
+   -128 64 32 16  8  4  2  1
+      1  1  1  1  1  1  0  0 <== -4
+
+                     1  1    <== carries
+      0  0  0  0  0  0  1  1 <== one's complement of -4
+    + 0  0  0  0  0  0  0  1 <== plus 1
+      ----------------------
+      0  0  0  0  0  1  0  0 <== 4
+\end{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Subtraction of Binary Numbers}
+
+
+Subtraction of binary numbers is performed by first negating
+the subtrahend and then adding the two numbers.  Due to the
+nature of two's complement numbers this will work for both 
+signed and unsigned numbers.
+\enote{This section needs more examples of subtracting 
+signed an unsigned numbers and a discussion on how 
+signedness is not relevant until the results are interpreted. 
+For example adding $-4+ -8=-12$ using two 8--bit numbers 
+is the same as adding $252+248=500$ and truncating the result 
+to 244.}
+
+To calculate $-4-8 = -12$
+
+\begin{verbatim}
+   -128 64 32 16  8  4  2  1
+      1  1  1  1  1  1  0  0 <== -4
+    - 0  0  0  0  1  0  0  0 <== 8
+
+
+                  1  1  1    <== carries
+      1  1  1  1  0  1  1  1 <== one's complement of -8
+    + 0  0  0  0  0  0  0  1 <== plus 1
+      ----------------------
+      1  1  1  1  1  0  0  0 <== -8
+      
+	  
+      1  1  1  1             <== carries
+      1  1  1  1  1  1  0  0 <== -4
+    + 1  1  1  1  1  0  0  0 <== -8
+      ----------------------
+   1  1  1  1  1  0  1  0  0 < == -12
+\end{verbatim}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Truncation and Overflow}
+
+Disscuss the details of truncation and overflow here.
+\enote{This chapter should be made consistent in its use of 
+{\em truncation} and {\em overflow} as occur with signed and unsigned
+addition and subtraction.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Logical/Boolean Functions}
+
+Unlike addition and subtraction, boolean functions apply 
+on a per--bit basis.
+%in that they do not impact neighboring bits.
+%by generating things like a carry or a borrow.
+When applied to multi--bit values, each bit position is operated upon 
+independantly of the other bits.
+\enote{This is unclear.  Need to define bit positions and probably
+should add basic truth table diagrams.}
+\enote{Need to define 1 as true and 0 as false somewhere.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{NOT}
+
+The {\em NOT} operator applies to a single operand and represents the 
+opposite of the input.
+\enote{Need to define unary, binary and ternary operators without 
+confusing binary operators with binary numbers.}
+
+If the input is 1 then the output is 0.  If the input is 0 then the
+output is 1.  In other words, the output value is {\em not} that of the 
+input value.
+
+This text will use the operator used in the C language when discussing 
+the {\em NOT} operator in symbolic form.  Specifically the tilde: `\verb@~@'.
+
+\begin{verbatim}
+  ~ 1 1 1 1 0 1 0 1  <== A
+  -----------------
+    0 0 0 0 1 0 1 0  <== output
+\end{verbatim}
+
+In a line of code the above might read like this: \verb@output = ~A@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{AND}
+
+The boolean {\em and} function has two or more inputs and the output is a
+single bit.  The output is 1 if and only if all of the input values are 1.
+Otherwise it is 0.
+
+This text will use the operator used in the C language when discussing 
+the {\em AND} operator in symbolic form.  Specifically the ampersand: `\verb@&@'.
+
+This function works like it does in spoken language.  For example
+if A is 1 {\em AND} B is 1 then the output is 1 (true).
+Otherwise the output is 0 (false).  For example:
+
+\begin{verbatim}
+    1 1 1 1 0 1 0 1  <== A
+  & 1 0 0 1 0 0 1 1  <== B
+  -----------------
+    1 0 0 1 0 0 0 1  <== output
+\end{verbatim}
+
+In a line of code the above might read like this: \verb@output = A & B@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{OR}
+
+The boolean {\em or} function has two or more inputs and the output is a
+single bit.  The output is 1 if at least one of the input values are 1.
+
+This text will use the operator used in the C language when discussing
+the {\em OR}  operator in symbolic form.  Specifically the pipe: `\verb@|@'.
+
+This function works like it does in spoken language.  For example
+if A is 1 {\em OR} B is 1 then the output is 1 (true).
+Otherwise the output is 0 (false).  For example:
+
+\begin{verbatim}
+    1 1 1 1 0 1 0 1  <== A
+  | 1 0 0 1 0 0 1 1  <== B
+  -----------------
+    1 1 1 1 0 1 1 1  <== output
+\end{verbatim}
+
+In a line of code the above might read like this: \verb@output = A | B@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{XOR}
+
+The boolean {\em exclusive or} function has two or more inputs and the 
+output is a single bit.  The output is 1 if only an odd number of inputs 
+are 1. Otherwise the output will be 0.
+
+This text will use the operator used in the C language when discussing
+the {\em XOR}  operator in symbolic form.  Specifically the carrot: `\verb@^@'.
+
+Note that when {\em XOR} is used with two inputs, the output
+is set to 1 (true) when the inputs have different values and 0 
+(false) when the inputs both have the same value.
+
+For example:
+
+\begin{verbatim}
+    1 1 1 1 0 1 0 1  <== A
+  ^ 1 0 0 1 0 0 1 1  <== B
+  -----------------
+    0 1 1 0 0 1 1 0  <== output
+\end{verbatim}
+
+In a line of code the above might read like this: \verb@output = A ^ B@
+
+
+
+%\section{Context}
+%
+%Numbers can be interpreted differently depending on the context in 
+%which they are used.  For example a number may represent the quantity 
+%of millimeters between two points.  It may enumerate  a 
+%a letter of the alphabet -- ie.  $01000001=A$, $01000010=B$, 
+%$01000011=C$\ldots\ In fact, any finite set of items can be identified 
+%(enumerated) by a assigning a code number to each element in this fashon.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{IEEE-754 Floating Point Number Representation}
+\label{chapter::floatingpoint}
+
+This section provides an overview of the IEEE-754 32-bit binary floating 
+point format.
+
+\begin{itemize}
+\item Recall that the place values for integer binary numbers are:
+\begin{verbatim}
+   ... 128 64 32 16 8 4 2 1
+\end{verbatim}
+\item We can extend this to the right in binary similar to the way we do for 
+decimal numbers:
+\begin{verbatim}
+   ... 128 64 32 16 8 4 2 1 . 1/2 1/4 1/8 1/16 1/32 1/64 1/128 ...
+\end{verbatim}
+The `.' in a binary number is a binary point, not a decimal point.
+
+\item We use scientific notation as in $2.7 \times 10^{-47}$ to express either 
+small fractions or large numbers when we are not concerned every last digit 
+needed to represent the entire, exact, value of a number.
+
+\item The format of a number in scientific notation is $mantissa \times base^{exponent}$
+
+\item In binary we have $mantissa \times 2^{exponent}$
+
+\item IEEE--754 format requires binary numbers to be {\em normalized} to 
+$1.significand \times 2^{exponent}$ where the {\em significand}
+is the portion of the {\em mantissa} that is to the right of the binary--point.
+
+\begin{itemize}
+\item The unnormalized binary value of $-2.625$ is $10.101$
+\item The normalized value of $-2.625$ is $1.0101 \times 2^1$
+\end{itemize}
+
+\item We need not store the `1.' because {\em all} normalized floating 
+point numbers will start that way.  Thus we can save memory when storing
+normalized values by adding 1 to the significand.
+
+{
+\small
+\setlength{\unitlength}{.15in}
+\begin{picture}(32,4)(0,0)
+	\put(0,1){\line(1,0){32}}		% bottom line
+	\put(0,2){\line(1,0){32}}		% top line
+
+	\put(0,1){\line(0,1){2}}		% left vertical
+	\put(0,2){\makebox(1,1){\tiny 31}}	% left end bit number marker 
+
+	\put(32,1){\line(0,1){2}}		% vertical right end 
+	\put(31,2){\makebox(1,1){\tiny 0}}	% right end bit number marker
+
+	\put(0,0){\makebox(1,1){\small sign}}
+	\put(1,0){\makebox(8,1){\small exponent}}
+	\put(9,0){\makebox(23,1){\small significand}}
+
+    \put(0,1){\makebox(1,1){1}}		% sign
+
+	\put(1,1){\line(0,1){2}}		% seperator
+	\put(1,2){\makebox(1,1){\tiny 30}}	% bit marker
+
+    \put(1,1){\makebox(1,1){1}}		% exponent
+    \put(2,1){\makebox(1,1){0}}
+    \put(3,1){\makebox(1,1){0}}
+    \put(4,1){\makebox(1,1){0}}
+    \put(5,1){\makebox(1,1){0}}
+    \put(6,1){\makebox(1,1){0}}
+    \put(7,1){\makebox(1,1){0}}
+    \put(8,1){\makebox(1,1){0}}
+
+	\put(8,2){\makebox(1,1){\tiny 23}}	% bit marker
+	\put(9,1){\line(0,1){2}}		% seperator
+	\put(9,2){\makebox(1,1){\tiny 22}}	% bit marker
+
+    \put(9,1){\makebox(1,1){0}}
+    \put(10,1){\makebox(1,1){1}}
+    \put(11,1){\makebox(1,1){0}}
+    \put(12,1){\makebox(1,1){1}}
+    \put(13,1){\makebox(1,1){0}}
+    \put(14,1){\makebox(1,1){0}}
+    \put(15,1){\makebox(1,1){0}}
+    \put(16,1){\makebox(1,1){0}}
+    \put(17,1){\makebox(1,1){0}}
+    \put(18,1){\makebox(1,1){0}}
+    \put(19,1){\makebox(1,1){0}}
+    \put(20,1){\makebox(1,1){0}}
+    \put(21,1){\makebox(1,1){0}}
+    \put(22,1){\makebox(1,1){0}}
+    \put(23,1){\makebox(1,1){0}}
+    \put(24,1){\makebox(1,1){0}}
+    \put(25,1){\makebox(1,1){0}}
+    \put(26,1){\makebox(1,1){0}}
+    \put(27,1){\makebox(1,1){0}}
+    \put(28,1){\makebox(1,1){0}}
+    \put(29,1){\makebox(1,1){0}}
+    \put(30,1){\makebox(1,1){0}}
+    \put(31,1){\makebox(1,1){0}}
+\end{picture}
+}
+
+%\item $-((1 + \frac{1}{4} + \frac{1}{16}) \times 2^{128-127}) = -(1 \frac{5}{16} \times 2^{1}) = -(1.3125 \times 2^{1}) = -2.625$
+\item $-((1 + \frac{1}{4} + \frac{1}{16}) \times 2^{128-127}) = -((1 + \frac{1}{4} + \frac{1}{16}) \times 2^1) = -(2 + \frac{1}{2} + \frac{1}{8}) = -(2 + .5 + .125) = -2.625$
+
+\item IEEE754 formats: 
+
+\begin{tabular}{|l|l|l|}
+\hline
+				& IEEE754 32--bit	& IEEE754 64--bit	\\
+\hline
+sign			& 1 bit				& 1 bit			\\
+exponent		& 8 bits (excess--127)			& 11 bits (excess-1023)		\\
+mantissa		& 23 bits			& 52 bits		\\
+max exponent	& 127				& 1023			\\
+min exponent	& -126				& -1022			\\
+\hline
+\end{tabular}
+
+\item When the exponent is all ones, the mantissa is all zeros, and
+the sign is zero, the number represents positive infinity.
+
+\item When the exponent is all ones, the mantissa is all zeros, and
+the sign is one, the number represents negative infinity.
+
+\item Note that the binary representation of an IEEE754 number in memory
+can be compared for magnitude with another one using the same logic as for
+comparing two's complement signed integers because the magnitude of an 
+IEEE number grows upward and downward in the same fashion as signed integers.
+This is why we use excess notation and locate the significand's sign bit on
+the left of the exponent.
+
+\item Note that zero is a special case number.  Recall that a normalized
+number has an implied 1--bit to the left of the significand\ldots\ which
+means that there is no way to represent zero!
+Zero is represented by an exponent of all--zeros and a significand of 
+all--zeros.  This definition allows for a positive and a negative zero 
+if we observe that the sign can be either 1 or 0.
+
+\item On the number-line, numbers between zero and the smallest fraction in 
+either direction are in the {\em \gls{underflow}} areas.
+\enote{Need to add the standard lecture numberline diagram showing
+where the over/under--flow areas are and why.}
+
+\item On the number line, numbers greater than the mantissa of all--ones and the 
+largest exponent allowed are in the {\em \gls{overflow}} areas.
+
+\item Note that numbers have a higher resolution on the number--line when the 
+exponent is smaller.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Floating Point Number Accuracy}
+Due to the finite number of bits used to store the value of a floating point
+number, it is not possible to represent every one of the infinite values
+on the real number line.  The following C programs illustrate this point.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Powers Of Two}
+Just like the integer numbers, the powers of two that have bits to represent 
+them can be represented perfectly\ldots\ as can their sums (provided that the
+significand requires no more than 23 bits.)
+
+\listing{powersoftwo.c}{Precise Powers of Two} 
+\listing{powersoftwo.out}{Output from {\tt powersoftwo.c}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Clean Decimal Numbers}
+When dealing with decimal values, you will find that they don't map simply
+into binary floating point values.
+% (the same holds true for binary integer numbers).  
+
+Note how the decimal numbers are not accurately represented as they get larger.
+The decimal number on line 10 of \listingRef{cleandecimal.out}
+can be perfectly represented in IEEE format.  However, a problem arises in 
+the 11Th loop iteration.  It is due to the fact that the
+binary number can not be represented accurately in IEEE format.  Its least
+significant bits were truncated in a best-effort attempt at rounding the value
+off in order to fit the value into the bits provided.  This is an example of
+{\em low order truncation}.  Once this happens, the value of \verb@x.f@ is
+no longer as precise as it could be given more bits in which to save its value.
+
+\listing{cleandecimal.c}{Print Clean Decimal Numbers} 
+\listing{cleandecimal.out}{Output from {\tt cleandecimal.c}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Accumulation of Error}
+These  rounding errors can be exaggerated when the number we multiply 
+the \verb@x.f@ value by is, itself, something that can not be accurately 
+represented in IEEE 
+form.\footnote{Applications requiring accurate decimal values, such as 
+financial accounting systems, can use a packed--decimal numeric format
+to avoid unexpected oddities caused by the use of binary numbers.}
+\enote{In a lecture one would show that one tenth is a repeating 
+non--terminating binary number that gets truncated.  This discussion 
+should be reproduced here in text form.}
+
+For example, if we multiply our \verb@x.f@ value by $\frac{1}{10}$ each time, 
+we can never be accurate and we start accumulating errors immediately.
+
+\listing{erroraccumulation.c}{Accumulation of Error} 
+\listing{erroraccumulation.out}{Output from {\tt erroraccumulation.c}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Reducing Error Accumulation} 
+In order to use floating point numbers in a program without causing 
+excessive rounding problems an algorithm can be redesigned such that the 
+accumulation is eliminated.  
+This example is similar to the previous one, but this time we recalculate the 
+desired value from a known--accurate integer value.  
+Some rounding errors remain present, but they can not accumulate.
+
+\listing{errorcompensation.c}{Accumulation of Error} 
+\listing{errorcompensation.out}{Output from {\tt erroraccumulation.c}}

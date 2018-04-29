@@ -1,0 +1,1688 @@
+\chapter{RV32 Machine Instructions}
+\label{chapter:RV32}
+\index{RV32}
+
+\section{Introduction}
+
+\enote{Discuss what the IMAFD, G and other ISA extensions mean as well as the
+32, 64 and 128--bit versions.}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conventions and Terminology}
+
+When discussing instructions, the following abbreviations/notations are used:
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{XLEN}
+
+XLEN represents the bit--length of an \reg{x} register in the machine architecture.
+Possible values are 32, 64 and 128.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{sx(val)}
+\label{extension:sx}
+
+Sign extend {\em val} to the left.
+
+This is used to convert a signed integer value expressed using some number of 
+bits to a larger number of bits by adding more bits to the left.  In doing so, 
+the sign will be preserved.  In this case {\em val} represents the least 
+\acrshort{msb}s of the value.  
+For more on binary numbers see \autoref{chapter:NumberSystems}.
+
+\autoref{Figure:SignExtendNegative} illustrates extending the negative sign 
+bit of {\em val} to the left by replicating it.
+When {\em val} is negative, its \acrshort{msb} (bit 19 in this example) will 
+be set to 1.   Extending this value to the left will set all the new bits 
+to the left of it to 1 as well.
+
+
+\begin{figure}[ht]
+\centering
+\DrawBitBoxSignExtendedPicture{32}{10100000000000000010}
+\captionof{figure}{Sign--extending a negative integer from 20 bits to 32 bits.}
+\label{Figure:SignExtendNegative}
+\end{figure}
+
+
+\autoref{Figure:SignExtendPositive} illustrates extending the positive sign 
+bit of {\em val} to the left by replicating it.
+When {\em val} is positive, its \acrshort{msb} will be set to 0.  Extending this 
+value to the left will set all the new bits to the left of it to 0 as well.  
+
+
+\begin{figure}[ht]
+\centering
+\DrawBitBoxSignExtendedPicture{32}{01000000000000000010}
+\captionof{figure}{Sign--extending a positive integer from 20 bits to 32 bits.}
+\label{Figure:SignExtendPositive}
+\end{figure}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{zx(val)}
+\label{extension:zx}
+
+Zero extend {\em val} to the left.
+
+This is used to convert an unsigned integer value expressed using some number of 
+bits to a larger number of bits by adding more bits to the left.  In doing so, 
+the new bits added will all be set to zero.  As is the case with \verb@sx(val)@,
+{\em val} represents the \acrshort{lsb}s of the final value.  
+\autoref{Figure:ZeroExtend} illustrates zero--extending a 20--bit {\em val} to the 
+left to form a 32--bit fullword.
+
+For more on binary numbers see \autoref{chapter:NumberSystems}.
+
+\begin{figure}[ht]
+\centering
+\DrawBitBoxZeroExtendedPicture{32}{10000000000000000010}
+\captionof{figure}{Zero--extending an unsigned integer from 20 bits to 32 bits.}
+\label{Figure:ZeroExtend}
+\end{figure}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{zr(val)}
+\label{extension:zr}
+
+Zero extend {\em val} to the right.
+
+Some times a binary value is encoded such that a set of bits represented
+by {\em val} are used to represent the \acrshort{msb}s of some longer (more bits) 
+value.  
+In this case it is necessary to append zeroes to the right to convert \verb@val@ to 
+the longer value.
+
+\autoref{Figure:ZeroRightExtend} illustrates converting a 20--bit {\em val} to
+a 32--bit fullword.
+
+\begin{figure}[ht]
+\centering
+\DrawBitBoxSignLeftZeroRightExtendedPicture{32}{01000000000000000010}{12}
+\captionof{figure}{Zero--extending an integer to the right from 20 bits to 32 bits.}
+\label{Figure:ZeroRightExtend}
+\end{figure}
+
+%\begin{figure}[ht]
+%\centering
+%\parbox{.7\linewidth}{
+%\DrawBitBoxUnsignedPicture{01000000000000000010}\\
+%\DrawBitBoxUnsignedPicture{01000000000000000010000000000000}
+%}
+%\captionof{figure}{Zero--extending an integer to the right from 20 bits to 32 bits.}
+%\label{Figure:ZeroRightExtend}
+%\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Sign Entended Left and Zero Extend Right}
+\label{extension:slzr}
+
+Some instructions such as the J--type (see \autoref{insnformat:jtype}) include
+immediate operands that are extended in both directions.
+
+\autoref{Figure:slzrPositive} and \autoref{Figure:slzrNegative}
+illustrates zero--extending a 20--bit negative number one bit to the right 
+and sign--extending it 11 bits to the left:
+
+\begin{figure}[ht]
+\centering
+\DrawBitBoxSignLeftZeroRightExtendedPicture{32}{01000100011101001001}{1}
+\captionof{figure}{Sign--extending a positive 20--bit number 
+11 bits to the left and one bit to the right.}
+\label{Figure:slzrPositive}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\DrawBitBoxSignLeftZeroRightExtendedPicture{32}{11000100011101001001}{1}
+\captionof{figure}{Sign--extending a negative 20--bit number 
+11 bits to the left and one bit to the right.}
+\label{Figure:slzrNegative}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{m8(addr)}
+\label{memory:m8}
+
+The contents of an 8--bit value in memory at address {\em addr}.
+
+Given the contents of the memory dump shown in 
+\autoref{Figure:SampleMemoryContents}, 
+\verb@m8(42)@ refers to the memory location at address \verb@42@$_{16}$ 
+that currently contains the 8--bit value \verb@fc@$_{16}$.
+
+The \verb@mn(addr)@ notation can be used to refer to memory that is being 
+read or written depending on the context.  
+
+When memory is being written, the following notation is used to indicate that 
+the least significant 8 bis of {\em source} will be is written into memory at 
+the address {\em addr}:
+
+\verb@m8(addr)@ $\leftarrow$ \verb@source@
+
+When memory is being read, the following notation is used to indicate that the 
+8 bit value at the address {\em addr} will be read and stored into {\em dest}:
+
+\verb@dest@ $\leftarrow$ \verb@m8(addr)@ 
+
+Note that {\em source} and {\em dest} are typically registers.
+ 
+
+\begin{figure}[ht]
+\centering
+\begin{BVerbatim}
+
+
+00000030  2f 20 72 65 61 64 20 61  20 62 69 6e 61 72 79 20
+00000040  66 69 fc 65 20 66 69 6c  6c 65 64 20 77 69 74 68
+00000050  20 72 76 33 32 49 20 69  6e 73 74 72 75 63 74 69
+00000060  6f 6e 73 20 61 6e 64 20  66 65 65 64 20 74 68 65
+\end{BVerbatim}
+\captionof{figure}{Sample memory contents.}
+\label{Figure:SampleMemoryContents}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{m16(addr)}
+
+The contents of an 16--bit little--endian value in memory at address {\em addr}.
+
+Given the contents of the memory dump shown in 
+\autoref{Figure:SampleMemoryContents}, 
+\verb@m16(42)@ refers to the memory location at address \verb@42@$_{16}$
+that currently contains \verb@65fc@$_{16}$. See also~\autoref{memory:m8}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{m32(addr)}
+
+The contents of an 32--bit little--endian value in memory at address {\em addr}.
+
+Given the contents of the memory dump shown in
+\autoref{Figure:SampleMemoryContents},
+\verb@m32(42)@ refers to the memory location at address \verb@42@$_{16}$
+that currently contains \verb@662065fc@$_{16}$.
+See also~\autoref{memory:m8}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{m64(addr)}
+
+The contents of an 64--bit little--endian value in memory at address {\em addr}.
+
+Given the contents of the memory dump shown in 
+\autoref{Figure:SampleMemoryContents}, 
+\verb@m64(42)@ refers to the memory location at address \verb@42@$_{16}$
+that currently contains \verb@656c6c69662065fc@$_{16}$.
+See also~\autoref{memory:m8}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{m128(addr)}
+
+The contents of an 128--bit little--endian value in memory at 
+address {\em addr}.
+
+Given the contents of the memory dump shown in 
+\autoref{Figure:SampleMemoryContents}, 
+\verb@m128(42)@ refers to the memory location at address \verb@42@$_{16}$
+that currently contains \verb@7220687469772064656c6c69662065fc@$_{16}$.
+See also~\autoref{memory:m8}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{.+offset}
+
+The address of the current instruction plus a numeric offset.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{.-offset}
+
+The address of the current instruction minus a numeric offset.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{pc}
+
+The current value of the program counter.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{rd}
+
+An x--register used to store the result of instruction.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{rs1}
+
+An x--register value used as a source operand for an instruction.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{rs2}
+
+An x--register value used as a source operand for an instruction.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{imm}
+
+An immediate numeric operand.  The word {\em immediate} refers
+to the fact that the operand is stored within an instruction.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{rsN[h:l]}
+
+The value of bits from {\em h} through {\em l} of x--register rsN.
+For example: rs1[15:0] refers to the contents of 
+the 16 \acrshort{lsb}s of rs1.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Addressing Modes}
+
+immediate, register, base-displacement, pc-relative
+\enote{Write this section.}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Instruction Encoding Formats}
+\label{section:EncodingFormats}
+
+This 
+\enote{Should discuss types and sizes beyond the fundamentals.  Will add
+if/when instruction details are added in the future.} 
+document concerns itself with the following RISC-V instruction formats.
+
+XXX Show and discuss a stack of formats explaining how the unnatural ordering
+of the {\em imm} fields reduces the number of possible locations that 
+the hardware has to be prepared to {\em look} for various bits.  For example,
+the opcode, rd, rs1, rs1, func3 and the sign bit (when used) are all always 
+in the same position.  Also note that imm[19:12] and imm[10:5] can only be 
+found in one place.  imm[4:0] can only be found in one of two places\ldots
+
+The point to all this is that it is easier to build a machine if it 
+does not have to accommodate many different ways to perform the same task.
+This simplification can also allow it operate faster.
+
+\autoref{Figure:riscvFormats} Shows the RISC-V instruction formats.
+
+\begin{figure}[ht]
+\DrawInsnTypeBTikz{00000000000000000000000000000000}\\
+\DrawInsnTypeUTikz{00000000000000000000000000000000}\\
+\DrawInsnTypeJTikz{00000000000000000000000000000000}\\
+\DrawInsnTypeITikz{00000000000000000000000000000000}\\
+\DrawInsnTypeSTikz{00000000000000000000000000000000}\\
+\DrawInsnTypeRShiftTikz{00000000000000000000000000000000}\\
+\DrawInsnTypeRTikz{00000000000000000000000000000000}
+\captionof{figure}{RISC-V instruction formats.}
+\label{Figure:riscvFormats}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{U Type}
+\label{insnformat:utype}
+
+The U--Type format is used for instructions that use a 20--bit immediate operand 
+and a destination register.
+ 
+\DrawInsnTypeUTikz{11010110000000000011001010110111}
+
+The \reg{rd} field contains an \reg{x} register number to be set to a value that
+depends on the instruction.
+
+The imm field 
+contains a 20--bit value that will be converted into \Gls{xlen} bits by 
+using the {\em imm} operand for bits 31:12 and then sign-extending it 
+to the left\footnote{When XLEN is larger than 32.} and zero--extending 
+the LSBs as discussed in \autoref{extension:zr}.
+
+If \Gls{xlen}=32 then the imm value in this example will be
+converted as shown below.
+
+\DrawBitBoxSignLeftZeroRightExtendedPicture{32}{11010110000000000011}{12}
+
+Notice that the 20--bits of the imm field are mapped in the same order and 
+in the same relative position that they appear in the instruction when 
+they are used to create the value of the immediate operand.  
+Shifting the imm value to the left, into the ``upper bits'' of the immediate 
+value suggests a rationale for the name of this format.
+
+%from $01010110000000000011_2$ (\verb@d6003@$_{16}$) to 
+%$11010110000000000011000000000000_2$ (\verb@d6003000@$_{16}$).
+
+If \Gls{xlen}=64 then the imm value in this example will be converted to the
+same two's complement integer value by extending the sign to the left.
+
+%\DrawBitBoxSignLeftZeroRightExtendedPicture{64}{11010110000000000011}{12}
+%$1111111111111111111111111111111111010110000000000011000000000000_2$ 
+%(\verb@ffffffffd6003000@$_{16}$).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{J Type}
+\label{insnformat:jtype}
+
+The J--type format is used for instructions that use a 20--bit immediate operand
+and a destination register.  It is similar to the U--type.  However, the immediate
+operand is constructed by arranging the {\em imm} bits in a different manner.
+
+\DrawInsnTypeJTikz{00111001001110000001001111101111}
+
+The \reg{rd} field contains an \reg{x} register number to be set to a value that
+depends on the instruction.
+
+
+In the J--type format the 20 {\em imm} bits are arranged such 
+that they represent the ``lower'' portion of the immediate value.  Unlike 
+the U--type 
+instructions, the J-type requires the bits to be re--ordered and shifted 
+to the right before they are used.\footnote{The reason that the J--type 
+bits are reordered like this is because it simplifies the implementation of 
+hardware as discussed in \autoref{section:EncodingFormats}.}
+
+The example above shows that the bit positions in the {\em imm} field 
+description.  We see that the 20 {\em imm} bits are re--ordered according to: 
+[20\textbar10:1\textbar11\textbar19:12].  
+This means that the \acrshort{msb} of the {\em imm} field is to be placed 
+into bit 20 of the immediate integer value ultimately used by the instruction 
+when it is converted into \Gls{xlen} bits.  
+The next bit to the right in the {\em imm} field is to be placed into bit 10 of 
+the immediate value and so on.
+
+After the {\em imm} bits are re-positioned into bits 20:1 of the immediate value
+being constructed, a zero--bit will be added to the \acrshort{lsb} 
+and the value in bit--position 20 will be replicated to sign--extend the 
+value to \Gls{xlen} bits as discussed in \autoref{extension:slzr}.
+
+If \Gls{xlen}=32 then the {\em imm} value in this example will be converted as 
+shown below.
+
+\DrawBitBoxSignLeftZeroRightExtendedPicture{32}{01000000110111001001}{1}
+
+%$00111001001110000001_2$ (\verb@39381@$_16$) to
+%$00000000000010000001101110010010_2$ (\verb@00081b92@$_16$).
+%
+%If \Gls{xlen}=64 then the imm value in this example will be converted to\\
+%$0000000000000000000000000000000000000000000010000001101110010010_2$ 
+%(\verb@0000000000081b92@$_16$).
+
+A J--type example with a negative imm field:
+
+\DrawInsnTypeJTikz{10111001001110000001001111101111}
+
+If \Gls{xlen}=32 then the {\em imm} field in this example will be converted as 
+shown below.
+
+\DrawBitBoxSignLeftZeroRightExtendedPicture{32}{11000000110111001001}{1}
+
+%$10111001001110000001_2$ (\verb@b9381@$_16$) to
+%$1111111111111000 0001101110010010_2$ (\verb@fff81b92@$_16$).
+%
+%If \Gls{xlen}=32 then the imm value in this example will be converted to
+%\verb@fffffffffff81b92@$_16$.
+
+The J--type format is used by the Jump And Link instruction that calculates 
+a target address by adding a signed immediate value to the current program 
+counter.  Since no instruction can be placed at an odd address the 20--bit 
+imm value is zero--extended to the right to represent a 21-bit signed offset 
+capable of representing numbers twice the magnitude of the 20--bit imm value.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{R Type}
+\label{insnformat:rtype}
+\DrawInsnTypeRTikz{01000001111100011000001110110011}
+
+A special case of the R-type used for shift--immediate instructions where 
+the {\em rs2} field is used as an immediate value named {\em shamt} 
+representing the number of bit positions to shift:
+
+\DrawInsnTypeRShiftTikz{00000000001000011001001110100011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{I Type}
+\label{insnformat:itype}
+\DrawInsnTypeITikz{00000000010000011000001110000011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{S Type}
+\label{insnformat:stype}
+\DrawInsnTypeSTikz{00000000111100011000100110100011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{B Type}
+\label{insnformat:btype}
+\DrawInsnTypeBTikz{00000000111100011000100011100011}
+
+%insnTypeF
+%insnTypeCSRR
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{CPU Registers}
+\label{cpuregs}
+
+The registers are names x0 through x31 and have aliases suited to their 
+conventional use.  The following table describes each register.  
+
+Note 
+\enote{Need to add a section that discusses the calling conventions}  
+that the calling calling convention specifies that only some 
+of the registers are to be saved by functions if they alter their contents.
+The idea being that accessing memory is time-consuming and that by
+classifying some registers as ``temporary'' (not saved by any function
+that alter its contents) it is possible to carefully implement a function
+with less need to store register values on the stack in order to use them
+to perform the operations of the fuction.
+
+The lack of grouping the temporary and saved registers is due to the
+fact that the C extension %See \autoref{rv32:c}
+provides access to only the first 16 registers when executing instructions 
+in the compressed format.  
+
+
+\begin{center}
+\begin{tabular}{|l|l|l|l|}
+\hline
+Reg	&	Alias			& Description						& Saved		\\
+\hline
+\hline
+x0	&	zero			& Hard-wired zero					&			\\
+x1	&	ra				& Return address					& 			\\
+x2	&	sp				& Stack pointer						& yes		\\
+x3	&	gp				& Global pointer					&			\\
+x4	&	tp				& Thread pointer					&			\\
+x5	&	t0				& Temporary/alternate link register	&			\\
+x6	&	t1				& Temporary							&			\\
+x7	&	t2				& Temporary							&			\\
+x8	&	s0/fp			& Saved register/frame pointer		& yes		\\
+x9	&	s1				& Saved register					& yes		\\
+x10	&	a0				& Function argument/return value	& 			\\
+x11	&	a1				& Function argument/return value	& 			\\
+x12	&	a2				& Function argument					& 			\\
+x13	&	a3				& Function argument					& 			\\
+x14	&	a4				& Function argument					& 			\\
+x15	&	a5				& Function argument					& 			\\
+x16	&	a6				& Function argument					& 			\\
+x17	&	a7				& Function argument					& 			\\
+x18	&	s2				& Saved register					& yes		\\
+x19	&	s3				& Saved register					& yes		\\
+x20	&	s4				& Saved register					& yes		\\
+x21	&	s5				& Saved register					& yes		\\
+x22	&	s6				& Saved register					& yes		\\
+x23	&	s7				& Saved register					& yes		\\
+x24	&	s8				& Saved register					& yes		\\
+x25	&	s9				& Saved register					& yes		\\
+x26	&	s10				& Saved register					& yes		\\
+x27	&	s11				& Saved register					& yes		\\
+x28	&	t3				& Temporary							&			\\
+x29	&	t4				& Temporary							&			\\
+x30	&	t5				& Temporary							&			\\
+x31	&	t6				& Temporary							&			\\
+\hline
+\end{tabular}
+\end{center}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{memory}
+
+Note that RISC-V is a little-endian machine.  
+
+All instructions must be naturally aligned to their 4--byte 
+boundaries.~\cite[p.~5]{rvismv1v22:2017}
+
+If a RISC-V processor implements the C (compressed) extension then 
+instructions may be aligned to 2--byte 
+boundaries.\cite[p.~68]{rvismv1v22:2017}
+
+Data alignment is not necessary but unaligned data can be inefficient.  
+Accessing unaligned data using any of the load or store instructions can 
+also prevent a mempry access from operating 
+atomically.~\cite[p.19]{rvismv1v22:2017}  See also \autoref{RV32A}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{RV32I Base Instruction Set}
+\index{RV32I}
+
+\Gls{rv32}I refers to the basic 32-bit integer instructions.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{LUI rd, imm}
+\index{Instruction!LUI}
+
+Load Upper Immediate.
+
+\verb@rd@ $\leftarrow$ \verb@zr(imm)@
+
+Copy the immediate value into bits 31:12 of the destination register and
+place zeroes into bits 11:0.
+When XLEN is 64 or 128, the immediate value is sign--extended to the left.
+
+Instruction Format and Example:
+
+\textbf{\large LUI t0, 3}\\
+\DrawInsnTypeUPicture{LUI t0, 3}{00000000000000000011001010110111}
+
+t0 = 0x00000300
+
+\textbf{\large LUI t0, -1}\\
+\DrawInsnTypeUPicture{LUI t0, 3}{11111111111111111111001010110111}
+
+t0 = 0xfffff000
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{AUIPC rd, imm}
+\index{Instruction!AUIPC}
+
+Add Upper Immediate to PC.
+
+\verb@rd@ $\leftarrow$ \verb@pc + zr(imm)@
+
+Create a signed 32--bit value by zero--extending imm[31:12] to the 
+right (see \autoref{extension:zr}) and add this value to the 
+\reg{pc} register, placing the result into \reg{rd}.
+
+When XLEN is 64 or 128, the value placed into \reg{rd} will be 
+sign--extended to the left.
+
+
+Encoding:
+
+\textbf{\large AUIPC t0, 3}\\
+\DrawInsnTypeUPicture{AUIPC t0, 3}{00000000000000000011001010110111}
+
+State of registers before execution:
+
+pc = 0x11114444
+
+Decoding the instruction:
+
+op-code = 0110111\\
+rd = x5\\
+imm = 0x00003000
+
+After execution:
+
+pc = 0x11114444\\
+x5 = 0x11117444
+
+The AUIPC instruction supports two-instruction sequences to access arbitrary 
+offsets from the PC for both control-flow transfers and data accesses. 
+The combination of an AUIPC and the 12-bit immediate in a JALR can transfer 
+control to any 32-bit PC-relative address, while an AUIPC plus the 12-bit 
+immediate offset in regular load or store instructions can access any 32-bit 
+PC-relative data address.~\cite[p.~14]{rvismv1v22:2017}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{JAL rd, imm}
+\index{Instruction!JAL}
+
+Jump and link.
+
+\verb@rd@ $\leftarrow$ \verb@pc + 4@\\
+\verb@pc@ $\leftarrow$ \verb@pc + sx(imm<<1)@
+
+This instruction saves the address of the next instruction
+that would otherwise execute (located at \reg{pc}+4) into 
+\reg{rd} and then adds immediate value to the \reg{pc} causing
+an unconditional branch to take place.
+
+The standard software conventions for calling subroutines
+use \reg{x1} as the return address (\reg{rd} register in this 
+case).~\cite[p.~16]{rvismv1v22:2017}
+
+
+Encoding:
+
+\DrawInsnTypeJPicture{JAL x7, .+16}{00000001000000000000001111101111}
+
+imm demultiplexed value = $00000000000000001000_2 \ll 1 = 16_{10}$
+
+
+State of registers before execution:
+
+pc = 0x11114444
+
+State of registers after execution:
+
+pc = 0x11114454
+x7 = 0x11114448
+
+JAL provides a method to call a subroutine using a pc-relative address.
+
+
+\DrawInsnTypeJPicture{JAL x7, .-16}{11111111000111111111001111101111}
+
+imm demultiplexed value = $11111111111111111000_2 \ll 1 = -16_{10}$
+
+State of registers before execution:
+
+pc = 0x11114444
+
+State of registers after execution:
+
+pc = 0x11114434
+x7 = 0x11114448
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{JALR rd, rs1, imm}
+\index{Instruction!JALR}
+
+Jump and link register.
+
+\verb@rd@ $\leftarrow$ \verb@pc + 4@\\
+\verb@pc@ $\leftarrow$ \verb@(rs1 + sx(imm)) & ~1@
+
+This instruction saves the address of the next instruction
+that would otherwise execute (located at \reg{pc}+4) into 
+\reg{rd} and then adds the immediate value to the \reg{rs1} 
+register and stores the sum into the \reg{pc} register causing
+an unconditional branch to take place.
+
+Note that the branch target address is calculated by 
+sign--extending the imm[11:0] bits from the instruction, 
+adding it to the \reg{rs1} register and {\em then} the 
+LSB of the sum is to zero and the result is stored into the 
+\reg{pc} register.
+The discarding of the LSB allows the branch to refer to any 
+even address.
+
+The standard software conventions for calling subroutines
+use \reg{x1} as the return address (\reg{rd} register in this 
+case).~\cite[p.~16]{rvismv1v22:2017}
+
+
+Encoding:
+
+\DrawInsnTypeIPicture{JALR x1, x7, 4}{00000000010000111000000011100111}
+
+Before:
+
+pc = 0x11114444\\
+x7 = 0x44444444
+
+After
+
+pc = 0x5555888c\\
+x1 = 0x11114448
+
+JALR provides a method to call a subroutine using a base-displacement address.
+
+\DrawInsnTypeIPicture{JALR x1, x0, 5}{00000000010100000000000011100111}
+
+Note that the least significant bit in the result of rs1+imm is 
+discarded/set to zero before the result is saved in the pc.
+ 
+pc = 0x11114444
+
+After
+
+pc = 0x00000004\\
+x1 = 0x11114448
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{BEQ rs1, rs2, imm}
+\index{Instruction!BEQ}
+
+Branch if equal.
+
+\verb@pc@ $\leftarrow$ \verb@(rs1 == rs2) ? pc+sx(imm[12:1]<<1) : pc+4@
+
+Encoding:
+
+\DrawInsnTypeBPicture{BEQ x3, x15, 2064}{00000000111100011000100011100011}
+
+imm[12:1] = $010000001000_2 = 1032_{10}$\\
+imm = $2064_{10}$\\
+funct3 = $000_2$\\
+rs1 = x3\\
+rs2 = x15
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{BNE rs1, rs2, imm}
+\index{Instruction!BNE}
+
+Branch if Not Equal.
+
+\verb@pc@ $\leftarrow$ \verb@(rs1 != rs2) ? pc+sx(imm[12:1]<<1) : pc+4@
+
+Encoding:
+
+\DrawInsnTypeBPicture{BNE x3, x15, 2064}{00000000111100011001100011100011}
+
+imm[12:1] = $010000001000_2 = 1032_{10}$\\
+imm = $2064_{10}$\\
+funct3 = $001_2$\\
+rs1 = x3\\
+rs2 = x15
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{BLT rs1, rs2, imm}
+\index{Instruction!BLT}
+
+Branch if Less Than.
+
+\verb@pc@ $\leftarrow$ \verb@(rs1 < rs2) ? pc+sx(imm[12:1]<<1) : pc+4@
+
+Encoding:
+
+\DrawInsnTypeBPicture{BLT x3, x15, 2064}{00000000111100011100100011100011}
+
+imm[12:1] = $010000001000_2 = 1032_{10}$\\
+imm = $2064_{10}$\\
+funct3 = $100_2$\\
+rs1 = x3\\
+rs2 = x15
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{BGE rs1, rs2, imm}
+\index{Instruction!BGE}
+
+Branch if Greater or Equal.
+
+\verb@pc@ $\leftarrow$ \verb@(rs1 >= rs2) ? pc+sx(imm[12:1]<<1) : pc+4@
+
+Encoding:
+
+\DrawInsnTypeBPicture{BGE x3, x15, 2064}{00000000111100011101100011100011}
+
+imm[12:1] = $010000001000_2 = 1032_{10}$\\
+imm = $2064_{10}$\\
+funct3 = $101_2$\\
+rs1 = x3\\
+rs2 = x15
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{BLTU rs1, rs2, imm}
+\index{Instruction!BLTU}
+
+Branch if Less Than Unsigned.
+
+\verb@pc@ $\leftarrow$ \verb@(rs1 < rs2) ? pc+sx(imm[12:1]<<1) : pc+4@
+
+Encoding:
+
+\DrawInsnTypeBPicture{BLTU x3, x15, 2064}{00000000111100011110100011100011}
+
+imm[12:1] = $010000001000_2 = 1032_{10}$\\
+imm = $2064_{10}$\\
+funct3 = $110_2$\\
+rs1 = x3\\
+rs2 = x15
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{BGEU rs1, rs2, imm}
+\index{Instruction!BGEU}
+
+Branch if Greater or Equal Unsigned.
+
+\verb@pc@ $\leftarrow$ \verb@(rs1 >= rs2) ? pc+sx(imm[12:1]<<1) : pc+4@
+
+Encoding:
+
+\DrawInsnTypeBPicture{BGEU x3, x15, 2064}{00000000111100011111100011100011}
+\enote{use symbols in branch examples}
+
+imm[12:1] = $010000001000_2 = 1032_{10}$\\
+imm = $2064_{10}$\\
+funct3 = $111_2$\\
+rs1 = x3\\
+rs2 = x15
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{LB rd, imm(rs1)}
+\index{Instruction!LB}
+
+Load byte.
+
+\verb@rd@ $\leftarrow$ \verb@sx(m8(rs1+sx(imm)))@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+Load an 8-bit value from memory at address \verb@rs1+imm@, then 
+sign--extend it to 32 bits before storing it in \verb@rd@
+
+
+Encoding:
+
+\DrawInsnTypeIPicture{LB x7, 4(x3)}{00000000010000011000001110000011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{LH rd, imm(rs1)}
+\index{Instruction!LH}
+
+Load halfword.
+
+\verb@rd@ $\leftarrow$ \verb@sx(m16(rs1+sx(imm)))@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+Load a 16-bit value from memory at address \verb@rs1+imm@, then 
+sign--extend it to 32 bits before storing it in \verb@rd@
+
+
+Encoding:
+
+\DrawInsnTypeIPicture{LH x7, 4(x3)}{00000000010000011001001110000011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{LW rd, imm(rs1)}
+\index{Instruction!LW}
+
+Load word.
+
+\verb@rd@ $\leftarrow$ \verb@sx(m32(rs1+sx(imm)))@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+Load a 32-bit value from memory at address \verb@rs1+imm@, then 
+store it in \verb@rd@
+
+Encoding:
+
+\DrawInsnTypeIPicture{LW x7, 4(x3)}{00000000010000011010001110000011}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{LBU rd, imm(rs1)}
+\index{Instruction!LBU}
+
+Load byte unsigned.
+
+\verb@rd@ $\leftarrow$ \verb@zx(m8(rs1+sx(imm)))@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+Load an 8-bit value from memory at address \verb@rs1+imm@, then 
+zero--extend it to 32 bits before storing it in \verb@rd@
+
+Encoding:
+
+\DrawInsnTypeIPicture{LBU x7, 4(x3)}{00000000010000011100001110000011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{LHU rd, imm(rs1)}
+\index{Instruction!LHU}
+
+Load halfword unsigned.
+
+\verb@rd@ $\leftarrow$ \verb@zx(m16(rs1+sx(imm)))@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+Load an 16-bit value from memory at address \verb@rs1+imm@, then 
+zero--extend it to 32 bits before storing it in \verb@rd@
+
+Encoding:
+
+\DrawInsnTypeIPicture{LHU x7, 4(x3)}{00000000010000011101001110000011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{SB rs2, imm(rs1)}
+\index{Instruction!SB}
+
+Store Byte.
+
+\verb@m8(rs1+sx(imm))@ $\leftarrow$ \verb@rs2[7:0]@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+Store the 8-bit value in \verb@rs2[7:0]@ into memory at 
+address \verb@rs1+imm@.
+
+Encoding:
+
+\DrawInsnTypeSPicture{SB x3, 19(x15)}{00000000111100011000100110100011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{SH rs2, imm(rs1)}
+\index{Instruction!SH}
+
+Store Halfword.
+
+\verb@m16(rs1+sx(imm))@ $\leftarrow$ \verb@rs2[15:0]@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+Store the 16-bit value in \verb@rs2[15:0]@ into memory at 
+address \verb@rs1+imm@.
+
+
+Encoding:
+
+\DrawInsnTypeSPicture{SH x3, 19(x15)}{00000000111100011001100110100011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{SW rs2, imm(rs1)}
+\index{Instruction!SW}
+
+Store Word
+
+\verb@m16(rs1+sx(imm))@ $\leftarrow$ \verb@rs2[31:0]@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+Store the 32-bit value in \verb@rs1@ into memory at address \verb@rs2+imm@.
+
+Encoding:
+
+\DrawInsnTypeSPicture{SW x3, 19(x15)}{00000000111100011010100110100011}
+
+Show pos \& neg imm examples.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{ADDI rd, rs1, imm}
+\index{Instruction!ADDI}
+
+Add Immediate
+
+\verb@rd@ $\leftarrow$ \verb@rs1+sx(imm)@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+Encoding:
+
+\DrawInsnTypeIPicture{ADDI x1, x7, 4}{00000000010000111000000010010011}
+
+Before:
+
+x7 = 0x11111111
+
+After:
+
+x1 = 0x11111115
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{SLTI rd, rs1, imm}
+\index{Instruction!SLTI}
+
+Set LessThan Immediate
+
+\verb@rd@ $\leftarrow$ \verb@(rs1 < sx(imm)) ? 1 : 0@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+If the sign--extended immediate value is less than the value
+in the \reg{rs1} register then the value 1 is stored in the 
+\reg{rd} register.  Otherwise the value 0 is stored in the
+\reg{rd} register. 
+
+Encoding:
+
+\DrawInsnTypeIPicture{SLTI x1, x7, 4}{00000000010000111010000010010011}
+
+Before:
+
+x7 = 0x11111111
+
+After:
+
+x1 = 0x00000000
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{SLTIU rd, rs1, imm}
+\index{Instruction!SLTIU}
+
+Set LessThan Immediate Unsigned
+
+\verb@rd@ $\leftarrow$ \verb@(rs1 < zx(imm)) ? 1 : 0@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+If the zero--extended immediate value is less than the value
+in the \reg{rs1} register then the value 1 is stored in the 
+\reg{rd} register.  Otherwise the value 0 is stored in the
+\reg{rd} register.  Both the immediate and \reg{rs1} register
+values are treated as unsigned numbers for the purposes of the 
+comparison.
+
+Encoding:
+
+\DrawInsnTypeIPicture{SLTIU x1, x7, 4}{00000000010000111011000010010011}
+
+Before:
+
+x7 = 0x81111111
+
+After:
+
+x1 = 0x00000001
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{XORI rd, rs1, imm}
+\index{Instruction!XORI}
+
+Exclusive Or Immediate
+
+\verb@rd@ $\leftarrow$ \verb@rs1 ^ sx(imm)@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+The logical XOR of the sign--extended immediate value and the value 
+in the \reg{rs1} register is stored in the \reg{rd} register.
+
+Encoding:
+
+\DrawInsnTypeIPicture{XORI x1, x7, 4}{00000000010000111100000010010011}
+
+Before:
+
+x7 = 0x81111111
+
+After:
+
+x1 = 0x81111115
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{ORI rd, rs1, imm}
+\index{Instruction!ORI}
+
+Or Immediate
+
+\verb@rd@ $\leftarrow$ \verb@rs1 | sx(imm)@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+The logical OR of the sign--extended immediate value and the value 
+in the \reg{rs1} register is stored in the \reg{rd} register.
+
+Encoding:
+
+\DrawInsnTypeIPicture{ORI x1, x7, 4}{00000000010000111110000010010011}
+
+Before:
+
+x7 = 0x81111111
+
+After:
+
+x1 = 0x81111115
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{ANDI rd, rs1, imm}
+\index{Instruction!ANDI}
+
+And Immediate
+
+\verb@rd@ $\leftarrow$ \verb@rs1 & sx(imm)@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+The logical AND of the sign--extended immediate value and the value 
+in the \reg{rs1} register is stored in the \reg{rd} register.
+
+
+Encoding:
+
+\DrawInsnTypeIPicture{ANDI x1, x7, 4}{00000000010000111111000010010011}
+
+Before:
+
+x7 = 0x81111111
+
+After:
+
+x1 = 0x81111115
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{SLLI rd, rs1, shamt}
+\index{Instruction!SLLI}
+
+Shift Left Logical Immediate
+
+\verb@rd@ $\leftarrow$ \verb@rs1 << shamt@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+
+SLLI is a logical left shift operation (zeros are shifted
+into the lower bits).  The value in rs1 shifted left shamt
+number of bits and the result placed into rd.~\cite[p.~14]{rvismv1v22:2017}
+
+Encoding:
+
+\DrawInsnTypeRShiftPicture{SLLI x7, x3, 2}{00000000001000011001001110100011}
+
+x3 = 0x81111111
+
+After:
+
+x7 = 0x04444444
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{SRLI rd, rs1, shamt}
+\index{Instruction!SRLI}
+
+Shift Right Logical Immediate
+
+\verb@rd@ $\leftarrow$ \verb@rs1 >> shamt@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+SRLI is a logical right shift operation (zeros are shifted
+into the higher bits).  The value in rs1 shifted right shamt
+number of bits and the result placed into rd.~\cite[p.~14]{rvismv1v22:2017}
+
+
+Encoding:
+
+\DrawInsnTypeRShiftPicture{SRLI x7, x3, 2}{00000000001000011101001110010011}
+
+x3 = 0x81111111
+
+After:
+
+x7 = 0x20444444
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{SRAI rd, rs1, shamt}
+\index{Instruction!SRAI}
+
+Shift Right Arithmetic Immediate
+
+\verb@rd@ $\leftarrow$ \verb@rs1 >> shamt@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+SRAI is a logical right shift operation (zeros are shifted
+into the higher bits).  The value in rs1 shifted right shamt
+number of bits and the result placed into rd.~\cite[p.~14]{rvismv1v22:2017}
+
+Encoding:
+
+\DrawInsnTypeRShiftPicture{SRAI x7, x3, 2}{01000000001000011101001110010011}
+
+x3 = 0x81111111
+
+After:
+
+x7 = 0xe0444444
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{ADD rd, rs1, rs2}
+\index{Instruction!ADD}
+
+Add 
+
+\verb@rd@ $\leftarrow$ \verb@rs1 + rs2@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+ADD performs addition. Overflows are ignored and the low 32 bits of 
+the result are written to rd.~\cite[p.~15]{rvismv1v22:2017}
+
+Encoding:
+
+\DrawInsnTypeRPicture{ADD x7, x3, x31}{00000001111100011000001110110011}
+
+x3  = 0x81111111
+x31 = 0x22222222
+
+After:
+
+x7 = 0xa3333333
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{SUB rd, rs1, rs2}
+\index{Instruction!SUB}
+
+Subtract
+
+\verb@rd@ $\leftarrow$ \verb@rs1 - rs2@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+SUB performs subtraction. Underflows are ignored and the low 32 bits of 
+the result are written to rd.~\cite[p.~15]{rvismv1v22:2017}
+
+Encoding:
+
+\DrawInsnTypeRPicture{SUB x7, x3, x31}{01000001111100011000001110110011}
+
+x3  = 0x83333333
+x31 = 0x01111111
+
+After:
+
+x7 = 0x82222222
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{SLL rd, rs1, rs2}
+\index{Instruction!SLL}
+
+Shift Left Logical
+
+\verb@rd@ $\leftarrow$ \verb@rs1 << rs2@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+SLL performs a logical left shift on the value in register rs1 by 
+the shift amount held in the lower 5 bits of register rs2.~\cite[p.~15]{rvismv1v22:2017}
+
+Encoding:
+
+\DrawInsnTypeRPicture{SLL x7, x3, x31}{00000001111100011001001110110011}
+
+x3  = 0x83333333\\
+x31 = 0x00000002
+
+After:
+
+x7 = 0x0ccccccc
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{SLT rd, rs1, rs2}
+\index{Instruction!SLT}
+
+Set Less Than
+
+\verb@rd@ $\leftarrow$ \verb@(rs1 < rs2) ? 1 : 0@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+SLT performs a signed compare, writing 1 to rd if rs1 < rs2, 0 
+otherwise.~\cite[p.~15]{rvismv1v22:2017}
+
+Encoding:
+
+\DrawInsnTypeRPicture{SLT x7, x3, x31}{00000001111100011010001110110011}
+
+x3  = 0x83333333\\
+x31 = 0x00000002
+
+After:
+
+x7 = 0x00000001
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{SLTU rd, rs1, rs2}
+\index{Instruction!SLTU}
+
+Set Less Than Unsigned 
+
+\verb@rd@ $\leftarrow$ \verb@(rs1 < rs2) ? 1 : 0@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+SLTU performs an unsigned compare, writing 1 to rd if rs1 < rs2, 0 otherwise. 
+Note, SLTU rd, x0, rs2 sets rd to 1 if rs2 is not equal to zero, otherwise 
+sets rd to zero (assembler pseudo-op SNEZ rd, rs).~\cite[p.~15]{rvismv1v22:2017}
+
+Encoding:
+
+\DrawInsnTypeRPicture{SLTU x7, x3, x31}{00000001111100011011001110110011}
+
+x3  = 0x83333333\\
+x31 = 0x00000002
+
+After:
+
+x7 = 0x00000000
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{XOR rd, rs1, rs2}
+\index{Instruction!XOR}
+
+Exclusive Or
+
+\verb@rd@ $\leftarrow$ \verb@rs1 ^ rs2@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+XOR performs a bit-wise exclusive or on rs1 and rs2.  
+The result is stored on rd.
+
+Encoding:
+
+\DrawInsnTypeRPicture{XOR x7, x3, x31}{00000001111100011100001110110011}
+
+x3  = 0x83333333\\
+x31 = 0x1888ffff
+
+After:
+
+x7 = 0x9bbbcccc
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{SRL rd, rs1, rs2}
+\index{Instruction!SRL}
+
+Shift Right Logical
+
+\verb@rd@ $\leftarrow$ \verb@rs1 >> rs2@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+SRL performs a logical right shift on the value in register rs1 by 
+the shift amount held in the lower 5 bits of 
+register rs2.~\cite[p.~15]{rvismv1v22:2017}
+
+Encoding:
+
+\DrawInsnTypeRPicture{SRL x7, x3, x31}{00000001111100011101001110110011}
+
+x3  = 0x83333333\\
+x31 = 0x00000010
+
+After:
+
+x7 = 0x00008333
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{SRA rd, rs1, rs2}
+\index{Instruction!SRA}
+
+Shift Right Arithmetic
+
+\verb@rd@ $\leftarrow$ \verb@rs1 >> rs2@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+SRA performs an arithmetic right shift (the original sign bit is copied 
+into the vacated upper bits) on the value in register rs1 by the shift 
+amount held in the lower 5 bits of 
+register rs2.~\cite[p.~14,~15]{rvismv1v22:2017}
+
+Encoding:
+
+\DrawInsnTypeRPicture{SLA x7, x3, x31}{01000001111100011101001110110011}
+
+x3  = 0x83333333\\
+x31 = 0x00000010
+
+After:
+
+x7 = 0xffff8333
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{OR rd, rs1, rs2}
+\index{Instruction!OR}
+
+Or 
+
+\verb@rd@ $\leftarrow$ \verb@rs1 | rs2@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+OR is a logical operation that performs a bit-wise OR on 
+register rs1 and rs2 and then places the result 
+in rd.~\cite[p.~14]{rvismv1v22:2017}
+
+Encoding:
+
+\DrawInsnTypeRPicture{OR x7, x3, x31}{00000001111100011101001110110011}
+
+x3  = 0x83333333\\
+x31 = 0x00000440
+
+After:
+
+x7 = 0x83333773
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{AND rd, rs1, rs2}
+\index{Instruction!AND}
+
+And
+
+\verb@rd@ $\leftarrow$ \verb@rs1 & rs2@\\
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+AND is a logical operation that performs a bit-wise AND on 
+register rs1 and rs2 and then places the result 
+in rd.~\cite[p.~14]{rvismv1v22:2017}
+
+Encoding:
+
+\DrawInsnTypeRPicture{AND x7, x3, x31}{00000001111100011110001110110011}
+
+x3  = 0x83333333\\
+x31 = 0x00000fe2
+
+After:
+
+x7 = 0x00000322
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{FENCE predecessor, successor}
+\index{Instruction!FENCE}
+
+The FENCE instruction is used to order device I/O and memory accesses as 
+viewed by other RISC-V harts and external devices or co-processors. Any 
+combination of device input (I), device output (O), memory reads (R), 
+and memory writes (W) may be ordered with respect to any combination
+of the same. Informally, no other RISC-V hart or external device can 
+observe any operation in the successor set following a FENCE before any 
+operation in the predecessor set preceding the FENCE. The execution 
+environment will define what I/O operations are possible, and in particular, 
+which load and store instructions might be treated and ordered as device 
+input and device output operations respectively rather than memory reads 
+and writes. For example, memory-mapped I/O devices will typically be 
+accessed with uncached loads and stores that are ordered using the I and O
+ bits rather than the R and W bits. Instruction-set extensions might 
+also describe new coprocessor I/O instructions that will also be ordered 
+using the I and O bits in a FENCE.~\cite[p.~21]{rvismv1v22:2017}
+
+Operation:
+
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+Encoding:
+
+%\insnTypeF{FENCE iorw, iorw}
+{0 0 0 1 1 1 1}		% op
+{0 0 0}				% funct3
+{1 1 1 1}			% predecessor iorw
+{1 1 1 1}			% successor iorw
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{FENCE.I}
+\index{Instruction!FENCE.I}
+
+The FENCE.I instruction is used to synchronize the instruction and 
+data streams. RISC-V does not guarantee that stores to instruction 
+memory will be made visible to instruction fetches on the same
+RISC-V hart until a FENCE.I instruction is executed. A FENCE.I 
+instruction only ensures that a subsequent instruction fetch on 
+a RISC-V hart will see any previous data stores already visible to 
+the same RISC-V hart. FENCE.I does not ensure that other RISC-V harts' 
+instruction fetches will observe the local hart's stores in a 
+multiprocessor system. To make a store to instruction memory
+visible to all RISC-V harts, the writing hart has to execute a 
+data FENCE before requesting that all remote RISC-V harts execute 
+a FENCE.I.~\cite[p.~21]{rvismv1v22:2017}
+
+Operation:
+
+\verb@pc@ $\leftarrow$ \verb@pc+4@
+
+Encoding:
+
+%\insnTypeF{FENCE.I}
+{0 0 0 1 1 1 1}		% op
+{0 0 1}				% funct3
+{0 0 0 0}			% predecessor iorw
+{0 0 0 0}			% successor iorw
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{ECALL}
+\index{Instruction!ECALL}
+
+The ECALL instruction is used to make a request to the supporting 
+execution environment, which is usually an operating system. The ABI 
+for the system will define how parameters for the environment
+request are passed, but usually these will be in defined locations 
+in the integer register file.~\cite[p.~24]{rvismv1v22:2017}
+
+%\insnTypeI{ECALL}
+{1 1 1 0 0 1 1}
+{0 0 0 0 0}
+{0 0 0}
+{0 0 0 0 0}
+{0 0 0 0 0 0 0 0 0 0 0 0}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{EBREAK}
+\index{Instruction!EBREAK}
+
+The EBREAK instruction is used by debuggers to cause control to be 
+transferred back to a debugging environment.~\cite[p.~24]{rvismv1v22:2017}
+
+%\insnTypeI{ECALL}
+{1 1 1 0 0 1 1}
+{0 0 0 0 0}
+{0 0 0}
+{0 0 0 0 0}
+{0 0 0 0 0 0 0 0 0 0 0 1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{CSRRW rd, csr, rs1}
+\index{Instruction!CSRRW}
+
+The CSRRW (Atomic Read/Write CSR) instruction atomically swaps values in 
+the CSRs and integer registers. CSRRW reads the old value of the CSR, 
+zero-extends the value to XLEN bits, then writes it to integer register rd. 
+The initial value in rs1 is written to the CSR. If rd=x0, then the 
+instruction shall not read the CSR and shall not cause any of the 
+side-effects that might occur on a CSR read.~\cite[p.~22]{rvismv1v22:2017}
+
+%\insnTypeCSRR{CSRRW x3, 2, x15}
+{1 1 1 0 0 1 1}				% op
+{0 0 0 1 1}					% rd
+{0 0 1}						% funct3
+{0 1 1 1 1}					% rs1
+{0 0 0 0 0 0 0 0 0 0 1 0}	% csr
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{CSRRS rd, csr, rs1}
+\index{Instruction!CSRRS}
+
+The CSRRS (Atomic Read and Set Bits in CSR) instruction reads the value 
+of the CSR, zero-extends the value to XLEN bits, and writes it to integer 
+register rd. The initial value in integer register rs1 is treated as a bit 
+mask that specifies bit positions to be set in the CSR. Any bit that
+is high in rs1 will cause the corresponding bit to be set in the CSR, 
+if that CSR bit is writable.  Other bits in the CSR are unaffected (though 
+CSRs might have side effects when written).~\cite[p.~22]{rvismv1v22:2017}
+
+If rs1=x0, then the instruction will not write 
+to the CSR at all, and so shall not cause any of the side effects that 
+might otherwise occur on a CSR write, such as raising illegal instruction 
+exceptions on accesses to read-only CSRs. Note that if rs1 specifies a 
+register holding a zero value other than x0, the instruction will still 
+attempt to write the unmodified value back to the CSR and will cause any 
+attendant side effects.~\cite[p.~22]{rvismv1v22:2017}
+
+
+%\insnTypeCSRR{CSRRS x3, 2, x15}
+{1 1 1 0 0 1 1}				% op
+{0 0 0 1 1}					% rd
+{0 1 0}						% funct3
+{0 1 1 1 1}					% rs1
+{0 0 0 0 0 0 0 0 0 0 1 0}	% csr
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{CSRRC rd, csr, rs1}
+\index{Instruction!CSRRC}
+
+The CSRRC (Atomic Read and Clear Bits in CSR) instruction reads the value 
+of the CSR, zero-extends the value to XLEN bits, and writes it to integer 
+register rd. The initial value in integer register rs1 is treated as a 
+bit mask that specifies bit positions to be cleared in the CSR. Any bit
+that is high in rs1 will cause the corresponding bit to be cleared in 
+the CSR, if that CSR bit is writable. Other bits in the CSR are 
+unaffected.~\cite[p.~22]{rvismv1v22:2017}
+
+If rs1=x0, then the instruction will not write 
+to the CSR at all, and so shall not cause any of the side effects that 
+might otherwise occur on a CSR write, such as raising illegal instruction 
+exceptions on accesses to read-only CSRs. Note that if rs1 specifies a 
+register holding a zero value other than x0, the instruction will still 
+attempt to write the unmodified value back to the CSR and will cause any 
+attendant side effects.~\cite[p.~22]{rvismv1v22:2017}
+
+%\insnTypeCSRR{CSRRC x3, 2, x15}
+{1 1 1 0 0 1 1}				% op
+{0 0 0 1 1}					% rd
+{0 1 1}						% funct3
+{0 1 1 1 1}					% rs1
+{0 0 0 0 0 0 0 0 0 0 1 0}	% csr
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{CSRRWI rd, csr, imm}
+\index{Instruction!CSRRWI}
+
+This instruction is the same as CSRRW except a 5-bit unsigned (zero-extended)
+immediate value is used rather than the value from a register.
+
+%\insnTypeCSRR{CSRRWI x3, 2, 7}
+{1 1 1 0 0 1 1}				% op
+{0 0 0 1 1}					% rd
+{1 0 1}						% funct3
+{0 0 1 1 1}					% imm
+{0 0 0 0 0 0 0 0 0 0 1 0}	% csr
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{CSRRSI rd, csr, rs1}
+\index{Instruction!CSRRSI}
+
+This instruction is the same as CSRRS except a 5-bit unsigned (zero-extended)
+immediate value is used rather than the value from a register.
+
+If the uimm[4:0] field is zero, then this instruction will not
+write to the CSR, and shall not cause any of the side effects that 
+might otherwise occur on a CSR write. For CSRRWI, if rd=x0, then 
+the instruction shall not read the CSR and shall not cause any
+of the side-effects that might occur on a CSR 
+read.~\cite[p.~22]{rvismv1v22:2017}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{CSRRCI rd, csr, rs1}
+\index{Instruction!CSRRCI}
+
+This instruction is the same as CSRRC except a 5-bit unsigned (zero-extended)
+immediate value is used rather than the value from a register.
+
+If the uimm[4:0] field is zero, then this instruction will not
+write to the CSR, and shall not cause any of the side effects that 
+might otherwise occur on a CSR write. For CSRRWI, if rd=x0, then 
+the instruction shall not read the CSR and shall not cause any
+of the side-effects that might occur on a CSR 
+read.~\cite[p.~22]{rvismv1v22:2017}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{RV32M Standard Extension}
+\index{RV32M}
+
+32-bit integer multiply and divide instructions.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{RV32A Standard Extension}
+\index{RV32A}
+
+32-bit atomic operations.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{RV32F Standard Extension}
+\index{RV32F}
+
+32-bit IEEE floating point instructions.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{RV32D Standard Extension}
+\index{RV32D}
+
+64-bit IEEE floating point instructions.

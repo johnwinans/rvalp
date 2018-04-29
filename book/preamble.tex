@@ -1,0 +1,261 @@
+
+\oddsidemargin=.82in
+\evensidemargin=1.82in
+
+%\topmargin=-.5in
+\headheight=12pt
+\headsep=20pt
+
+\hoffset=-1.2in      % for 8.5x11
+%\voffset=-1.15in        % for 8.5x11
+\voffset=-.8in        % for 8.5x11
+%\textheight=9.75in   % for 8.5x11
+\textheight=9in   % for 8.5x11
+%\textheight=8.75in   % for 8.5x11
+
+%\textwidth=348pt    % for 8.5x11
+%\textwidth=6in    % for 8.5x11
+\textwidth=6.25in    % for 8.5x11
+
+\marginparsep=7pt
+%\marginparwidth=71pt
+%\marginparwidth=1.25in
+%\marginparwidth=1.5in
+\marginparwidth=1.25in
+\footskip=36pt
+\marginparpush=5pt
+
+
+\usepackage{ifthen}
+\usepackage{stringstrings}	% so can count characters in a string
+\usepackage{xstring}		% so can count characters in a string
+
+\usepackage[pass]{geometry}
+\usepackage{color}   % Necessary for colored links
+
+% load makeidx BEFORE hyperref to make the index clickable
+% load makeidx AFTER hyperref if want to use showidx
+%\usepackage{makeidx}
+\usepackage[pagebackref]{hyperref}
+\hypersetup{
+    colorlinks=true,	%set true if you want colored links
+    linkcolor=blue		%choose some color if you want links to stand out
+}
+
+\usepackage{makeidx,showidx}	% showidx breaks hyperref when loaded before hyperref
+
+
+
+%\usepackage{url}
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+
+\usepackage{amsmath}
+\numberwithin{equation}{section}
+\usepackage{amsfonts} % I hear these are also good to load
+\usepackage{amssymb} % I hear these are also good to load
+
+%\usepackage{picture}
+%\usepackage{epstopdf}
+%\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{tikz-timing}
+\usepackage{tikz}
+%\usepackage{timing}
+\usepackage{float}
+\usepackage{fancyvrb}
+\usepackage{caption}
+\usepackage{placeins}
+
+\usepackage{listings}
+
+\usepackage[toc]{glossaries}
+%\renewcommand*{\glsclearpage}{} 
+
+\usepackage{pifont}
+\usepackage{layout}
+
+\usepackage{xcolor}          
+\usepackage{textcomp}       % for the trademark symbol
+
+%\usepackage[obeyspaces]{url}
+\usepackage{fink}			% deprecated in favor of currfile
+%\usepackage{currfile}		% dut... doesn't emit the local include path properly
+
+\usepackage{MyFigs}
+
+\def\code#1{\url{#1}}
+
+% The exercise environment
+\usepackage{exercise}
+
+\renewcommand{\ExerciseHeader}{%
+\textbf{\large\ExerciseHeaderDifficulty\ExerciseName\ %
+\ExerciseHeaderNB\ExerciseHeaderTitle\ExerciseHeaderOrigin}\medskip}
+
+\renewcommand{\ExePartHeader}{%
+\medskip\emph{\large\ExePartHeaderDifficulty\ExePartName %
+\ExePartHeaderNB \ExePartHeaderTitle\\
+}}
+
+%\renewcommand{\ExePartHeader}{%
+%\medskip\emph{\large\ExePartHeaderDifficulty Part \ExePartHeaderNB %
+%\quad \ExePartName\ExePartHeaderTitle}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\DefineVerbatimEnvironment%
+%{Code}{Verbatim}
+%{frame=single,numbers=left,numbersep=2mm,framesep=3mm}
+%%%,numbersep=2mm,frame=lines,framerule=0.8mm,framesep=5mm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% [1] = filename to include
+% [2] = title of the code sample
+% A label will be generated as: Code:#1
+%\newcommand{\xxxx}[2]{%
+%	\label{Code:#1} %
+%	\VerbatimInput[frame=single,numbers=left,numbersep=2mm,framesep=3mm,label={#2}]{#1}}
+
+\newcommand{\theListingFontFamily}{\ttfamily\small}
+%\newcommand{\theListingFontFamily}{\ttfamily\footnotesize}
+%\newcommand{\theListingFontFamily}{\ttfamily\scriptsize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% [1] = place for additional listing parameters, default: language=C
+% [2] = filepath
+% [3] = Description of the listing
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\listing}[3][language=C]{%
+	\lstinputlisting[ %
+		numbers=left,numberstyle=\tiny,stepnumber=1,numbersep=8pt, %
+		breaklines=true, %
+		frame=single %
+		showtabs=false, %
+		basicstyle=\theListingFontFamily, %
+		showstringspaces=false, %
+		tabsize=4, %
+		showlines=true, %  show all blank lines
+		#1, %
+		captionpos=t,frame=tblr,label={lst:\detokenize{#2}},caption={{\tt \detokenize{#2}}\\\hspace{\textwidth}{\small #3}}]{\detokenize{#2}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\listingRef}[1]{\autoref{lst:\detokenize{#1}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\lstnewenvironment{tty}
+	{\lstset{language=sh, %
+		numbers=left,numberstyle=\tiny,stepnumber=1,numbersep=8pt, %
+		breaklines=true, %
+        frame=l, %
+        showtabs=false, %
+		basicstyle=\theListingFontFamily, %
+		showstringspaces=false, %
+		tabsize=4, %
+		showlines=true, %  show all blank lines
+		basicstyle=\theListingFontFamily}}
+	{}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A footer that shall appear on every page
+
+%\newcommand{\MyFoot}{{\sf\scriptsize Copyright \copyright\ 2014, 2015 John Winans.  All Rights Reserved}\\
+%\vspace{.05in}
+%\scriptsize\FooterText}
+
+\newcommand{\MyFoot}{\scriptsize\FooterText}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{fancy}
+
+% supress normal headings and footers
+\fancyhf{}
+
+% heading and footing rules
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+
+
+%\def\DiscardOneCharacter#1{}
+% Sub-footer that shows the version control version string in the lfoot defined above
+\ifdefined\GitFileName
+%    \newcommand{\FooterText}{\tt \GitFileName \currfilename\\
+    \newcommand{\FooterText}{\tt \GitFileName \finkpath\\
+\GitDescription}
+\else
+    \newcommand{\FooterText}{\emph{--UNKNOWN--}}
+\fi
+
+%\lhead{\leftmark}
+%\rhead{\rightmark}
+\fancyhead[LE]{\leftmark}
+\fancyhead[RO]{\rightmark}
+
+\newcommand{\PageNumber}{Page \thepage\ of \pageref*{LastPage}}
+%\rfoot{Page \thepage\ of \pageref{LastPage}}
+%\lfoot{\MyFoot}
+
+\fancyfoot[LE,RO]{\PageNumber}
+\fancyfoot[RE,LO]{\MyFoot}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% override the plain page style so the first page of a
+% chapter still has a footer on it (but no header).
+
+\fancypagestyle{plain}{%
+\renewcommand{\headrulewidth}{0pt} %
+\fancyhf{} % clear all header and footer fields
+\fancyfoot[LE,RO]{\PageNumber}
+\fancyfoot[RE,LO]{\MyFoot}
+%\lfoot{\MyFoot} %
+%\rfoot{Page \thepage\ of \pageref*{LastPage}}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{.51em}
+
+% How deep should we enumerate the section/subsection/subsubsections
+% 3=all the way
+\setcounter{secnumdepth}{3}
+
+% How many section-levels to show in the TOC.
+% 4=all of them
+\setcounter{tocdepth}{4}
+%\setcounter{tocdepth}{1}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Presentation styles for things like names links and
+% window objects in figures.
+
+% how should we present a window name
+\newcommand{\windowname}[1]{{\em #1}} 
+
+% How should we present the name of an object in a figure
+% that can be interacted with.
+\newcommand{\linkname}[1]{{\bf #1}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% fix some annoying things
+
+\newcommand{\tm}{\textsuperscript{TM}}
+\newcommand{\rtm}{\textsuperscript{\textregistered}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A command to make a colored background box whilst in math mode:
+\newcommand{\MathHilight}[1]{\colorbox{yellow}{\ensuremath{#1}}}
+
+\usepackage{tcolorbox}
+%\tcbset{colback=blue!20!white}
+\tcbset{colback=green!20!white}
+

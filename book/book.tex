@@ -1,0 +1,95 @@
+%\documentclass[oneside,draft,letterpaper]{book}
+%\documentclass[letterpaper]{book}
+\documentclass[oneside,letterpaper]{book}
+
+\input{preamble}
+\input{colors}
+\input{insnformats}
+
+\usepackage{ENote}
+
+%\usepackage{showframe}
+
+\hypersetup{
+	pdfauthor={John Winans},
+	pdftitle={RISC-V Assembly Language Programming (Draft \GitRevision{})},
+	pdfkeywords={RISC-V} {Assembler}
+}
+
+\makeindex
+
+%\makeglossaries
+\makenoidxglossaries
+\include{glossary}
+
+\begin{document}
+\include{indexrefs}		% The see-references for the index
+
+
+% Why does this (apparently) have to go here????
+\newlength{\fullwidth}
+\setlength{\fullwidth}{\the\textwidth}
+\addtolength{\fullwidth}{\the\marginparsep}
+\addtolength{\fullwidth}{\the\marginparwidth}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frontmatter
+
+\title{RISC-V\\Assembly Language Programming\\{\normalsize (Draft \GitRevision{})}}
+\author{John Winans\\ \href{mailto:jwinans@niu.edu}{\sf jwinans@niu.edu}}
+%\date{May }
+
+\maketitle
+
+\include{copyright/chapter}
+\tableofcontents
+%\listoffigures
+
+\setlength{\parskip}{10pt}
+
+\include{preface/chapter}
+\mainmatter
+
+%\include{preface/chapter}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% there should be one include here for each chapter
+
+%\part{Introduction}
+
+%\include{intro/chapter}
+\include{numbers/chapter}
+\include{toolchain/chapter}
+\include{rv32/chapter}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% These 'chapters' are lettered rather than numbered
+
+\appendix
+\include{license/chapter}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\backmatter
+% putting a chapter here causes it to be unnumbered
+
+
+\clearpage
+\bibliography{bibliography}
+\addcontentsline{toc}{chapter}{Bibliography}
+%\nocite{*}  % force all bib items to file appear even if not cited
+%\bibliographystyle{alpha}
+\bibliographystyle{ieeetr}
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{\indexname}
+\printindex
+
+%\clearpage
+%\phantomsection
+\glsaddall
+\printnoidxglossaries
+%\printglossary
+
+\end{document}
