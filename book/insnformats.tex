@@ -209,6 +209,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Draw hex markers
+% #1 The number of bits in the box
+\newcommand\DrawHexMarkers[1]{
+	\pgfmathsetmacro\num{int(#1-1)}
+	\foreach \x in {4,8,...,\num}
+		\draw [line width=.5mm] (\x+.5,-.75) -- (\x+.5, -.3);
+}
+
+
 % Print the characters within a string evenly spaced at integral node positions
 %
 % #1 The number of characters in the string
@@ -283,6 +293,7 @@
 	\draw {[rounded corners=\SignBoxCornerRadius] (1.35, -.6) -- (1.35, .6) -- (.65, .6) -- (.65, -.6) -- cycle};	% sign bit
 	\draw (32-7-.5, -.75) -- (32-7-.5, .1);		% imm[11]
 
+	\DrawHexMarkers{\numchars}
 	\EndTikzPicture
 }
 
@@ -305,6 +316,7 @@
 	% add some hint bits in for imm fields
 	\draw {[rounded corners=\SignBoxCornerRadius] (1.35, -.6) -- (1.35, .6) -- (.65, .6) -- (.65, -.6) -- cycle};	% sign bit
 
+	\DrawHexMarkers{\numchars}
 	\EndTikzPicture
 }
 
@@ -329,6 +341,7 @@
 	\draw (32-19-.5, -.75) -- (32-19.5, .1);		% imm[19:12]
 	\draw (32-20-.5, -.75) -- (32-20.5, .1);		% imm[11]
 
+	\DrawHexMarkers{\numchars}
 	\EndTikzPicture
 }
 
@@ -356,6 +369,7 @@
 \newcommand\DrawInsnTypeITikz[1]{
 	\BeginTikzPicture
 	\DrawInsnTypeI{#1}
+	\DrawHexMarkers{\numchars}
 	\EndTikzPicture
 }
 \newcommand\DrawInsnTypeIPicture[2]{
@@ -379,6 +393,7 @@
 	% add some hint bits in for imm fields
 	\draw {[rounded corners=\SignBoxCornerRadius] (1.35, -.6) -- (1.35, .6) -- (.65, .6) -- (.65, -.6) -- cycle};	% sign bit
 
+	\DrawHexMarkers{\numchars}
 	\EndTikzPicture
 }
 
@@ -400,6 +415,7 @@
 	\DrawInsnBoxSeg{\numchars}{11}{7}{rd}
 	\DrawInsnBoxSeg{\numchars}{6}{0}{opcode}
 
+	\DrawHexMarkers{\numchars}
 	\EndTikzPicture
 }
 
@@ -421,6 +437,7 @@
 	\DrawInsnBoxSeg{\numchars}{11}{7}{rd}
 	\DrawInsnBoxSeg{\numchars}{6}{0}{opcode}
 
+	\DrawHexMarkers{\numchars}
 	\EndTikzPicture
 }
 
