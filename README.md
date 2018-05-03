@@ -30,6 +30,8 @@ Put the following into .bashrc:
     export INFOPATH=$INFOPATH:/usr/local/texlive/2017/texmf-dist/doc/info
     export MANPATH=$MANPATH:/usr/local/texlive/2017/texmf-dist/doc/man
 
+Then clone and build this repo:
+
     git clone git@github.com:johnwinans/rvalp.git
     cd rvalp
     make world
