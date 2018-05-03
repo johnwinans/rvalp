@@ -575,15 +575,27 @@ When XLEN is 64 or 128, the immediate value is sign--extended to the left.
 
 Instruction Format and Example:
 
-\textbf{\large LUI t0, 3}\\
 \DrawInsnTypeUPicture{LUI t0, 3}{00000000000000000011001010110111}
 
-t0 = 0x00000300
+\begin{verbatim}
+00010074: 000032b7  lui     x5, 0x3         // x5 = 0x3000
+ reg  0: 00000000 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 00003000 f0f0f0f0 f0f0f0f0
+ reg  8: f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+ reg 16: f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+ reg 24: f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+     pc: 00010078
+\end{verbatim}
 
-\textbf{\large LUI t0, -1}\\
-\DrawInsnTypeUPicture{LUI t0, 3}{11111111111111111111001010110111}
+\DrawInsnTypeUPicture{LUI t0, 0xfffff}{11111111111111111111001010110111}
 
-t0 = 0xfffff000
+\begin{verbatim}
+00010078: fffff2b7  lui     x5, 0xfffff         // x5 = 0xfffff000
+ reg  0: 00000000 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 fffff000 f0f0f0f0 f0f0f0f0
+ reg  8: f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+ reg 16: f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+ reg 24: f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+     pc: 0001007c
+\end{verbatim}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -598,29 +610,29 @@ Create a signed 32--bit value by zero--extending imm[31:12] to the
 right (see \autoref{extension:zr}) and add this value to the 
 \reg{pc} register, placing the result into \reg{rd}.
 
-When XLEN is 64 or 128, the value placed into \reg{rd} will be 
-sign--extended to the left.
+When XLEN is 64 or 128, the immediate value is also sign--extended 
+to the left prior to being added to the \reg{pc} register.
 
-
-Encoding:
-
-\textbf{\large AUIPC t0, 3}\\
 \DrawInsnTypeUPicture{AUIPC t0, 3}{00000000000000000011001010110111}
+\begin{verbatim}
+0001007c: 00003297  auipc   x5, 0x3          // x5 = 0x1307c = 0x1007c + 0x3000
+ reg  0: 00000000 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 0001307c f0f0f0f0 f0f0f0f0
+ reg  8: f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+ reg 16: f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+ reg 24: f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+     pc: 00010080
+\end{verbatim}
 
-State of registers before execution:
+\DrawInsnTypeUPicture{AUIPC t0, 0x81000}{10000001000000000000001010110111}
+\begin{verbatim}
+00010080: 81000297  auipc   x5, 0x81000          // x5 = 0x81010080 = 0x10080 + 0x81000000
+ reg  0: 00000000 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 81010080 f0f0f0f0 f0f0f0f0
+ reg  8: f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+ reg 16: f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+ reg 24: f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+     pc: 00010084
+\end{verbatim}
 
-pc = 0x11114444
-
-Decoding the instruction:
-
-op-code = 0110111\\
-rd = x5\\
-imm = 0x00003000
-
-After execution:
-
-pc = 0x11114444\\
-x5 = 0x11117444
 
 The AUIPC instruction supports two-instruction sequences to access arbitrary 
 offsets from the PC for both control-flow transfers and data accesses. 
@@ -1041,15 +1053,17 @@ x1 = 0x00000000
 
 Set LessThan Immediate Unsigned
 
-\verb@rd@ $\leftarrow$ \verb@(rs1 < zx(imm)) ? 1 : 0@\\
+\verb@rd@ $\leftarrow$ \verb@(rs1 < sx(imm)) ? 1 : 0@\\
 \verb@pc@ $\leftarrow$ \verb@pc+4@
 
-If the zero--extended immediate value is less than the value
+If the sign--extended immediate value is less than the value
 in the \reg{rs1} register then the value 1 is stored in the 
 \reg{rd} register.  Otherwise the value 0 is stored in the
 \reg{rd} register.  Both the immediate and \reg{rs1} register
 values are treated as unsigned numbers for the purposes of the 
-comparison.
+comparison.\footnote{The immediate value is first sign-extended to
+XLEN bits then treated as an unsigned number.\cite[p.~14]{rvismv1v22:2017}}
+
 
 Encoding:
 
