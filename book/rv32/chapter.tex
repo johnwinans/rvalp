@@ -1681,6 +1681,59 @@ read.~\cite[p.~22]{rvismv1v22:2017}
 32-bit integer multiply and divide instructions.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{MUL rd, rs1, rs2}
+\index{Instruction!MUL}
+
+Multiply \reg{rs1} by \reg{rs2} and store the least significant 32--bits
+of the result in \reg{rd}.
+
+\DrawInsnTypeRPicture{MUL x7, x3, x31}{00000011111100111000001110110011}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{MULH rd, rs1, rs2}
+\index{Instruction!MULH}
+
+\DrawInsnTypeRPicture{MULH x7, x3, x31}{00000011111100111001001110110011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{MULHS rd, rs1, rs2}
+\index{Instruction!MULHS}
+
+\DrawInsnTypeRPicture{MULHS x7, x3, x31}{00000011111100111010001110110011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{MULHU rd, rs1, rs2}
+\index{Instruction!MULHU}
+
+\DrawInsnTypeRPicture{MULHU x7, x3, x31}{00000011111100111011001110110011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{DIV rd, rs1, rs2}
+\index{Instruction!DIV}
+
+\DrawInsnTypeRPicture{DIV x7, x3, x31}{00000011111100111100001110110011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{DIVU rd, rs1, rs2}
+\index{Instruction!DIVU}
+
+\DrawInsnTypeRPicture{DIVU x7, x3, x31}{00000011111100111101001110110011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{REM rd, rs1, rs2}
+\index{Instruction!REM}
+
+\DrawInsnTypeRPicture{REM x7, x3, x31}{00000011111100111110001110110011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{REMU rd, rs1, rs2}
+\index{Instruction!REMU}
+
+\DrawInsnTypeRPicture{REMU x7, x3, x31}{00000011111100111111001110110011}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{RV32A Standard Extension}
 \index{RV32A}
