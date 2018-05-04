@@ -1,10 +1,124 @@
 \chapter{Introduction}
 \label{chapter:Introduction}
 
+At its core, a digital computer has at least one \acrfull{cpu}.  A
+CPU executes a continuous stream of instructions called a \gls{program}.  
+These program instructions are expressed in what is called 
+\gls{MachineLanguage}.  Each machine language instruction is a binary value.  
+In order to provide a method to simplify the management of machine language 
+programs a symbolic mapping is provided where a mneumonic can be used to 
+specify each machine instruction and any of its parameters\ldots\ rather 
+than mandate that programs be expressed as binary machine language 
+instructions.  The set of mneumonics, parameters and rules for specifying 
+them is called an {\em Assembly Language}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The Digital Computer}
+
+A digital computer is composed of storage systems (memory, disc drives,
+USB drives, etc.), a CPU (with one or more cores), input peripherals like 
+a keyboard and mouse and output peripherals like a display or speakers.
+
+\subsection{Storage Systems}
+
+Computer storage systems are used to hold the data and instructions
+for the CPU.
+
+Types of computer storage can be classified into two categories.
+Volatile and non--volatile.
+
+\subsubsection{Volatile Storage}
+
+Volatile storage is characterized by the fact that it will lose its
+contents (forget) any time that it is powered off.
+
+One type of volatile storage is provided inside the CPU itself in 
+small blocks called \glspl{register}.  These registers are used to 
+hold individual data values that can be manipulated by the instructions
+that are executed by the CPU.  
+
+Another type of volatile storage is main memory.
+Main memory is connected to a computer's CPU and is used to hold
+the data and instructions that can not fit into the CPU registers.
+
+Typically, a CPU's registers can hold tens of data values while
+the main memory can contain many billions of data values.
+
+A CPU can process data in a register at a speed that can be an order 
+of magnitude faster than the rate that it can process (specifically,
+transfer data and instructions to and from) the main memory.  
+
+Register storage costs an order of magnitude more to manufacture than
+main memory.  While it is desirable to have many registers the economics 
+dictate that the vast majority of volatile computer storage be provided
+in its main memory.  As a result, optimizing the copying of data between 
+the registers and main memory is a desirable trait of good programs.
+
+\subsubsection{Non--Volatile Storage}
+
+Non--volatile storage is characterized by the fact that it will {\em NOT} 
+lose its contents when it is powered off.
+
+Common types of non--volatile storage are disc drives, flash cards and USB 
+drives.  Prices can vary widely depending on size and transfer speeds.
+
+It is typical for a computer system's non--volatile storage to operate
+more slowly than its main memory.
+
+\subsection{CPU}
+
+The \acrshort{cpu} is a collection of registers and circuitry designed
+to read data and instructions from the system storage.  The instructions
+are used to instruct the CPU how to perform various mathamatical and 
+logical operations on the data in its registers and write the results
+of those operations back into the system storage.
+
+\subsection{Peripherals}
+
+A peripheral is a device that is not a CPU or main memory.  They are 
+typically used to transfer information/data into and out of the 
+main memory.
+
+This text is not particularly concerned with the peripherals of a computer
+system other than in those sections where instructions are discussed 
+whose purpose is to address the needs of a peripheral device.  Such
+instructions are used to initiate, execute and/or synchronize data transfers.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Instruction Set Architecture}
 
-Discuss the IMAFD, G and other ISA extensions mean.
+The catalog of rules that describe all of the details of the instructions 
+that a given CPU can execute is called its \acrfull{isa}.
 
+The RISC--V CPU ISA is defined as a set of modules.  The purpose of
+dividing the ISA into modules is to allow an implementor to select which 
+features to incorporate into a CPU design.
 
+Any given RISC--V implementation must provide one of the {\em base}
+modules and zero or more of the {\em extension} modules.
+
+\subsection{RV Base Modules}
+The base modules are RV32I (32--bit general purpose), 
+RV32E (32--bit embedded), RV64I (64--bit general purpose) 
+and RV128I (128--bit general purpose).
+
+These base modules provide the minimal functional set of integer operations
+needed to execute an application.  The differing bit--widths address
+the needs of different main--memory sizes.
+
+This text discusses programming the RV32I using assembly language. 
+
+\subsection{Extension Modules}
+
+RISC-V extension modules may be included by an implementor interested
+in optimizing a design for one or more purposes.
+
+Available extension modules include M (integer math), A (atomic),
+F (32--bit floating point), D (64--bit floating point), 
+Q (128--bit floating point), C (compressed size instructions) and others.
+
+The extension name {\em G} is used to represent the combined set of IMAFD
+extensions as is expected to be a common combination.
