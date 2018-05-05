@@ -96,7 +96,7 @@ Zero extend {\em val} to the right.
 Some times a binary value is encoded such that a set of bits represented
 by {\em val} are used to represent the \acrshort{msb}s of some longer (more bits) 
 value.  
-In this case it is necessary to append zeroes to the right to convert \verb@val@ to 
+In this case it is necessary to append zeros to the right to convert \verb@val@ to 
 the longer value.
 
 \autoref{Figure:ZeroRightExtend} illustrates converting a 20--bit {\em val} to
@@ -570,7 +570,7 @@ Load Upper Immediate.
 \verb@rd@ $\leftarrow$ \verb@zr(imm)@
 
 Copy the immediate value into bits 31:12 of the destination register and
-place zeroes into bits 11:0.
+place zeros into bits 11:0.
 When XLEN is 64 or 128, the immediate value is sign--extended to the left.
 
 Instruction Format and Example:
@@ -992,7 +992,7 @@ Store Word
 \verb@m16(rs1+sx(imm))@ $\leftarrow$ \verb@rs2[31:0]@\\
 \verb@pc@ $\leftarrow$ \verb@pc+4@
 
-Store the 32-bit value in \verb@rs1@ into memory at address \verb@rs2+imm@.
+Store the 32-bit value in \verb@rs1@ into memory at address \verb@rs1+imm@.
 
 Encoding:
 
