@@ -12,7 +12,12 @@
 		these two states are represented by the numbers one and zero or
 		by the conditions true and false and can be stored in one bit}
 }
-
+\newglossaryentry{hexadecimal}
+{
+	name=hexadecimal,
+	description={A base--16 numbering system whose digits are 
+		0123456789abcdef.  The hex digits (hits) are not case--sensitive}
+}
 \newglossaryentry{bit}
 {
 	name=bit,
@@ -101,18 +106,67 @@
 \newglossaryentry{register}
 {
 	name={register},
-	description={A unit of storage inside a CPU}
+	description={A unit of storage inside a CPU with the capacity of XLEN bits}
 }
 \newglossaryentry{program}
 {
 	name={program},
 	description={A ordered list of one or more instructions}
 }
+\newglossaryentry{address}
+{
+	name={address},
+	description={A numeric value used to uniquely identify each byte of main memory}
+}
+\newglossaryentry{alignment}
+{
+	name={alignment},
+	description={Refers to a range of numeric values that begin 
+		at a multiple of some number.  Primairly used when referring to
+		a memory address.  For example an alignment of two refers to one
+		or more addresses starting at even address and continuing onto
+		subsequent adjacent, increasing memory addresses}
+}
+\newglossaryentry{exception}
+{
+	name={exception},
+	description={An error encountered by the CPU while executing an instruction
+		that can not be completed}
+}
 
+\newglossaryentry{bigendian}
+{
+	name={big endian},
+	description={A number format where the most significant values are 
+	printed to the left of the lesser significant values.  This is the
+	method that everyone used to write decimal numbers every day}
+}
+\newglossaryentry{littleendian}
+{
+	name={little endian},
+	description={A number format where the least significant values are 
+		printed to the left of the more significant values.  This is the
+		opposite ordering that everyone learns in grade school when learning
+		how to count.  For example a big endian number written as ``1234''
+		would be written in little endian form as ``4321''}
+}
+\newglossaryentry{rvddt}
+{
+	name={rvddt},
+	description={A RV32I simulator and debugging tool inspired by the 
+		simplicity of the Dynamic Debugging Tool (ddt) that was part of 
+		the CP/M operating system}
+}
+\newglossaryentry{mneumonic}
+{
+	name={mneumonic},
+	description={A method used to remember something.  In the case of
+		assembly language, each machine instruction is given a name
+		so the programmer need not memorize the biary values of each
+		machine instruction}
+}
 
-
-
-
+\newacronym{hart}{hart}{Hardware Thread}
 \newacronym{msb}{MSB}{Most Significant Bit}
 \newacronym{lsb}{LSB}{Least Significant Bit}
 \newacronym{isa}{ISA}{Instruction Set Architecture}
