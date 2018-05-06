@@ -478,7 +478,7 @@ The idea being that accessing memory is time-consuming and that by
 classifying some registers as ``temporary'' (not saved by any function
 that alter its contents) it is possible to carefully implement a function
 with less need to store register values on the stack in order to use them
-to perform the operations of the fuction.
+to perform the operations of the function.
 
 The lack of grouping the temporary and saved registers is due to the
 fact that the C extension %See \autoref{rv32:c}
