@@ -309,12 +309,14 @@ This program listing illustrates a number of things:
 \item The lines of the listing are numberd on the left margin for
 	easy reference.
 \item An assembly program consists of lines of plain text.
+\item The RISC-V ISA does not provide an operation that will simply 
+	set a register to a numeric value.  To accomplish our goal this
+	program will add zero to zero and place the sum in in each of the
+	four registers.
 \item The lines that start with a dot `.' (on lines 1, 2 and 3) are 
 	called {\em assembler directives} as they tell the assembler itself
 	how we want it to translate the following {\em assembly language instructions} 
-	into {\em machine language instructions.}  There are as many
-	(if not more) assembler directives than there are valid
-	instructions!
+	into {\em machine language instructions.}  
 \item Line 4 shows a {\em label} named {\em \_start}.  The colon
 	at the end is the indicator to the assembler that causes it to
 	recognize the preceeding characters as a label.
@@ -324,24 +326,19 @@ This program listing illustrates a number of things:
 	a different number of fields.)  The fields on line 5 are:
 
 	\begin{itemize}
-	\item [addi] The instruction mneumonic.  It indicated th eoperation the 
-		CPU will perform.
+	\item [addi] The instruction mneumonic.  It indicates the operation 
+		that the CPU will perform.
 	\item [x28] The {\em destination} register that will receive the 
 		sum when the {\em addi} instruction is finished.  The names of
 		the 32 registers are expressed as x0 -- x31.
-	\item [x0] One of the addends of the sum operation.  The x0 register
-		will always contain the vlaue zero.  It can never be changed.
+	\item [x0] One of the addends of the sum operation.  (The x0 register
+		will always contain the vlaue zero.  It can never be changed.)
 	\item [0] The second addend is the number zero.
 		\item [\# set \ldots] Any text anywhere in a RISC-V assembly language
 	program that starts with the pound--sign is ignored by the assembler.
 			They are used to place a {\em comment} in the program to help
 	the reader better understand the motive of the programmer.
 	\end{itemize}
-
-\item The RV ISAs do not provide an operation that will simply 
-	set a register to a numeric value.  To accomplish our goal this
-	program will add zero to zero and place the sum in in each of the
-	foutr registers.
 \end{itemize}
 
 
@@ -353,12 +350,9 @@ will use a simulator that shows sequence of events and the binary values
 involved.  \listingRef{zero4regs.out} shows the operation of the four 
 {\em addi} instructions from \listingRef{zero4regs.S} when executed using the 
 \gls{rvddt} simulator.\footnote{The {\em rvddt} application was written to 
-generate the listings for this text.  It is quite similar to the {\em spike}
-simulator that this author had trouble getting to do what was desired.  
-Given the simplicity of the RV32I ISA, rvddt required only 1500 
-lines of C++ and was written in one (long) afternoon.  Doing so was an
-incredibly useful task as it revealed a few misunderstandings of some of 
-the RV32I instructions.}
+generate the listings for this text.  It is similar to the fancier
+{\em spike} simulator.  Given the simplicity of the RV32I ISA, rvddt 
+is less than 1700 lines of C++ and was written in one (long) afternoon.}
 
 \listing{zero4regs.out}{Running a program with the rvddt simulator}
 
