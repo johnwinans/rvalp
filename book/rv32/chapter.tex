@@ -5,7 +5,7 @@
 \section{Introduction}
 
 \enote{Discuss what the IMAFD, G and other ISA extensions mean as well as the
-32, 64 and 128--bit versions.}
+32, 64 and 128-bit versions.}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -17,7 +17,7 @@ When discussing instructions, the following abbreviations/notations are used:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{XLEN}
 
-XLEN represents the bit--length of an \reg{x} register in the machine architecture.
+XLEN represents the bit-length of an \reg{x} register in the machine architecture.
 Possible values are 32, 64 and 128.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -42,7 +42,7 @@ to the left of it to 1 as well.
 \begin{figure}[ht]
 \centering
 \DrawBitBoxSignExtendedPicture{32}{10100000000000000010}
-\captionof{figure}{Sign--extending a negative integer from 20 bits to 32 bits.}
+\captionof{figure}{Sign-extending a negative integer from 20 bits to 32 bits.}
 \label{Figure:SignExtendNegative}
 \end{figure}
 
@@ -56,7 +56,7 @@ value to the left will set all the new bits to the left of it to 0 as well.
 \begin{figure}[ht]
 \centering
 \DrawBitBoxSignExtendedPicture{32}{01000000000000000010}
-\captionof{figure}{Sign--extending a positive integer from 20 bits to 32 bits.}
+\captionof{figure}{Sign-extending a positive integer from 20 bits to 32 bits.}
 \label{Figure:SignExtendPositive}
 \end{figure}
 
@@ -72,15 +72,15 @@ This is used to convert an unsigned integer value expressed using some number of
 bits to a larger number of bits by adding more bits to the left.  In doing so, 
 the new bits added will all be set to zero.  As is the case with \verb@sx(val)@,
 {\em val} represents the \acrshort{lsb}s of the final value.  
-\autoref{Figure:ZeroExtend} illustrates zero--extending a 20--bit {\em val} to the 
-left to form a 32--bit fullword.
+\autoref{Figure:ZeroExtend} illustrates zero-extending a 20-bit {\em val} to the 
+left to form a 32-bit fullword.
 
 For more on binary numbers see \autoref{chapter:NumberSystems}.
 
 \begin{figure}[ht]
 \centering
 \DrawBitBoxZeroExtendedPicture{32}{10000000000000000010}
-\captionof{figure}{Zero--extending an unsigned integer from 20 bits to 32 bits.}
+\captionof{figure}{Zero-extending an unsigned integer from 20 bits to 32 bits.}
 \label{Figure:ZeroExtend}
 \end{figure}
 
@@ -99,13 +99,13 @@ value.
 In this case it is necessary to append zeros to the right to convert \verb@val@ to 
 the longer value.
 
-\autoref{Figure:ZeroRightExtend} illustrates converting a 20--bit {\em val} to
-a 32--bit fullword.
+\autoref{Figure:ZeroRightExtend} illustrates converting a 20-bit {\em val} to
+a 32-bit fullword.
 
 \begin{figure}[ht]
 \centering
 \DrawBitBoxSignLeftZeroRightExtendedPicture{32}{01000000000000000010}{12}
-\captionof{figure}{Zero--extending an integer to the right from 20 bits to 32 bits.}
+\captionof{figure}{Zero-extending an integer to the right from 20 bits to 32 bits.}
 \label{Figure:ZeroRightExtend}
 \end{figure}
 
@@ -115,7 +115,7 @@ a 32--bit fullword.
 %\DrawBitBoxUnsignedPicture{01000000000000000010}\\
 %\DrawBitBoxUnsignedPicture{01000000000000000010000000000000}
 %}
-%\captionof{figure}{Zero--extending an integer to the right from 20 bits to 32 bits.}
+%\captionof{figure}{Zero-extending an integer to the right from 20 bits to 32 bits.}
 %\label{Figure:ZeroRightExtend}
 %\end{figure}
 
@@ -124,17 +124,17 @@ a 32--bit fullword.
 \subsection{Sign Entended Left and Zero Extend Right}
 \label{extension:slzr}
 
-Some instructions such as the J--type (see \autoref{insnformat:jtype}) include
+Some instructions such as the J-type (see \autoref{insnformat:jtype}) include
 immediate operands that are extended in both directions.
 
 \autoref{Figure:slzrPositive} and \autoref{Figure:slzrNegative}
-illustrates zero--extending a 20--bit negative number one bit to the right 
-and sign--extending it 11 bits to the left:
+illustrates zero-extending a 20-bit negative number one bit to the right 
+and sign-extending it 11 bits to the left:
 
 \begin{figure}[ht]
 \centering
 \DrawBitBoxSignLeftZeroRightExtendedPicture{32}{01000100011101001001}{1}
-\captionof{figure}{Sign--extending a positive 20--bit number 
+\captionof{figure}{Sign-extending a positive 20-bit number 
 11 bits to the left and one bit to the right.}
 \label{Figure:slzrPositive}
 \end{figure}
@@ -142,7 +142,7 @@ and sign--extending it 11 bits to the left:
 \begin{figure}[ht]
 \centering
 \DrawBitBoxSignLeftZeroRightExtendedPicture{32}{11000100011101001001}{1}
-\captionof{figure}{Sign--extending a negative 20--bit number 
+\captionof{figure}{Sign-extending a negative 20-bit number 
 11 bits to the left and one bit to the right.}
 \label{Figure:slzrNegative}
 \end{figure}
@@ -152,12 +152,12 @@ and sign--extending it 11 bits to the left:
 \subsection{m8(addr)}
 \label{memory:m8}
 
-The contents of an 8--bit value in memory at address {\em addr}.
+The contents of an 8-bit value in memory at address {\em addr}.
 
 Given the contents of the memory dump shown in 
 \autoref{Figure:SampleMemoryContents}, 
 \verb@m8(42)@ refers to the memory location at address \verb@42@$_{16}$ 
-that currently contains the 8--bit value \verb@fc@$_{16}$.
+that currently contains the 8-bit value \verb@fc@$_{16}$.
 
 The \verb@mn(addr)@ notation can be used to refer to memory that is being 
 read or written depending on the context.  
@@ -193,7 +193,7 @@ Note that {\em source} and {\em dest} are typically registers.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{m16(addr)}
 
-The contents of an 16--bit little--endian value in memory at address {\em addr}.
+The contents of an 16-bit little-endian value in memory at address {\em addr}.
 
 Given the contents of the memory dump shown in 
 \autoref{Figure:SampleMemoryContents}, 
@@ -204,7 +204,7 @@ that currently contains \verb@65fc@$_{16}$. See also~\autoref{memory:m8}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{m32(addr)}
 
-The contents of an 32--bit little--endian value in memory at address {\em addr}.
+The contents of an 32-bit little-endian value in memory at address {\em addr}.
 
 Given the contents of the memory dump shown in
 \autoref{Figure:SampleMemoryContents},
@@ -215,7 +215,7 @@ See also~\autoref{memory:m8}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{m64(addr)}
 
-The contents of an 64--bit little--endian value in memory at address {\em addr}.
+The contents of an 64-bit little-endian value in memory at address {\em addr}.
 
 Given the contents of the memory dump shown in 
 \autoref{Figure:SampleMemoryContents}, 
@@ -226,7 +226,7 @@ See also~\autoref{memory:m8}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{m128(addr)}
 
-The contents of an 128--bit little--endian value in memory at 
+The contents of an 128-bit little-endian value in memory at 
 address {\em addr}.
 
 Given the contents of the memory dump shown in 
@@ -253,17 +253,17 @@ The current value of the program counter.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{rd}
 
-An x--register used to store the result of instruction.
+An x-register used to store the result of instruction.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{rs1}
 
-An x--register value used as a source operand for an instruction.
+An x-register value used as a source operand for an instruction.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{rs2}
 
-An x--register value used as a source operand for an instruction.
+An x-register value used as a source operand for an instruction.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{imm}
@@ -274,7 +274,7 @@ to the fact that the operand is stored within an instruction.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{rsN[h:l]}
 
-The value of bits from {\em h} through {\em l} of x--register rsN.
+The value of bits from {\em h} through {\em l} of x-register rsN.
 For example: rs1[15:0] refers to the contents of 
 the 16 \acrshort{lsb}s of rs1.
 
@@ -326,7 +326,7 @@ This simplification can also allow it operate faster.
 \subsection{U Type}
 \label{insnformat:utype}
 
-The U--Type format is used for instructions that use a 20--bit immediate operand 
+The U-Type format is used for instructions that use a 20-bit immediate operand 
 and a destination register.
  
 \DrawInsnTypeUTikz{11010110000000000011001010110111}
@@ -335,9 +335,9 @@ The \reg{rd} field contains an \reg{x} register number to be set to a value that
 depends on the instruction.
 
 The imm field 
-contains a 20--bit value that will be converted into \Gls{xlen} bits by 
+contains a 20-bit value that will be converted into \Gls{xlen} bits by 
 using the {\em imm} operand for bits 31:12 and then sign-extending it 
-to the left\footnote{When XLEN is larger than 32.} and zero--extending 
+to the left\footnote{When XLEN is larger than 32.} and zero-extending 
 the LSBs as discussed in \autoref{extension:zr}.
 
 If \Gls{xlen}=32 then the imm value in this example will be
@@ -345,7 +345,7 @@ converted as shown below.
 
 \DrawBitBoxSignLeftZeroRightExtendedPicture{32}{11010110000000000011}{12}
 
-Notice that the 20--bits of the imm field are mapped in the same order and 
+Notice that the 20-bits of the imm field are mapped in the same order and 
 in the same relative position that they appear in the instruction when 
 they are used to create the value of the immediate operand.  
 Shifting the imm value to the left, into the ``upper bits'' of the immediate 
@@ -365,8 +365,8 @@ same two's complement integer value by extending the sign to the left.
 \subsection{J Type}
 \label{insnformat:jtype}
 
-The J--type format is used for instructions that use a 20--bit immediate operand
-and a destination register.  It is similar to the U--type.  However, the immediate
+The J-type format is used for instructions that use a 20-bit immediate operand
+and a destination register.  It is similar to the U-type.  However, the immediate
 operand is constructed by arranging the {\em imm} bits in a different manner.
 
 \DrawInsnTypeJTikz{00111001001110000001001111101111}
@@ -375,16 +375,16 @@ The \reg{rd} field contains an \reg{x} register number to be set to a value that
 depends on the instruction.
 
 
-In the J--type format the 20 {\em imm} bits are arranged such 
+In the J-type format the 20 {\em imm} bits are arranged such 
 that they represent the ``lower'' portion of the immediate value.  Unlike 
-the U--type 
-instructions, the J-type requires the bits to be re--ordered and shifted 
-to the right before they are used.\footnote{The reason that the J--type 
+the U-type 
+instructions, the J-type requires the bits to be re-ordered and shifted 
+to the right before they are used.\footnote{The reason that the J-type 
 bits are reordered like this is because it simplifies the implementation of 
 hardware as discussed in \autoref{section:EncodingFormats}.}
 
 The example above shows that the bit positions in the {\em imm} field 
-description.  We see that the 20 {\em imm} bits are re--ordered according to: 
+description.  We see that the 20 {\em imm} bits are re-ordered according to: 
 [20\textbar10:1\textbar11\textbar19:12].  
 This means that the \acrshort{msb} of the {\em imm} field is to be placed 
 into bit 20 of the immediate integer value ultimately used by the instruction 
@@ -393,8 +393,8 @@ The next bit to the right in the {\em imm} field is to be placed into bit 10 of
 the immediate value and so on.
 
 After the {\em imm} bits are re-positioned into bits 20:1 of the immediate value
-being constructed, a zero--bit will be added to the \acrshort{lsb} 
-and the value in bit--position 20 will be replicated to sign--extend the 
+being constructed, a zero-bit will be added to the \acrshort{lsb} 
+and the value in bit-position 20 will be replicated to sign-extend the 
 value to \Gls{xlen} bits as discussed in \autoref{extension:slzr}.
 
 If \Gls{xlen}=32 then the {\em imm} value in this example will be converted as 
@@ -409,7 +409,7 @@ shown below.
 %$0000000000000000000000000000000000000000000010000001101110010010_2$ 
 %(\verb@0000000000081b92@$_16$).
 
-A J--type example with a negative imm field:
+A J-type example with a negative imm field:
 
 \DrawInsnTypeJTikz{10111001001110000001001111101111}
 
@@ -424,11 +424,11 @@ shown below.
 %If \Gls{xlen}=32 then the imm value in this example will be converted to
 %\verb@fffffffffff81b92@$_16$.
 
-The J--type format is used by the Jump And Link instruction that calculates 
+The J-type format is used by the Jump And Link instruction that calculates 
 a target address by adding a signed immediate value to the current program 
-counter.  Since no instruction can be placed at an odd address the 20--bit 
-imm value is zero--extended to the right to represent a 21-bit signed offset 
-capable of representing numbers twice the magnitude of the 20--bit imm value.
+counter.  Since no instruction can be placed at an odd address the 20-bit 
+imm value is zero-extended to the right to represent a 21-bit signed offset 
+capable of representing numbers twice the magnitude of the 20-bit imm value.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -436,7 +436,7 @@ capable of representing numbers twice the magnitude of the 20--bit imm value.
 \label{insnformat:rtype}
 \DrawInsnTypeRTikz{01000001111100011000001110110011}
 
-A special case of the R-type used for shift--immediate instructions where 
+A special case of the R-type used for shift-immediate instructions where 
 the {\em rs2} field is used as an immediate value named {\em shamt} 
 representing the number of bit positions to shift:
 
@@ -537,11 +537,11 @@ x31	&	t6				& Temporary							&			\\
 
 Note that RISC-V is a little-endian machine.  
 
-All instructions must be naturally aligned to their 4--byte 
+All instructions must be naturally aligned to their 4-byte 
 boundaries.~\cite[p.~5]{rvismv1v22:2017}
 
 If a RISC-V processor implements the C (compressed) extension then 
-instructions may be aligned to 2--byte 
+instructions may be aligned to 2-byte 
 boundaries.\cite[p.~68]{rvismv1v22:2017}
 
 Data alignment is not necessary but unaligned data can be inefficient.  
@@ -571,7 +571,7 @@ Load Upper Immediate.
 
 Copy the immediate value into bits 31:12 of the destination register and
 place zeros into bits 11:0.
-When XLEN is 64 or 128, the immediate value is sign--extended to the left.
+When XLEN is 64 or 128, the immediate value is sign-extended to the left.
 
 Instruction Format and Example:
 
@@ -606,11 +606,11 @@ Add Upper Immediate to PC.
 
 \verb@rd@ $\leftarrow$ \verb@pc + zr(imm)@
 
-Create a signed 32--bit value by zero--extending imm[31:12] to the 
+Create a signed 32-bit value by zero-extending imm[31:12] to the 
 right (see \autoref{extension:zr}) and add this value to the 
 \reg{pc} register, placing the result into \reg{rd}.
 
-When XLEN is 64 or 128, the immediate value is also sign--extended 
+When XLEN is 64 or 128, the immediate value is also sign-extended 
 to the left prior to being added to the \reg{pc} register.
 
 \DrawInsnTypeUPicture{AUIPC t0, 3}{00000000000000000011001010110111}
@@ -710,7 +710,7 @@ register and stores the sum into the \reg{pc} register causing
 an unconditional branch to take place.
 
 Note that the branch target address is calculated by 
-sign--extending the imm[11:0] bits from the instruction, 
+sign-extending the imm[11:0] bits from the instruction, 
 adding it to the \reg{rs1} register and {\em then} the 
 LSB of the sum is to zero and the result is stored into the 
 \reg{pc} register.
@@ -877,7 +877,7 @@ Load byte.
 \verb@pc@ $\leftarrow$ \verb@pc+4@
 
 Load an 8-bit value from memory at address \verb@rs1+imm@, then 
-sign--extend it to 32 bits before storing it in \verb@rd@
+sign-extend it to 32 bits before storing it in \verb@rd@
 
 
 Encoding:
@@ -894,7 +894,7 @@ Load halfword.
 \verb@pc@ $\leftarrow$ \verb@pc+4@
 
 Load a 16-bit value from memory at address \verb@rs1+imm@, then 
-sign--extend it to 32 bits before storing it in \verb@rd@
+sign-extend it to 32 bits before storing it in \verb@rd@
 
 
 Encoding:
@@ -928,7 +928,7 @@ Load byte unsigned.
 \verb@pc@ $\leftarrow$ \verb@pc+4@
 
 Load an 8-bit value from memory at address \verb@rs1+imm@, then 
-zero--extend it to 32 bits before storing it in \verb@rd@
+zero-extend it to 32 bits before storing it in \verb@rd@
 
 Encoding:
 
@@ -944,7 +944,7 @@ Load halfword unsigned.
 \verb@pc@ $\leftarrow$ \verb@pc+4@
 
 Load an 16-bit value from memory at address \verb@rs1+imm@, then 
-zero--extend it to 32 bits before storing it in \verb@rd@
+zero-extend it to 32 bits before storing it in \verb@rd@
 
 Encoding:
 
@@ -1030,7 +1030,7 @@ Set LessThan Immediate
 \verb@rd@ $\leftarrow$ \verb@(rs1 < sx(imm)) ? 1 : 0@\\
 \verb@pc@ $\leftarrow$ \verb@pc+4@
 
-If the sign--extended immediate value is less than the value
+If the sign-extended immediate value is less than the value
 in the \reg{rs1} register then the value 1 is stored in the 
 \reg{rd} register.  Otherwise the value 0 is stored in the
 \reg{rd} register. 
@@ -1056,7 +1056,7 @@ Set LessThan Immediate Unsigned
 \verb@rd@ $\leftarrow$ \verb@(rs1 < sx(imm)) ? 1 : 0@\\
 \verb@pc@ $\leftarrow$ \verb@pc+4@
 
-If the sign--extended immediate value is less than the value
+If the sign-extended immediate value is less than the value
 in the \reg{rs1} register then the value 1 is stored in the 
 \reg{rd} register.  Otherwise the value 0 is stored in the
 \reg{rd} register.  Both the immediate and \reg{rs1} register
@@ -1086,7 +1086,7 @@ Exclusive Or Immediate
 \verb@rd@ $\leftarrow$ \verb@rs1 ^ sx(imm)@\\
 \verb@pc@ $\leftarrow$ \verb@pc+4@
 
-The logical XOR of the sign--extended immediate value and the value 
+The logical XOR of the sign-extended immediate value and the value 
 in the \reg{rs1} register is stored in the \reg{rd} register.
 
 Encoding:
@@ -1110,7 +1110,7 @@ Or Immediate
 \verb@rd@ $\leftarrow$ \verb@rs1 | sx(imm)@\\
 \verb@pc@ $\leftarrow$ \verb@pc+4@
 
-The logical OR of the sign--extended immediate value and the value 
+The logical OR of the sign-extended immediate value and the value 
 in the \reg{rs1} register is stored in the \reg{rd} register.
 
 Encoding:
@@ -1134,7 +1134,7 @@ And Immediate
 \verb@rd@ $\leftarrow$ \verb@rs1 & sx(imm)@\\
 \verb@pc@ $\leftarrow$ \verb@pc+4@
 
-The logical AND of the sign--extended immediate value and the value 
+The logical AND of the sign-extended immediate value and the value 
 in the \reg{rs1} register is stored in the \reg{rd} register.
 
 
@@ -1684,7 +1684,7 @@ read.~\cite[p.~22]{rvismv1v22:2017}
 \subsection{MUL rd, rs1, rs2}
 \index{Instruction!MUL}
 
-Multiply \reg{rs1} by \reg{rs2} and store the least significant 32--bits
+Multiply \reg{rs1} by \reg{rs2} and store the least significant 32-bits
 of the result in \reg{rd}.
 
 \DrawInsnTypeRPicture{MUL x7, x3, x31}{00000011111100111000001110110011}

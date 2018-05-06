@@ -60,7 +60,7 @@ $10^2$	& $10^1$	& $10^0$	& $2^7$ & $2^6$ & $2^5$ & $2^4$ & $2^3$ & $2^2$ & $2^1$
 \end{figure}
 
 
-One way to look at this table is on a per--row basis where each place 
+One way to look at this table is on a per-row basis where each place 
 value is represented by the base raised to the power of the place value
 position (shown in the column headings.)  This is useful when
 converting arbitrary values between bases.  For example to interpret
@@ -72,9 +72,9 @@ And the same for the hexadecimal value:
 \[ 0 \times 16^1 + 3 \times 16^0 = 3_{10} \]
 
 
-Another way to look at this table is on a per--column basis.  When
+Another way to look at this table is on a per-column basis.  When
 tasked with drawing such a table by hand, it might be useful 
-to observe that, just as in decimal, the right--most column will
+to observe that, just as in decimal, the right-most column will
 cycle through all of the values represented in the chosen base
 then cycle back to zero and repeat.  (For example, in binary this
 pattern is 0-1-0-1-0-1-0-\ldots) The next column in each base
@@ -138,7 +138,7 @@ To convert from binary to decimal, put the decimal value of the place values
       0  0  0  1  1  0  1  1
 \end{verbatim}
 
-Now sum the place--values that are expressed in decimal for each 
+Now sum the place-values that are expressed in decimal for each 
 bit with the value of 1: $16+8+2+1$.  The integer binary value
 $00011011_2$ represents the decimal value $27_{10}$.
 
@@ -162,7 +162,7 @@ Decimal:         4+2  =6   8+4+  1=13  8+  2  =10  8+4+2  =14
 After the summing, convert each decimal value to hex.  The decimal
 values from 0--9 are the same values in hex.  Because we don't have any
 more numerals to represent the values from 10-15, we use the first 6
-letters (See the right--most column of \autoref{Figure:integers}.)
+letters (See the right-most column of \autoref{Figure:integers}.)
 Fortunately there are only six hex mappings involving letters.  Thus 
 it is reasonable to memorize them.
 
@@ -178,13 +178,13 @@ Hex:                   6           D           A           E
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{From Hexadecimal to Binary}
 
-Again, the four--bit mapping between binary and hex makes this
+Again, the four-bit mapping between binary and hex makes this
 task as straight forward as using a look-up table.
 
-For each \gls{hit} (Hex digIT), translate it to its unique four--bit pattern.
+For each \gls{hit} (Hex digIT), translate it to its unique four-bit pattern.
 Perform this task either by memorizing each of the 16 patterns 
 or by converting each hit to decimal first and then converting
-each four--bit binary value to decimal using the place--value summing 
+each four-bit binary value to decimal using the place-value summing 
 method discussed in \autoref{section:bindec}.
 
 For example:
@@ -233,7 +233,7 @@ the \acrshort{lsb} on the bottom line: $010011010010_2$.
 \subsubsection{From Decimal to Hex}
 
 Conversion from decimal to hex can be done by using the place
-values for base--16 and the same math as from decimal to binary
+values for base-16 and the same math as from decimal to binary
 or by first converting the decimal value to binary and then
 from binary to hex by using the methods discussed above.
 
@@ -245,7 +245,7 @@ a conversion by way of binary is quite straight forward.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Addition of Binary Numbers}
 
-The addition of binary numbers can be performed long--hand the
+The addition of binary numbers can be performed long-hand the
 same way decimal addition is taught in grade school.  In fact binary
 addition is easier since it only involves adding 0 or 1.
 
@@ -372,7 +372,7 @@ signed and unsigned numbers.
 \enote{This section needs more examples of subtracting 
 signed an unsigned numbers and a discussion on how 
 signedness is not relevant until the results are interpreted. 
-For example adding $-4+ -8=-12$ using two 8--bit numbers 
+For example adding $-4+ -8=-12$ using two 8-bit numbers 
 is the same as adding $252+248=500$ and truncating the result 
 to 244.}
 
@@ -413,10 +413,10 @@ addition and subtraction.}
 \subsection{Logical/Boolean Functions}
 
 Unlike addition and subtraction, boolean functions apply 
-on a per--bit basis.
+on a per-bit basis.
 %in that they do not impact neighboring bits.
 %by generating things like a carry or a borrow.
-When applied to multi--bit values, each bit position is operated upon 
+When applied to multi-bit values, each bit position is operated upon 
 independantly of the other bits.
 \enote{This is unclear.  Need to define bit positions and probably
 should add basic truth table diagrams.}
@@ -562,9 +562,9 @@ needed to represent the entire, exact, value of a number.
 
 \item In binary we have $mantissa \times 2^{exponent}$
 
-\item IEEE--754 format requires binary numbers to be {\em normalized} to 
+\item IEEE-754 format requires binary numbers to be {\em normalized} to 
 $1.significand \times 2^{exponent}$ where the {\em significand}
-is the portion of the {\em mantissa} that is to the right of the binary--point.
+is the portion of the {\em mantissa} that is to the right of the binary-point.
 
 \begin{itemize}
 \item The unnormalized binary value of $-2.625$ is $10.101$
@@ -643,10 +643,10 @@ normalized values by adding 1 to the significand.
 
 \begin{tabular}{|l|l|l|}
 \hline
-				& IEEE754 32--bit	& IEEE754 64--bit	\\
+				& IEEE754 32-bit	& IEEE754 64-bit	\\
 \hline
 sign			& 1 bit				& 1 bit			\\
-exponent		& 8 bits (excess--127)			& 11 bits (excess-1023)		\\
+exponent		& 8 bits (excess-127)			& 11 bits (excess-1023)		\\
 mantissa		& 23 bits			& 52 bits		\\
 max exponent	& 127				& 1023			\\
 min exponent	& -126				& -1022			\\
@@ -667,21 +667,21 @@ This is why we use excess notation and locate the significand's sign bit on
 the left of the exponent.
 
 \item Note that zero is a special case number.  Recall that a normalized
-number has an implied 1--bit to the left of the significand\ldots\ which
+number has an implied 1-bit to the left of the significand\ldots\ which
 means that there is no way to represent zero!
-Zero is represented by an exponent of all--zeros and a significand of 
-all--zeros.  This definition allows for a positive and a negative zero 
+Zero is represented by an exponent of all-zeros and a significand of 
+all-zeros.  This definition allows for a positive and a negative zero 
 if we observe that the sign can be either 1 or 0.
 
 \item On the number-line, numbers between zero and the smallest fraction in 
 either direction are in the {\em \gls{underflow}} areas.
 \enote{Need to add the standard lecture numberline diagram showing
-where the over/under--flow areas are and why.}
+where the over/under-flow areas are and why.}
 
-\item On the number line, numbers greater than the mantissa of all--ones and the 
+\item On the number line, numbers greater than the mantissa of all-ones and the 
 largest exponent allowed are in the {\em \gls{overflow}} areas.
 
-\item Note that numbers have a higher resolution on the number--line when the 
+\item Note that numbers have a higher resolution on the number line when the 
 exponent is smaller.
 \end{itemize}
 
@@ -725,10 +725,10 @@ These  rounding errors can be exaggerated when the number we multiply
 the \verb@x.f@ value by is, itself, something that can not be accurately 
 represented in IEEE 
 form.\footnote{Applications requiring accurate decimal values, such as 
-financial accounting systems, can use a packed--decimal numeric format
+financial accounting systems, can use a packed-decimal numeric format
 to avoid unexpected oddities caused by the use of binary numbers.}
 \enote{In a lecture one would show that one tenth is a repeating 
-non--terminating binary number that gets truncated.  This discussion 
+non-terminating binary number that gets truncated.  This discussion 
 should be reproduced here in text form.}
 
 For example, if we multiply our \verb@x.f@ value by $\frac{1}{10}$ each time, 
@@ -743,7 +743,7 @@ In order to use floating point numbers in a program without causing
 excessive rounding problems an algorithm can be redesigned such that the 
 accumulation is eliminated.  
 This example is similar to the previous one, but this time we recalculate the 
-desired value from a known--accurate integer value.  
+desired value from a known-accurate integer value.  
 Some rounding errors remain present, but they can not accumulate.
 
 \listing{errorcompensation.c}{Accumulation of Error} 

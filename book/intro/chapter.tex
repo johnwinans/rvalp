@@ -36,7 +36,7 @@ Computer storage systems are used to hold the data and instructions
 for the CPU.
 
 Types of computer storage can be classified into two categories.
-Volatile and non--volatile.
+Volatile and non-volatile.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Volatile Storage}
@@ -68,18 +68,18 @@ in its main memory.  As a result, optimizing the copying of data between
 the registers and main memory is a desirable trait of good programs.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Non--Volatile Storage}
+\subsubsection{Non-Volatile Storage}
 
-Non--volatile storage is characterized by the fact that it will {\em NOT} 
+Non-volatile storage is characterized by the fact that it will {\em NOT} 
 lose its contents when it is powered off.
 
-Common types of non--volatile storage are disc drives, flash cards and USB 
+Common types of non-volatile storage are disc drives, flash cards and USB 
 drives.  Prices can vary widely depending on size and transfer speeds.
 
-It is typical for a computer system's non--volatile storage to operate
+It is typical for a computer system's non-volatile storage to operate
 more slowly than its main memory.
 
-This text is not particularly concerned with non--volatile storage. 
+This text is not particularly concerned with non-volatile storage. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{CPU}
@@ -115,23 +115,23 @@ An ISA is typically expressed in terms of the specific meaning of
 each binary instruction that a CPU can recognize and how it will
 process each one.
 
-The RISC--V ISA is defined as a set of modules.  The purpose of
+The RISC-V ISA is defined as a set of modules.  The purpose of
 dividing the ISA into modules is to allow an implementor to select which 
 features to incorporate into a CPU design.
 
-Any given RISC--V implementation must provide one of the {\em base}
+Any given RISC-V implementation must provide one of the {\em base}
 modules and zero or more of the {\em extension} modules.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{RV Base Modules}
 \index{RV32I}
-The base modules are RV32I (32--bit general purpose), 
-RV32E (32--bit embedded), RV64I (64--bit general purpose) 
-and RV128I (128--bit general purpose).
+The base modules are RV32I (32-bit general purpose), 
+RV32E (32-bit embedded), RV64I (64-bit general purpose) 
+and RV128I (128-bit general purpose).
 
 These base modules provide the minimal functional set of integer operations
-needed to execute an application.  The differing bit--widths address
-the needs of different main--memory sizes.
+needed to execute an application.  The differing bit-widths address
+the needs of different main-memory sizes.
 
 This text primairly focuses on the RV32I base module and how to program it.
 
@@ -149,8 +149,8 @@ RISC-V extension modules may be included by an implementor interested
 in optimizing a design for one or more purposes.
 
 Available extension modules include M (integer math), A (atomic),
-F (32--bit floating point), D (64--bit floating point), 
-Q (128--bit floating point), C (compressed size instructions) and others.
+F (32-bit floating point), D (64-bit floating point), 
+Q (128-bit floating point), C (compressed size instructions) and others.
 
 The extension name {\em G} is used to represent the combined set of IMAFD
 extensions as it is expected to be a common combination.
@@ -174,14 +174,14 @@ and 65536 bytes of memory.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{An Example Program}
+\section{Executing a Program}
 
 To observe the operation of our example computer an RV32I simulator 
 will be used that will print a message describing the status of the 
 CPU and the instructions that it executes as it goes along.
 
-The process of executing an instruction is called the
-\index{instruction cycle} instruction cycle and it is comprised
+The process of executing an instruction is called an
+\index{instruction cycle}{\em instruction cycle} and it is comprised
 of an {\em instruction fetch} and an {\em instruction execute} phase.
  
 The status of the CPU is entirely embodied in the data values that
@@ -203,6 +203,7 @@ or read from (or stored into) one or more of the registers.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Instruction Fetch}
+\index{instruction fetch}
 
 In order to {\em fetch} an instruction from the main memory the CPU
 must have a method to identify which instruction should be fetched and
@@ -252,6 +253,7 @@ See~\cite{codriscv:2017} for more information on computer organization.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Instruction Execute}
+\index{instruction execute}
 
 Once an instruction has been fetched by the CPU, it can be executed.
 
@@ -335,7 +337,7 @@ This program listing illustrates a number of things:
 		will always contain the vlaue zero.  It can never be changed.)
 	\item [0] The second addend is the number zero.
 		\item [\# set \ldots] Any text anywhere in a RISC-V assembly language
-	program that starts with the pound--sign is ignored by the assembler.
+	program that starts with the pound-sign is ignored by the assembler.
 			They are used to place a {\em comment} in the program to help
 	the reader better understand the motive of the programmer.
 	\end{itemize}
@@ -378,7 +380,7 @@ is less than 1700 lines of C++ and was written in one (long) afternoon.}
 	It contains the address of the instruction that the CPU will execute.  
 	After each instruction, the \reg{pc} will either advance four bytes 
 	ahead or be set to another value by a branch instruction as discussed above.
-\item [$\ell$ 9] A four--byte instruction is fetched from memory at the address
+\item [$\ell$ 9] A four-byte instruction is fetched from memory at the address
 	in the \reg{pc} register, is decoded and printed.  From left to right
 	the fields shown on this line are:
 
@@ -395,7 +397,7 @@ is less than 1700 lines of C++ and was written in one (long) afternoon.}
 		holds one of the two addends of the operation.
 	\item [0] The \reg{imm} field of the addi instruction that
 		holds the second of the two addends of the operation.
-	\item [\# \ldots] A simulator--generated comment that exaplains
+	\item [\# \ldots] A simulator-generated comment that exaplains
 		what the instruction is doing.  For this instruction it indicates 
 		that \reg{x28} will have the value zero stored into it as a result 
 		of performing the addition: $0+0$.
