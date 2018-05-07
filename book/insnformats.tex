@@ -446,6 +446,95 @@
 	\DrawInsnTypeRTikz{#2}
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 the binary encoding
+\newcommand\DrawInsnTypeFTikz[1]{
+    \BeginTikzPicture
+    \StrLen{#1}[\numchars]
+    \DrawInsnBitstring{\numchars}{#1}{FENCE}
+    \DrawInsnBoxSeg{\numchars}{31}{28}{}
+    \DrawInsnBoxSeg{\numchars}{27}{24}{pred}
+    \DrawInsnBoxSeg{\numchars}{23}{20}{succ}
+    \DrawInsnBoxSeg{\numchars}{19}{15}{}
+    \DrawInsnBoxSeg{\numchars}{14}{12}{funct3}
+    \DrawInsnBoxSeg{\numchars}{11}{7}{}
+    \DrawInsnBoxSeg{\numchars}{6}{0}{opcode}
+
+    \DrawHexMarkers{\numchars}
+    \EndTikzPicture
+}
+
+\newcommand\DrawInsnTypeFPicture[2]{
+    \InsnStatement{#1}\\
+    \DrawInsnTypeFTikz{#2}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 the binary encoding
+\newcommand\DrawInsnTypeETikz[1]{
+    \BeginTikzPicture
+	\StrLen{#1}[\numchars]
+	\DrawInsnBitstring{\numchars}{#1}{\hyperref[insnformat:itype]{I-type}}
+	\DrawInsnBoxSeg{\numchars}{31}{20}{}
+	\DrawInsnBoxSeg{\numchars}{19}{15}{}
+	\DrawInsnBoxSeg{\numchars}{14}{12}{funct3}
+	\DrawInsnBoxSeg{\numchars}{11}{7}{}
+	\DrawInsnBoxSeg{\numchars}{6}{0}{opcode}
+
+    \DrawHexMarkers{\numchars}
+    \EndTikzPicture
+}
+
+\newcommand\DrawInsnTypeEPicture[2]{
+    \InsnStatement{#1}\\
+    \DrawInsnTypeETikz{#2}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 the binary encoding
+\newcommand\DrawInsnTypeCSTikz[1]{
+    \BeginTikzPicture
+	\StrLen{#1}[\numchars]
+	\DrawInsnBitstring{\numchars}{#1}{\hyperref[insnformat:itype]{I-type}}
+	\DrawInsnBoxSeg{\numchars}{31}{20}{csr}
+	\DrawInsnBoxSeg{\numchars}{19}{15}{rs1}
+	\DrawInsnBoxSeg{\numchars}{14}{12}{funct3}
+	\DrawInsnBoxSeg{\numchars}{11}{7}{rd}
+	\DrawInsnBoxSeg{\numchars}{6}{0}{opcode}
+
+    \DrawHexMarkers{\numchars}
+    \EndTikzPicture
+}
+
+\newcommand\DrawInsnTypeCSPicture[2]{
+    \InsnStatement{#1}\\
+    \DrawInsnTypeCSTikz{#2}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 the binary encoding
+\newcommand\DrawInsnTypeCSITikz[1]{
+    \BeginTikzPicture
+	\StrLen{#1}[\numchars]
+	\DrawInsnBitstring{\numchars}{#1}{\hyperref[insnformat:itype]{I-type}}
+	\DrawInsnBoxSeg{\numchars}{31}{20}{csr}
+	\DrawInsnBoxSeg{\numchars}{19}{15}{zimm}
+	\DrawInsnBoxSeg{\numchars}{14}{12}{funct3}
+	\DrawInsnBoxSeg{\numchars}{11}{7}{rd}
+	\DrawInsnBoxSeg{\numchars}{6}{0}{opcode}
+
+    \DrawHexMarkers{\numchars}
+    \EndTikzPicture
+}
+
+\newcommand\DrawInsnTypeCSIPicture[2]{
+    \InsnStatement{#1}\\
+    \DrawInsnTypeCSITikz{#2}
+}
+
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

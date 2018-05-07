@@ -1464,6 +1464,7 @@ x7 = 0x00000322
 \subsection{FENCE predecessor, successor}
 \index{Instruction!FENCE}
 
+\enote{Which of the i, o, r and w goes into each bit?  See what gas does.}%
 The FENCE instruction is used to order device I/O and memory accesses as 
 viewed by other RISC-V harts and external devices or co-processors. Any 
 combination of device input (I), device output (O), memory reads (R), 
@@ -1486,11 +1487,7 @@ Operation:
 
 Encoding:
 
-%\insnTypeF{FENCE iorw, iorw}
-{0 0 0 1 1 1 1}		% op
-{0 0 0}				% funct3
-{1 1 1 1}			% predecessor iorw
-{1 1 1 1}			% successor iorw
+\DrawInsnTypeFPicture{FENCE iorw, iorw}{00001111111100000000000000001111}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{FENCE.I}
@@ -1515,11 +1512,7 @@ Operation:
 
 Encoding:
 
-%\insnTypeF{FENCE.I}
-{0 0 0 1 1 1 1}		% op
-{0 0 1}				% funct3
-{0 0 0 0}			% predecessor iorw
-{0 0 0 0}			% successor iorw
+\DrawInsnTypeFPicture{FENCE.I}{00000000000000000001000000001111}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1532,12 +1525,7 @@ for the system will define how parameters for the environment
 request are passed, but usually these will be in defined locations 
 in the integer register file.~\cite[p.~24]{rvismv1v22:2017}
 
-%\insnTypeI{ECALL}
-{1 1 1 0 0 1 1}
-{0 0 0 0 0}
-{0 0 0}
-{0 0 0 0 0}
-{0 0 0 0 0 0 0 0 0 0 0 0}
+\DrawInsnTypeEPicture{ECALL}{00000000000000000000000001110011}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1547,12 +1535,7 @@ in the integer register file.~\cite[p.~24]{rvismv1v22:2017}
 The EBREAK instruction is used by debuggers to cause control to be 
 transferred back to a debugging environment.~\cite[p.~24]{rvismv1v22:2017}
 
-%\insnTypeI{ECALL}
-{1 1 1 0 0 1 1}
-{0 0 0 0 0}
-{0 0 0}
-{0 0 0 0 0}
-{0 0 0 0 0 0 0 0 0 0 0 1}
+\DrawInsnTypeEPicture{EBREAK}{00000000000100000000000001110011}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{CSRRW rd, csr, rs1}
@@ -1565,12 +1548,7 @@ The initial value in rs1 is written to the CSR. If rd=x0, then the
 instruction shall not read the CSR and shall not cause any of the 
 side-effects that might occur on a CSR read.~\cite[p.~22]{rvismv1v22:2017}
 
-%\insnTypeCSRR{CSRRW x3, 2, x15}
-{1 1 1 0 0 1 1}				% op
-{0 0 0 1 1}					% rd
-{0 0 1}						% funct3
-{0 1 1 1 1}					% rs1
-{0 0 0 0 0 0 0 0 0 0 1 0}	% csr
+\DrawInsnTypeCSPicture{CSRRW x3, 2, x15}{00000000001001111001000111110011}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{CSRRS rd, csr, rs1}
@@ -1592,13 +1570,7 @@ register holding a zero value other than x0, the instruction will still
 attempt to write the unmodified value back to the CSR and will cause any 
 attendant side effects.~\cite[p.~22]{rvismv1v22:2017}
 
-
-%\insnTypeCSRR{CSRRS x3, 2, x15}
-{1 1 1 0 0 1 1}				% op
-{0 0 0 1 1}					% rd
-{0 1 0}						% funct3
-{0 1 1 1 1}					% rs1
-{0 0 0 0 0 0 0 0 0 0 1 0}	% csr
+\DrawInsnTypeCSPicture{CSRRS x3, 2, x15}{00000000001001111010000111110011}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{CSRRC rd, csr, rs1}
@@ -1620,14 +1592,7 @@ register holding a zero value other than x0, the instruction will still
 attempt to write the unmodified value back to the CSR and will cause any 
 attendant side effects.~\cite[p.~22]{rvismv1v22:2017}
 
-%\insnTypeCSRR{CSRRC x3, 2, x15}
-{1 1 1 0 0 1 1}				% op
-{0 0 0 1 1}					% rd
-{0 1 1}						% funct3
-{0 1 1 1 1}					% rs1
-{0 0 0 0 0 0 0 0 0 0 1 0}	% csr
-
-
+\DrawInsnTypeCSPicture{CSRRC x3, 2, x15}{00000000001001111011000111110011}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{CSRRWI rd, csr, imm}
@@ -1636,12 +1601,7 @@ attendant side effects.~\cite[p.~22]{rvismv1v22:2017}
 This instruction is the same as CSRRW except a 5-bit unsigned (zero-extended)
 immediate value is used rather than the value from a register.
 
-%\insnTypeCSRR{CSRRWI x3, 2, 7}
-{1 1 1 0 0 1 1}				% op
-{0 0 0 1 1}					% rd
-{1 0 1}						% funct3
-{0 0 1 1 1}					% imm
-{0 0 0 0 0 0 0 0 0 0 1 0}	% csr
+\DrawInsnTypeCSIPicture{CSRRWI x3, 2, 7}{00000000001000111101000111110011}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{CSRRSI rd, csr, rs1}
@@ -1657,6 +1617,7 @@ the instruction shall not read the CSR and shall not cause any
 of the side-effects that might occur on a CSR 
 read.~\cite[p.~22]{rvismv1v22:2017}
 
+\DrawInsnTypeCSIPicture{CSRRSI x3, 2, 7}{00000000001000111110000111110011}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{CSRRCI rd, csr, rs1}
@@ -1672,6 +1633,7 @@ the instruction shall not read the CSR and shall not cause any
 of the side-effects that might occur on a CSR 
 read.~\cite[p.~22]{rvismv1v22:2017}
 
+\DrawInsnTypeCSIPicture{CSRRCI x3, 2, 7}{00000000001000111111000111110011}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
