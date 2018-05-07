@@ -1302,7 +1302,7 @@ Set Less Than
 \verb@rd@ $\leftarrow$ \verb@(rs1 < rs2) ? 1 : 0@\\
 \verb@pc@ $\leftarrow$ \verb@pc+4@
 
-SLT performs a signed compare, writing 1 to rd if rs1 < rs2, 0 
+SLT performs a signed compare, writing 1 to \reg{rd} if \reg{rs1} $<$ \reg{rs2}, 0 
 otherwise.~\cite[p.~15]{rvismv1v22:2017}
 
 Encoding:
@@ -1325,9 +1325,9 @@ Set Less Than Unsigned
 \verb@rd@ $\leftarrow$ \verb@(rs1 < rs2) ? 1 : 0@\\
 \verb@pc@ $\leftarrow$ \verb@pc+4@
 
-SLTU performs an unsigned compare, writing 1 to rd if rs1 < rs2, 0 otherwise. 
-Note, SLTU rd, x0, rs2 sets rd to 1 if rs2 is not equal to zero, otherwise 
-sets rd to zero (assembler pseudo-op SNEZ rd, rs).~\cite[p.~15]{rvismv1v22:2017}
+SLTU performs an unsigned compare, writing 1 to \reg{rd} if \reg{rs1} $<$ \reg{rs2}, 0 otherwise. 
+Note, SLTU rd, x0, rs2 sets \reg{rd} to 1 if \reg{rs2} is not equal to zero, otherwise 
+sets \reg{rd} to zero (assembler pseudo-op \verb@SNEZ rd, rs@).~\cite[p.~15]{rvismv1v22:2017}
 
 Encoding:
 
