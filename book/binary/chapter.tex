@@ -1,11 +1,137 @@
-\chapter{Number Systems}
-\label{chapter:NumberSystems}
+\chapter{Numbers and Storage Systems}
+\label{chapter:numbers}
 
-RISC-V systems represent information using binary values stored in 
-little-endian order.\footnote{See\cite{IEN137} for some history of 
-the big/little-endian ``controversy.''}
+This chapter discusses how data are represented and stored in a computer.
 
-\section{Integers}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Context}
+%
+%Numbers can be interpreted differently depending on the context in 
+%which they are used.  For example a number may represent the quantity 
+%of millimeters between two points.  It may enumerate  a 
+%a letter of the alphabet -- ie.  $01000001=A$, $01000010=B$, 
+%$01000011=C$\ldots\ In fact, any finite set of items can be identified 
+%(enumerated) by a assigning a code number to each element in this fashon.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Logical/Boolean Functions}
+
+\enote{This is unclear.  Need to define bit positions and probably
+should add basic truth table diagrams.}%
+Unlike addition and subtraction, boolean functions apply 
+on a per-bit basis.
+%in that they do not impact neighboring bits.
+%by generating things like a carry or a borrow.
+When applied to multi-bit values, each bit position is operated upon 
+independantly of the other bits.
+\enote{Need to define 1 as true and 0 as false somewhere.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{NOT}
+
+The {\em NOT} operator applies to a single operand and represents the 
+opposite of the input.
+\enote{Need to define unary, binary and ternary operators without 
+confusing binary operators with binary numbers.}
+
+If the input is 1 then the output is 0.  If the input is 0 then the
+output is 1.  In other words, the output value is {\em not} that of the 
+input value.
+
+This text will use the operator used in the C language when discussing 
+the {\em NOT} operator in symbolic form.  Specifically the tilde: `\verb@~@'.
+
+\begin{verbatim}
+  ~ 1 1 1 1 0 1 0 1  <== A
+  -----------------
+    0 0 0 0 1 0 1 0  <== output
+\end{verbatim}
+
+In a line of code the above might read like this: \verb@output = ~A@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{AND}
+
+The boolean {\em and} function has two or more inputs and the output is a
+single bit.  The output is 1 if and only if all of the input values are 1.
+Otherwise it is 0.
+
+This text will use the operator used in the C language when discussing 
+the {\em AND} operator in symbolic form.  Specifically the ampersand: `\verb@&@'.
+
+This function works like it does in spoken language.  For example
+if A is 1 {\em AND} B is 1 then the output is 1 (true).
+Otherwise the output is 0 (false).  For example:
+
+\begin{verbatim}
+    1 1 1 1 0 1 0 1  <== A
+  & 1 0 0 1 0 0 1 1  <== B
+  -----------------
+    1 0 0 1 0 0 0 1  <== output
+\end{verbatim}
+
+In a line of code the above might read like this: \verb@output = A & B@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{OR}
+
+The boolean {\em or} function has two or more inputs and the output is a
+single bit.  The output is 1 if at least one of the input values are 1.
+
+This text will use the operator used in the C language when discussing
+the {\em OR}  operator in symbolic form.  Specifically the pipe: `\verb@|@'.
+
+This function works like it does in spoken language.  For example
+if A is 1 {\em OR} B is 1 then the output is 1 (true).
+Otherwise the output is 0 (false).  For example:
+
+\begin{verbatim}
+    1 1 1 1 0 1 0 1  <== A
+  | 1 0 0 1 0 0 1 1  <== B
+  -----------------
+    1 1 1 1 0 1 1 1  <== output
+\end{verbatim}
+
+In a line of code the above might read like this: \verb@output = A | B@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{XOR}
+
+The boolean {\em exclusive or} function has two or more inputs and the 
+output is a single bit.  The output is 1 if only an odd number of inputs 
+are 1. Otherwise the output will be 0.
+
+This text will use the operator used in the C language when discussing
+the {\em XOR}  operator in symbolic form.  Specifically the carrot: `\verb@^@'.
+
+Note that when {\em XOR} is used with two inputs, the output
+is set to 1 (true) when the inputs have different values and 0 
+(false) when the inputs both have the same value.
+
+For example:
+
+\begin{verbatim}
+    1 1 1 1 0 1 0 1  <== A
+  ^ 1 0 0 1 0 0 1 1  <== B
+  -----------------
+    0 1 1 0 0 1 1 0  <== output
+\end{verbatim}
+
+In a line of code the above might read like this: \verb@output = A ^ B@
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Integers and Counting}
 
 A binary integer is constructed with only 1s and 0s in the same
 manner as decimal numbers are constructed with values from 0 to 9.
@@ -408,343 +534,85 @@ Disscuss the details of truncation and overflow here.
 {\em truncation} and {\em overflow} as occur with signed and unsigned
 addition and subtraction.}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Logical/Boolean Functions}
 
-Unlike addition and subtraction, boolean functions apply 
-on a per-bit basis.
-%in that they do not impact neighboring bits.
-%by generating things like a carry or a borrow.
-When applied to multi-bit values, each bit position is operated upon 
-independantly of the other bits.
-\enote{This is unclear.  Need to define bit positions and probably
-should add basic truth table diagrams.}
-\enote{Need to define 1 as true and 0 as false somewhere.}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{NOT}
-
-The {\em NOT} operator applies to a single operand and represents the 
-opposite of the input.
-\enote{Need to define unary, binary and ternary operators without 
-confusing binary operators with binary numbers.}
-
-If the input is 1 then the output is 0.  If the input is 0 then the
-output is 1.  In other words, the output value is {\em not} that of the 
-input value.
-
-This text will use the operator used in the C language when discussing 
-the {\em NOT} operator in symbolic form.  Specifically the tilde: `\verb@~@'.
-
-\begin{verbatim}
-  ~ 1 1 1 1 0 1 0 1  <== A
-  -----------------
-    0 0 0 0 1 0 1 0  <== output
-\end{verbatim}
-
-In a line of code the above might read like this: \verb@output = ~A@
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{AND}
-
-The boolean {\em and} function has two or more inputs and the output is a
-single bit.  The output is 1 if and only if all of the input values are 1.
-Otherwise it is 0.
-
-This text will use the operator used in the C language when discussing 
-the {\em AND} operator in symbolic form.  Specifically the ampersand: `\verb@&@'.
-
-This function works like it does in spoken language.  For example
-if A is 1 {\em AND} B is 1 then the output is 1 (true).
-Otherwise the output is 0 (false).  For example:
-
-\begin{verbatim}
-    1 1 1 1 0 1 0 1  <== A
-  & 1 0 0 1 0 0 1 1  <== B
-  -----------------
-    1 0 0 1 0 0 0 1  <== output
-\end{verbatim}
-
-In a line of code the above might read like this: \verb@output = A & B@
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{OR}
-
-The boolean {\em or} function has two or more inputs and the output is a
-single bit.  The output is 1 if at least one of the input values are 1.
-
-This text will use the operator used in the C language when discussing
-the {\em OR}  operator in symbolic form.  Specifically the pipe: `\verb@|@'.
-
-This function works like it does in spoken language.  For example
-if A is 1 {\em OR} B is 1 then the output is 1 (true).
-Otherwise the output is 0 (false).  For example:
-
-\begin{verbatim}
-    1 1 1 1 0 1 0 1  <== A
-  | 1 0 0 1 0 0 1 1  <== B
-  -----------------
-    1 1 1 1 0 1 1 1  <== output
-\end{verbatim}
-
-In a line of code the above might read like this: \verb@output = A | B@
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{XOR}
-
-The boolean {\em exclusive or} function has two or more inputs and the 
-output is a single bit.  The output is 1 if only an odd number of inputs 
-are 1. Otherwise the output will be 0.
-
-This text will use the operator used in the C language when discussing
-the {\em XOR}  operator in symbolic form.  Specifically the carrot: `\verb@^@'.
-
-Note that when {\em XOR} is used with two inputs, the output
-is set to 1 (true) when the inputs have different values and 0 
-(false) when the inputs both have the same value.
-
-For example:
-
-\begin{verbatim}
-    1 1 1 1 0 1 0 1  <== A
-  ^ 1 0 0 1 0 0 1 1  <== B
-  -----------------
-    0 1 1 0 0 1 1 0  <== output
-\end{verbatim}
-
-In a line of code the above might read like this: \verb@output = A ^ B@
-
-
-
-%\section{Context}
-%
-%Numbers can be interpreted differently depending on the context in 
-%which they are used.  For example a number may represent the quantity 
-%of millimeters between two points.  It may enumerate  a 
-%a letter of the alphabet -- ie.  $01000001=A$, $01000010=B$, 
-%$01000011=C$\ldots\ In fact, any finite set of items can be identified 
-%(enumerated) by a assigning a code number to each element in this fashon.
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{IEEE-754 Floating Point Number Representation}
-\label{chapter::floatingpoint}
+\section{Main Memory Storage}
 
-This section provides an overview of the IEEE-754 32-bit binary floating 
-point format.
+\enote{Refactor this section and the memory discussion in RV32 reference chapter}%
+When transferring data between its registers registers and main memory a
+RISC-V system uses the little-endian byte order.\footnote{
+See\cite{IEN137} for some history of the big/little-endian ``controversy.''}
 
-\begin{itemize}
-\item Recall that the place values for integer binary numbers are:
-\begin{verbatim}
-   ... 128 64 32 16 8 4 2 1
-\end{verbatim}
-\item We can extend this to the right in binary similar to the way we do for 
-decimal numbers:
-\begin{verbatim}
-   ... 128 64 32 16 8 4 2 1 . 1/2 1/4 1/8 1/16 1/32 1/64 1/128 ...
-\end{verbatim}
-The `.' in a binary number is a binary point, not a decimal point.
+\enote{Discuss byte ordering, addressing and character strings.}
 
-\item We use scientific notation as in $2.7 \times 10^{-47}$ to express either 
-small fractions or large numbers when we are not concerned every last digit 
-needed to represent the entire, exact, value of a number.
+\subsection{Memory Dump}
 
-\item The format of a number in scientific notation is $mantissa \times base^{exponent}$
+Introduce the memory dump and how to read them here.
 
-\item In binary we have $mantissa \times 2^{exponent}$
+Discuss the pitfalls of assuming what a set of bytes is used for based 
+on their contents!
 
-\item IEEE-754 format requires binary numbers to be {\em normalized} to 
-$1.significand \times 2^{exponent}$ where the {\em significand}
-is the portion of the {\em mantissa} that is to the right of the binary-point.
+\subsection{Big Endian Representation}
 
-\begin{itemize}
-\item The unnormalized binary value of $-2.625$ is $10.101$
-\item The normalized value of $-2.625$ is $1.0101 \times 2^1$
-\end{itemize}
+Using the memory dump contents in prior section, discuss how 
+big endian values are stored.
 
-\item We need not store the `1.' because {\em all} normalized floating 
-point numbers will start that way.  Thus we can save memory when storing
-normalized values by adding 1 to the significand.
+\subsection{Little Endian Representation}
 
-{
-\small
-\setlength{\unitlength}{.15in}
-\begin{picture}(32,4)(0,0)
-	\put(0,1){\line(1,0){32}}		% bottom line
-	\put(0,2){\line(1,0){32}}		% top line
+Using the memory dump contents in prior section, discuss how 
+little endian values are stored.
 
-	\put(0,1){\line(0,1){2}}		% left vertical
-	\put(0,2){\makebox(1,1){\tiny 31}}	% left end bit number marker 
+\subsection{Character Strings and Arrays}
 
-	\put(32,1){\line(0,1){2}}		% vertical right end 
-	\put(31,2){\makebox(1,1){\tiny 0}}	% right end bit number marker
+Define character strings and arrays.
 
-	\put(0,0){\makebox(1,1){\small sign}}
-	\put(1,0){\makebox(8,1){\small exponent}}
-	\put(9,0){\makebox(23,1){\small significand}}
+Using the prior memory dump, discuss how and where things are stored and
+retrieved.
 
-    \put(0,1){\makebox(1,1){1}}		% sign
+\subsection{Alignment}
 
-	\put(1,1){\line(0,1){2}}		% seperator
-	\put(1,2){\makebox(1,1){\tiny 30}}	% bit marker
+Draw a diagram showing the overlapping data types when they are all aligned.
 
-    \put(1,1){\makebox(1,1){1}}		% exponent
-    \put(2,1){\makebox(1,1){0}}
-    \put(3,1){\makebox(1,1){0}}
-    \put(4,1){\makebox(1,1){0}}
-    \put(5,1){\makebox(1,1){0}}
-    \put(6,1){\makebox(1,1){0}}
-    \put(7,1){\makebox(1,1){0}}
-    \put(8,1){\makebox(1,1){0}}
 
-	\put(8,2){\makebox(1,1){\tiny 23}}	% bit marker
-	\put(9,1){\line(0,1){2}}		% seperator
-	\put(9,2){\makebox(1,1){\tiny 22}}	% bit marker
+\subsection{Instruction Alignment}
 
-    \put(9,1){\makebox(1,1){0}}
-    \put(10,1){\makebox(1,1){1}}
-    \put(11,1){\makebox(1,1){0}}
-    \put(12,1){\makebox(1,1){1}}
-    \put(13,1){\makebox(1,1){0}}
-    \put(14,1){\makebox(1,1){0}}
-    \put(15,1){\makebox(1,1){0}}
-    \put(16,1){\makebox(1,1){0}}
-    \put(17,1){\makebox(1,1){0}}
-    \put(18,1){\makebox(1,1){0}}
-    \put(19,1){\makebox(1,1){0}}
-    \put(20,1){\makebox(1,1){0}}
-    \put(21,1){\makebox(1,1){0}}
-    \put(22,1){\makebox(1,1){0}}
-    \put(23,1){\makebox(1,1){0}}
-    \put(24,1){\makebox(1,1){0}}
-    \put(25,1){\makebox(1,1){0}}
-    \put(26,1){\makebox(1,1){0}}
-    \put(27,1){\makebox(1,1){0}}
-    \put(28,1){\makebox(1,1){0}}
-    \put(29,1){\makebox(1,1){0}}
-    \put(30,1){\makebox(1,1){0}}
-    \put(31,1){\makebox(1,1){0}}
-\end{picture}
-}
+\enote{Rewrite this section for data rather than instructions and then
+note here that instructions must be naturally aligned.  For RV32 that
+is on a 4-byte boundary}%
+Every possible instruction that an RV32I CPU can execute contains
+exactly 32 bits.  Therefore each one must be stored in four bytes 
+of the main memory.
 
-%\item $-((1 + \frac{1}{4} + \frac{1}{16}) \times 2^{128-127}) = -(1 \frac{5}{16} \times 2^{1}) = -(1.3125 \times 2^{1}) = -2.625$
-\item $-((1 + \frac{1}{4} + \frac{1}{16}) \times 2^{128-127}) = -((1 + \frac{1}{4} + \frac{1}{16}) \times 2^1) = -(2 + \frac{1}{2} + \frac{1}{8}) = -(2 + .5 + .125) = -2.625$
+To simplify the hardware, each instruction must be placed into four 
+adjacent bytes whose numeric address sequence begins with a multiple 
+four.  For example, an instruction might be located in bytes 
+4, 5, 6 and 7 (but not in 5, 6, 7 and 8 nor in 9, 3, 1, and 0\ldots).
 
-\item IEEE754 formats: 
+This sort of addressing requirement is common and is referred to as
+\gls{alignment}.  An aligned instruction begins at a memory address
+that is a multiple of four.  An {\em unaligned} instruction would
+be one beginning at any other address and is {\em illegal}.
 
-\begin{tabular}{|l|l|l|}
-\hline
-				& IEEE754 32-bit	& IEEE754 64-bit	\\
-\hline
-sign			& 1 bit				& 1 bit			\\
-exponent		& 8 bits (excess-127)			& 11 bits (excess-1023)		\\
-mantissa		& 23 bits			& 52 bits		\\
-max exponent	& 127				& 1023			\\
-min exponent	& -126				& -1022			\\
-\hline
-\end{tabular}
+An attempt to fetch an instruction from an unaligned address
+will result in an error referred to as an alignment {\em \gls{exception}}.
+This and other exceptions cause the CPU to stop executing the
+curent instruction and start executing a different set of instructions
+that are prepared to handle the problem.  Often an exception is
+handled by completely stopping the program in a way that is commonly
+refered to as a system or application {\em crash}.
 
-\item When the exponent is all ones, the mantissa is all zeros, and
-the sign is zero, the number represents positive infinity.
+Given a properly aligned instruction address, the CPU can request
+that the main memory locate and deliver the values of the four bytes
+in the address sequence to the CPU using what is called a memory
+read operation.  Some systems can deliver four (or more) bytes at the
+same time while others might only be capable of delivering one or
+two bytes at a time.  These differences in hardware typically impact the
+cost and performance of a system.\footnote{The design and implementation
+choices that determine how any given system operates are part of what is
+called a system's {\em organization} and is beyond the scope of this text.
+See~\cite{codriscv:2017} for more information on computer organization.}
 
-\item When the exponent is all ones, the mantissa is all zeros, and
-the sign is one, the number represents negative infinity.
-
-\item Note that the binary representation of an IEEE754 number in memory
-can be compared for magnitude with another one using the same logic as for
-comparing two's complement signed integers because the magnitude of an 
-IEEE number grows upward and downward in the same fashion as signed integers.
-This is why we use excess notation and locate the significand's sign bit on
-the left of the exponent.
-
-\item Note that zero is a special case number.  Recall that a normalized
-number has an implied 1-bit to the left of the significand\ldots\ which
-means that there is no way to represent zero!
-Zero is represented by an exponent of all-zeros and a significand of 
-all-zeros.  This definition allows for a positive and a negative zero 
-if we observe that the sign can be either 1 or 0.
-
-\item On the number-line, numbers between zero and the smallest fraction in 
-either direction are in the {\em \gls{underflow}} areas.
-\enote{Need to add the standard lecture numberline diagram showing
-where the over/under-flow areas are and why.}
-
-\item On the number line, numbers greater than the mantissa of all-ones and the 
-largest exponent allowed are in the {\em \gls{overflow}} areas.
-
-\item Note that numbers have a higher resolution on the number line when the 
-exponent is smaller.
-\end{itemize}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Floating Point Number Accuracy}
-Due to the finite number of bits used to store the value of a floating point
-number, it is not possible to represent every one of the infinite values
-on the real number line.  The following C programs illustrate this point.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Powers Of Two}
-Just like the integer numbers, the powers of two that have bits to represent 
-them can be represented perfectly\ldots\ as can their sums (provided that the
-significand requires no more than 23 bits.)
-
-\listing{powersoftwo.c}{Precise Powers of Two} 
-\listing{powersoftwo.out}{Output from {\tt powersoftwo.c}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Clean Decimal Numbers}
-When dealing with decimal values, you will find that they don't map simply
-into binary floating point values.
-% (the same holds true for binary integer numbers).  
-
-Note how the decimal numbers are not accurately represented as they get larger.
-The decimal number on line 10 of \listingRef{cleandecimal.out}
-can be perfectly represented in IEEE format.  However, a problem arises in 
-the 11Th loop iteration.  It is due to the fact that the
-binary number can not be represented accurately in IEEE format.  Its least
-significant bits were truncated in a best-effort attempt at rounding the value
-off in order to fit the value into the bits provided.  This is an example of
-{\em low order truncation}.  Once this happens, the value of \verb@x.f@ is
-no longer as precise as it could be given more bits in which to save its value.
-
-\listing{cleandecimal.c}{Print Clean Decimal Numbers} 
-\listing{cleandecimal.out}{Output from {\tt cleandecimal.c}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Accumulation of Error}
-These  rounding errors can be exaggerated when the number we multiply 
-the \verb@x.f@ value by is, itself, something that can not be accurately 
-represented in IEEE 
-form.\footnote{Applications requiring accurate decimal values, such as 
-financial accounting systems, can use a packed-decimal numeric format
-to avoid unexpected oddities caused by the use of binary numbers.}
-\enote{In a lecture one would show that one tenth is a repeating 
-non-terminating binary number that gets truncated.  This discussion 
-should be reproduced here in text form.}
-
-For example, if we multiply our \verb@x.f@ value by $\frac{1}{10}$ each time, 
-we can never be accurate and we start accumulating errors immediately.
-
-\listing{erroraccumulation.c}{Accumulation of Error} 
-\listing{erroraccumulation.out}{Output from {\tt erroraccumulation.c}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Reducing Error Accumulation} 
-In order to use floating point numbers in a program without causing 
-excessive rounding problems an algorithm can be redesigned such that the 
-accumulation is eliminated.  
-This example is similar to the previous one, but this time we recalculate the 
-desired value from a known-accurate integer value.  
-Some rounding errors remain present, but they can not accumulate.
-
-\listing{errorcompensation.c}{Accumulation of Error} 
-\listing{errorcompensation.out}{Output from {\tt erroraccumulation.c}}

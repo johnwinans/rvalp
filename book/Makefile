@@ -1,7 +1,7 @@
 TOP=..
 include $(TOP)/Make.rules
 
-TEXPATH=./numbers:./intro:./rv32:./copyright:./license
+TEXPATH=./float:./intro:./rv32:./copyright:./license:./elements
 
 SUBDIRS=
 

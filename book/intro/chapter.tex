@@ -57,6 +57,11 @@ the data and instructions that can not fit into the CPU registers.
 Typically, a CPU's registers can hold tens of data values while
 the main memory can contain many billions of data values.
 
+To keep track of the data values, each register is assigned a number and
+the main memory is broken up into small blocks called \gls{byte}s that 
+are also each assigned number called an \gls{address} 
+(an address is often referred to as a {\em location.}
+
 A CPU can process data in a register at a speed that can be an order 
 of magnitude faster than the rate that it can process (specifically,
 transfer data and instructions to and from) the main memory.  
@@ -82,14 +87,71 @@ more slowly than its main memory.
 This text is not particularly concerned with non-volatile storage. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{CPU}
-
 \index{CPU}
-The \acrshort{cpu} is a collection of registers and circuitry designed
-to read data and instructions from the storage system.  The instructions
-tell the CPU to perform various mathamatical and logical operations on 
-the data in its registers and where to save the results of those operations.
 
+\enote{Add a block diagram of the CPU components described here.}
+The \acrshort{cpu} is a collection of registers and circuitry designed
+manipulate the register data and to exchange data and instructions with the 
+storage system.  The instructions that it reads from the main memory tells 
+the CPU to perform various mathamatical and logical operations on the data 
+in its registers and where to save the results of those operations.
+
+\subsubsection{Execution Unit}
+
+The part of a CPU that coordinates all aspects of the operations of each 
+instruction is called the {\em execution unit.}  It is what performs the transfers 
+of instructions and bata between the CPU and the main memory and tells the 
+registers when they are supposed to either store or recall data being transferred.  
+The execution unit also controls the ALU (Arithmetic and Logic Unit).
+
+\subsubsection{Arithmetic and Logic Unit}
+\index{ALU}
+
+When an instruction manipulates data by performing things like an {\em addition},
+{\em subtraction}, {\em comparison} or other similar operations, the ALU is what
+will calculate the sum, difference, and so on.
+
+\subsubsection{Registers}
+\index{register}
+
+In the RV32 CPU there are 31 general purpose registers that each contain 32 \gls{bit}s 
+(where each bit is one \gls{binary} digit value of one or zero) and a number 
+of special-purpose registers.
+Each of the general purpose registers is given a name such as \reg{x1}, \reg{x2},
+\ldots\ on up to \reg{x31} ({\em general purpose} refers to the fact that the CPU 
+itself does not prescribe any particular function to any these registers.)
+Two important special-purpose registers are \reg{x0} and \reg{pc}.
+
+Register \reg{x0} will always represent the value zero or logical {\em false}  
+no matter what.  If any instruction tries to change the value is \reg{x0} value the 
+operation will fail.  The need for {\em zero} is so common that, other than the 
+fact that it is hard-wired to zero, the \reg{x0} register is made available as 
+if it were otherwise a general purpose register.%
+\footnote{Having a special 
+{\em zero} register allows the total set of instructions that the CPU can execute 
+to be simplified.  Thus reducing its complexity, power consumption and cost.} 
+
+The \reg{pc} regiter is called the {\em program counter}.  The CPU uses it to
+remember the memory address where its program istructions are located.
+
+The number of bits in each register is defined by the \acrfull{isa}.
+
+\subsubsection{Harts}
+\index{hart}
+
+Analogous to a {\em core} in other types of CPUs, a {\em \acrshort{hart}} 
+(hardware \gls{thread}) in a RISC-V CPU refers to the collection of 32 registers,
+instruction execution unit and ALU.
+
+When more than one hart is present in a CPU, a different stream of instructions can 
+be executed on each hart all at the same time.
+Programs that are written to take advantage of this are called {\em multithreaded}.
+
+This text will primairly focus on CPUs that have only one hart.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Peripherals}
 
@@ -106,8 +168,8 @@ instructions are used to initiate, execute and/or synchronize data transfers.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Instruction Set Architecture}
-
 \index{ISA}
+
 The catalog of rules that describes the details of the instructions 
 and features that a given CPU provides is called its \acrfull{isa}.
 
@@ -125,80 +187,58 @@ modules and zero or more of the {\em extension} modules.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{RV Base Modules}
 \index{RV32I}
+
 The base modules are RV32I (32-bit general purpose), 
 RV32E (32-bit embedded), RV64I (64-bit general purpose) 
 and RV128I (128-bit general purpose).
 
 These base modules provide the minimal functional set of integer operations
-needed to execute an application.  The differing bit-widths address
+needed to execute a useful application.  The differing bit-widths address
 the needs of different main-memory sizes.
 
 This text primairly focuses on the RV32I base module and how to program it.
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Extension Modules}
 
-\index{RV32M}
-\index{RV32A}
-\index{RV32F}
-\index{RV32D}
-\index{RV32Q}
-\index{RV32C}
-\index{RV32G}
 RISC-V extension modules may be included by an implementor interested
 in optimizing a design for one or more purposes.
 
+\index{RV32M}%
+\index{RV32A}%
+\index{RV32F}%
+\index{RV32D}%
+\index{RV32Q}%
+\index{RV32C}%
 Available extension modules include M (integer math), A (atomic),
 F (32-bit floating point), D (64-bit floating point), 
 Q (128-bit floating point), C (compressed size instructions) and others.
 
+\index{RV32G}%
 The extension name {\em G} is used to represent the combined set of IMAFD
 extensions as it is expected to be a common combination.
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{An Example Computer}
-
-\enote{Need a block diagram and description of the virtual machine 
-that is used in this text.}%
-The machine used to execute the programs presented in this text
-has one RV32I CPU with 32 registers, one \acrshort{hart} 
-(analogous to what is called a {\em core} on other CPUs such as an ARM)
-and 65536 bytes of memory.  
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Executing a Program}
+\section{How the CPU Executes a Program}
 
-To observe the operation of our example computer an RV32I simulator 
-will be used that will print a message describing the status of the 
-CPU and the instructions that it executes as it goes along.
-
-The process of executing an instruction is called an
-\index{instruction cycle}{\em instruction cycle} and it is comprised
+The process of executing a program is continuously repeating series of
+\index{instruction cycle}{\em instruction cycles} that are each comprised
 of an {\em instruction fetch} and an {\em instruction execute} phase.
  
-The status of the CPU is entirely embodied in the data values that
-are stored in its registers at any moment in time.  The simulator 
-can print all of the register values before it executes an instruction 
-for reference.
+The current status of a CPU is entirely embodied in the data values that
+are stored in its registers at any moment in time.  Of particular interest
+to an executing a program is the \reg{pc} register.  The \reg{pc} contains
+the memory address containing the instruction that the CPU will execute next.
 
-When an instruction is executed the simulator can print a message
-describing where in main memory it came from, its numeric machine code 
-value, its mneumonic, a description of any associated parameters, 
-the values of those parameters and then carry out the operation as 
-defined by the ISA.
-
-For this to work, the instructions to be executed will have been 
-previously stored in a list in the main memory and any parameters that 
-an instruction specifies will either be part of the instruction itself 
-or read from (or stored into) one or more of the registers.
+For this to work, the instructions to be executed must have been previously 
+stored in ajacent main memory locations and the address of the first instruction 
+placed into the \reg{pc} register.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -209,53 +249,21 @@ In order to {\em fetch} an instruction from the main memory the CPU
 must have a method to identify which instruction should be fetched and
 a method to fetch it. 
 
-To make this possible the main memory is broken up into small blocks
-called \gls{byte}s that are each given a unique identifying number 
-called an \gls{address}.  The process of identifying which instruction
-to fetch is therefore a matter of knowing what address it is stored in.
+Given that the main memory is broken up and that each of its bytes is 
+assigned an address, the \reg{pc} is used to hold the address of the
+location where the next instruction to execute is located.
 
-A byte is comprised of eight binary digits called \gls{bit}s.
+Given an instruction address, the CPU can request that the main memory 
+locate and return the value of the data stored there using what is called 
+a {\em memory read} operation and then the CPU can treat that {\em fetched}
+value as an instruction and execute it.\footnote{RV32I instructions are 
+more than one byte in size, but this general description is suitable for now.}
 
-Every possible instruction that the RV32I can execute contains
-exactly 32 bits.  Therefore each instruction must be stored in 
-four bytes of the main memory.
-
-To simplify the hardware, each instruction 
-must be placed into four adjacent bytes whose numeric address sequence 
-begins with a multiple four.  For example, an instruction might be 
-located in bytes 12, 13, 14 and 15 (but not in 15, 16, 17 and 18
-nor 8, 207, 5, and 1073\ldots).
-
-This sort of addressing requirement is common and is referred to as 
-\gls{alignment}.  An aligned instruction begins at a memory address
-that is a multiple of four.  An {\em unaligned} instruction would
-be one beginning at any other address and is {\em illegal}.
-
-An attempt to fetch an instruction from an unaligned address
-will result in an error referred to as an alignment {\em \gls{exception}}.
-This and other exceptions cause the CPU to stop executing the 
-curent instruction and start executing a different set of instructions
-that are prepared to handle the problem.  Often an exception is 
-handled by completely stopping the program in a way that is commonly 
-refered to as a system or application {\em crash}.
-
-Given a properly aligned instruction address, the CPU can request 
-that the main memory locate and deliver the values of the four bytes
-in the address sequence to the CPU using what is called a memory
-read operation.  Some systems can deliver four (or more) bytes at the
-same time while others might only be capable of delivering one or
-two bytes at a time.  These differences in hardware typically impact the 
-cost and performance of a system.\footnote{The design and implementation 
-choices that determine how any given system operates are part of what is 
-called a system's {\em organization} and is beyond the scope of this text.
-See~\cite{codriscv:2017} for more information on computer organization.}
-
+Once an instruction has been fetched, it can be executed.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Instruction Execute}
 \index{instruction execute}
-
-Once an instruction has been fetched by the CPU, it can be executed.
 
 Typical instructions do things like add a number to the value
 currently stored in one of the registers or store the contents of a
@@ -265,14 +273,19 @@ Also part of every instruction is a notion of what should be done next.
 
 Most of the time an instruction will be complete by indicating that
 the CPU should proceed to fetch and execute the instruction at the next
-larger main memory address.
+larger main memory address.  In these cases the \reg{pc} is incremented
+to point to the memory address after the current instruction.
+
+Any parameters that an instruction requires must either be part of 
+the instruction itself or read from (or stored into) one or more of the 
+general purpose registers.
 
 Some instructions can specify that the CPU proceed to execute an
 instruction at an address other than the one that follows itself.
 This class of instructions have names like {\em jump} and {\em branch}
 and are available in a variety of different styles.
 
-The RV ISA uses the word {\em jump} to refer to an {\em unconditional}
+The RISC-V ISA uses the word {\em jump} to refer to an {\em unconditional}
 change in the sequential processing of instructions and the word
 {\em branch} to refer to a {\em conditional} change.
 
@@ -285,143 +298,5 @@ one of two different actions pending the resulting {\em condition} of
 the comparison.\footnote{This is the fundamental method used by a CPU 
 to make decisions.}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{A Sample Program Source Listing}
-
-A simple program that illustrates how this text presents 
-program source code is seen in \listingRef{zero4regs.S}.
-This program will place a zero in each of the 4 registers 
-named x28, x29, x30 and x31.
-
-\listing{zero4regs.S}{Setting four registers to zero.}
-
-This program listing illustrates a number of things: 
-\begin{itemize}
-\item Listings are identified by the name of the file within which
-	they are stored.  This listing is from a file named: \verb@zero4regs.S@.
-\item The assembly language programs discussed in this text will be saved
-	in files that end with: \verb@.S@  (Alternately you can use \verb@.sx@ 
-	on systems that don't understand the difference between upper and 
-	lowercase letters.\footnote{The author of this text prefers to avoid
-	using such systems.})
-\item A description of the listing's purpose appears under the name of the
-	file.  The description of \listingRef{zero4regs.S} is 
-	{\em Setting four registers to zero.}
-\item The lines of the listing are numberd on the left margin for
-	easy reference.
-\item An assembly program consists of lines of plain text.
-\item The RISC-V ISA does not provide an operation that will simply 
-	set a register to a numeric value.  To accomplish our goal this
-	program will add zero to zero and place the sum in in each of the
-	four registers.
-\item The lines that start with a dot `.' (on lines 1, 2 and 3) are 
-	called {\em assembler directives} as they tell the assembler itself
-	how we want it to translate the following {\em assembly language instructions} 
-	into {\em machine language instructions.}  
-\item Line 4 shows a {\em label} named {\em \_start}.  The colon
-	at the end is the indicator to the assembler that causes it to
-	recognize the preceeding characters as a label.
-\item Lines 5-8 are the four assembly language instructions that
-	make up the program.  Each instruction in this program
-	consists of four {\em fields}.  (Different instructions can have 
-	a different number of fields.)  The fields on line 5 are:
-
-	\begin{itemize}
-	\item [addi] The instruction mneumonic.  It indicates the operation 
-		that the CPU will perform.
-	\item [x28] The {\em destination} register that will receive the 
-		sum when the {\em addi} instruction is finished.  The names of
-		the 32 registers are expressed as x0 -- x31.
-	\item [x0] One of the addends of the sum operation.  (The x0 register
-		will always contain the vlaue zero.  It can never be changed.)
-	\item [0] The second addend is the number zero.
-		\item [\# set \ldots] Any text anywhere in a RISC-V assembly language
-	program that starts with the pound-sign is ignored by the assembler.
-			They are used to place a {\em comment} in the program to help
-	the reader better understand the motive of the programmer.
-	\end{itemize}
-\end{itemize}
-
-
-\subsection{Running a Program With rvddt}
-\index{rvddt}
-
-To illustrate what a CPU does when it executes instructions this text
-will use a simulator that shows sequence of events and the binary values
-involved.  \listingRef{zero4regs.out} shows the operation of the four 
-{\em addi} instructions from \listingRef{zero4regs.S} when executed using the 
-\gls{rvddt} simulator.\footnote{The {\em rvddt} application was written to 
-generate the listings for this text.  It is similar to the fancier
-{\em spike} simulator.  Given the simplicity of the RV32I ISA, rvddt 
-is less than 1700 lines of C++ and was written in one (long) afternoon.}
-
-\listing{zero4regs.out}{Running a program with the rvddt simulator}
-
-\begin{itemize}
-\item [$\ell$ 1] This listing includes the command-line that shows how the simulator
-	was executed to load a file containing the machine instructions (aka
-	machine code) from the assembler.
-\item [$\ell$ 2] A message from the simulator indicating that it loaded the machine
-	code into simulated memory at address 0.
-\item [$\ell$ 3] This line shows the prompt from the debugger and the command
-	\verb@t4@ that the user entered to request that the simulator trace 
-	the execution of four extructions.
-\item [$\ell$ 4-8] Prior to executing the first instruction, the state of the
-	CPU registers is displayed.  
-\item [$\ell$ 4] The values in registers 0, 1, 2, 3, 4, 5, 6 and 7 are printed 
-	from left to right in \gls{bigendian}, \gls{hexadecimal} form.  
-	The dash `\verb@-@' character in the middle of the line is a reference 
-	to make it easier to visually navigate across the line without being
-	forced to count the values from the far left when seeking the value 
-	of, say, x5.
-\item [$\ell$ 5-7] The values of registers 8--31 are printed.
-\item [$\ell$ 8] The {\em program counter} (\reg{pc}) register is printed.  
-	It contains the address of the instruction that the CPU will execute.  
-	After each instruction, the \reg{pc} will either advance four bytes 
-	ahead or be set to another value by a branch instruction as discussed above.
-\item [$\ell$ 9] A four-byte instruction is fetched from memory at the address
-	in the \reg{pc} register, is decoded and printed.  From left to right
-	the fields shown on this line are:
-
-	\begin{itemize}
-
-	\item [00000000] The memory address from which the instruction was
-		fetched.  This address is displayed in \gls{bigendian},
-		\gls{hexadecimal} form.
-	\item [00000e13] The machine code of the instruction displayed in 
-		\gls{bigendian}, \gls{hexadecimal} form.
-	\item [addi] The mneumonic for the machine instruction.
-	\item [x28] The \reg{rd} field of the addi instruction.  
-	\item [x0] The \reg{rs1} field of the addi instruction that
-		holds one of the two addends of the operation.
-	\item [0] The \reg{imm} field of the addi instruction that
-		holds the second of the two addends of the operation.
-	\item [\# \ldots] A simulator-generated comment that exaplains
-		what the instruction is doing.  For this instruction it indicates 
-		that \reg{x28} will have the value zero stored into it as a result 
-		of performing the addition: $0+0$.
-	\end{itemize}
-
-\item [$\ell$ 10-14] These lines are printed as the prelude while tracing the
-	second instruction. Lines 7 and 13 show that \reg{x28} has changed
-	from \verb@f0f0f0f0@ to \verb@00000000@ as a result of executing the
-	first instruction and lines 8 and 14 show that the \reg{pc} has 
-	advanced from zero (the location of the first instruction) to 
-	four, where the second instruction will be fetched.  None of the
-	rest of the registers have changed values.
-\item [$\ell$ 15] The second instruction decoded executed and described.  
-	This time register \reg{x29} will be assigned a value.
-\item [$\ell$ 16-27] The third and fourth instructions are traced.
-\item [$\ell$ 28] Tracing has completed. The simulator prints its prompt
-	and the user enters the `r' command to see the register state
-	after the fourth instruction has completed executing.
-\item [$\ell$ 29-33] Following the fourth instruction it can be observed
-	that registers \reg{x28}, \reg{x29}, \reg{x30} and \reg{x31} 
-	have been set to zero and that the \reg{pc} has advanced from
-	zero to four, then eight, then 12 (the hex value for 12 is c)
-	and then to 16 (which, in hex, is 10). 
-\item [$\ell$ 34] The simulator exit command `x' is entered by the user and
-	the terminal displays the shell prompt.
-
-\end{itemize}
+Once the instruction execution phase has completed, the next instruction 
+cycle will be performed using the new \reg{pc} register address.
