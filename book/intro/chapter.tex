@@ -6,10 +6,10 @@ CPU executes a continuous stream of instructions called a \gls{program}.
 These program instructions are expressed in what is called 
 \gls{MachineLanguage}.  Each machine language instruction is a binary value.  
 In order to provide a method to simplify the management of machine language 
-programs a symbolic mapping is provided where a \gls{mneumonic} can be used to 
+programs a symbolic mapping is provided where a \gls{mnemonic} can be used to 
 specify each machine instruction and any of its parameters\ldots\ rather 
 than require that programs be expressed as a series of binary values.  
-A set of mneumonics, parameters and rules for specifying their use for
+A set of mnemonics, parameters and rules for specifying their use for
 the purpose of programming a CPU is called an {\em Assembly Language}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -18,7 +18,7 @@ the purpose of programming a CPU is called an {\em Assembly Language}.
 
 There are different types of computers.  A {\em digital} computer is
 the type that most people think of when they hear the word {\em computer}.
-Other vareities of computers include {\em analog} and {\em quantum}.
+Other varieties of computers include {\em analog} and {\em quantum}.
 
 A digital computer is one that that processes data that are represented
 using numeric values (digits), most commonly expressed in binary
@@ -95,14 +95,14 @@ This text is not particularly concerned with non-volatile storage.
 The \acrshort{cpu} is a collection of registers and circuitry designed
 manipulate the register data and to exchange data and instructions with the 
 storage system.  The instructions that it reads from the main memory tells 
-the CPU to perform various mathamatical and logical operations on the data 
+the CPU to perform various mathematical and logical operations on the data 
 in its registers and where to save the results of those operations.
 
 \subsubsection{Execution Unit}
 
 The part of a CPU that coordinates all aspects of the operations of each 
 instruction is called the {\em execution unit.}  It is what performs the transfers 
-of instructions and bata between the CPU and the main memory and tells the 
+of instructions and data between the CPU and the main memory and tells the 
 registers when they are supposed to either store or recall data being transferred.  
 The execution unit also controls the ALU (Arithmetic and Logic Unit).
 
@@ -133,8 +133,8 @@ if it were otherwise a general purpose register.%
 {\em zero} register allows the total set of instructions that the CPU can execute 
 to be simplified.  Thus reducing its complexity, power consumption and cost.} 
 
-The \reg{pc} regiter is called the {\em program counter}.  The CPU uses it to
-remember the memory address where its program istructions are located.
+The \reg{pc} register is called the {\em program counter}.  The CPU uses it to
+remember the memory address where its program instructions are located.
 
 The number of bits in each register is defined by the \acrfull{isa}.
 
@@ -149,7 +149,7 @@ When more than one hart is present in a CPU, a different stream of instructions 
 be executed on each hart all at the same time.
 Programs that are written to take advantage of this are called {\em multithreaded}.
 
-This text will primairly focus on CPUs that have only one hart.
+This text will primarily focus on CPUs that have only one hart.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -178,7 +178,7 @@ each binary instruction that a CPU can recognize and how it will
 process each one.
 
 The RISC-V ISA is defined as a set of modules.  The purpose of
-dividing the ISA into modules is to allow an implementor to select which 
+dividing the ISA into modules is to allow an implementer to select which 
 features to incorporate into a CPU design.
 
 Any given RISC-V implementation must provide one of the {\em base}
@@ -196,13 +196,13 @@ These base modules provide the minimal functional set of integer operations
 needed to execute a useful application.  The differing bit-widths address
 the needs of different main-memory sizes.
 
-This text primairly focuses on the RV32I base module and how to program it.
+This text primarily focuses on the RV32I base module and how to program it.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Extension Modules}
 
-RISC-V extension modules may be included by an implementor interested
+RISC-V extension modules may be included by an implementer interested
 in optimizing a design for one or more purposes.
 
 \index{RV32M}%
@@ -237,7 +237,7 @@ to an executing a program is the \reg{pc} register.  The \reg{pc} contains
 the memory address containing the instruction that the CPU will execute next.
 
 For this to work, the instructions to be executed must have been previously 
-stored in ajacent main memory locations and the address of the first instruction 
+stored in adjacent main memory locations and the address of the first instruction 
 placed into the \reg{pc} register.
 
 

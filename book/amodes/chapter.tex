@@ -1,0 +1,25 @@
+\chapter{Addressing Modes}
+
+
+A box showing +/- 2KB regions for \reg{gp} addressing with 
+LB, LBU, SB, LH, LHU, SH, LW, and SW instructions.
+
+\BeginTikzPicture
+	\draw(1.5,0) node{.data};
+	\draw[->] (3,0) -- (4,0);		% right arrow
+
+	\draw(2,10) node{gp};
+	\draw[->] (3,10) -- (4,10);		% right arrow
+
+
+%	\draw(0,15) node{+2KB};
+%	\draw(0,5) node{-2KB};
+	\draw[->] (6,9) -- (6,1);		% up arrow
+	\draw[->] (6,11) -- (6,19);		% down arrow
+
+
+	\draw(6,20) node{\tt 0x8fff};
+	\draw(6,10) node{\tt 0x8800};
+	\draw(6,0) node{\tt 0x8000};
+\EndTikzPicture
+

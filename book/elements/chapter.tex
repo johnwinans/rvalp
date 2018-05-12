@@ -24,7 +24,7 @@ This program listing illustrates a number of things:
 \item A description of the listing's purpose appears under the name of the
 	file.  The description of \listingRef{zero4regs.S} is 
 	{\em Setting four registers to zero.}
-\item The lines of the listing are numberd on the left margin for
+\item The lines of the listing are numbered on the left margin for
 	easy reference.
 \item An assembly program consists of lines of plain text.
 \item The RISC-V ISA does not provide an operation that will simply 
@@ -37,20 +37,20 @@ This program listing illustrates a number of things:
 	into {\em machine language instructions.}  
 \item Line 4 shows a {\em label} named {\em \_start}.  The colon
 	at the end is the indicator to the assembler that causes it to
-	recognize the preceeding characters as a label.
+	recognize the preceding characters as a label.
 \item Lines 5-8 are the four assembly language instructions that
 	make up the program.  Each instruction in this program
 	consists of four {\em fields}.  (Different instructions can have 
 	a different number of fields.)  The fields on line 5 are:
 
 	\begin{itemize}
-	\item [addi] The instruction mneumonic.  It indicates the operation 
+	\item [addi] The instruction mnemonic.  It indicates the operation 
 		that the CPU will perform.
 	\item [x28] The {\em destination} register that will receive the 
 		sum when the {\em addi} instruction is finished.  The names of
 		the 32 registers are expressed as x0 -- x31.
 	\item [x0] One of the addends of the sum operation.  (The x0 register
-		will always contain the vlaue zero.  It can never be changed.)
+		will always contain the value zero.  It can never be changed.)
 	\item [0] The second addend is the number zero.
 		\item [\# set \ldots] Any text anywhere in a RISC-V assembly language
 	program that starts with the pound-sign is ignored by the assembler.
@@ -68,7 +68,7 @@ This program listing illustrates a number of things:
 To illustrate what a CPU does when it executes instructions this text
 will use the \gls{rvddt} simulator to display shows sequence of events 
 and the binary values involved.  This simulator supports the RV32I ISA 
-and has a configurable ammount of memory.%
+and has a configurable amount of memory.%
 \footnote{The {\em rvddt} simulator was written to generate the listings for 
 this text.  It is similar to the fancier {\em spike} simulator.  
 Given the simplicity of the RV32I ISA, rvddt is less than 1700 lines of C++ 
@@ -88,7 +88,7 @@ in trace-mode.
 	code into simulated memory at address 0.
 \item [$\ell$ 3] This line shows the prompt from the debugger and the command
 	\verb@t4@ that the user entered to request that the simulator trace 
-	the execution of four extructions.
+	the execution of four instructions.
 \item [$\ell$ 4-8] Prior to executing the first instruction, the state of the
 	CPU registers is displayed.  
 \item [$\ell$ 4] The values in registers 0, 1, 2, 3, 4, 5, 6 and 7 are printed 
@@ -113,13 +113,13 @@ in trace-mode.
 		\gls{hexadecimal} form.
 	\item [00000e13] The machine code of the instruction displayed in 
 		\gls{bigendian}, \gls{hexadecimal} form.
-	\item [addi] The mneumonic for the machine instruction.
+	\item [addi] The mnemonic for the machine instruction.
 	\item [x28] The \reg{rd} field of the addi instruction.  
 	\item [x0] The \reg{rs1} field of the addi instruction that
 		holds one of the two addends of the operation.
 	\item [0] The \reg{imm} field of the addi instruction that
 		holds the second of the two addends of the operation.
-	\item [\# \ldots] A simulator-generated comment that exaplains
+	\item [\# \ldots] A simulator-generated comment that explains
 		what the instruction is doing.  For this instruction it indicates 
 		that \reg{x28} will have the value zero stored into it as a result 
 		of performing the addition: $0+0$.
