@@ -1,0 +1,206 @@
+\chapter{Writing RISC-V Programs}
+
+
+\enote{Introduce the register names and aliases here.  
+Should we use ISA names or actual names here?}
+
+Ideas for order of introducing operations and instructions.
+
+\section{Using {\tt addi} to Set Register Values}
+\begin{verbatim}
+    addi    t0, zero, 4     # t0 = 4
+    addi    t1, t1, 100     # t1 = 104
+
+    addi    t0, zero, 0x123     # t0 = 0x123
+    addi    t0, t0, 0xfff       # t0 = 0x122 (subtract 1)
+
+    addi    t0, zero, 0xfff     # t0 = 0xffffffff (-1)  (diagram out the chaining carry)
+                                # refer back to the overflow/truncation discussion in binary chapter
+\end{verbatim}
+
+Demonstrate various addi instructions. 
+
+\section{Using {\tt ebreak} to Stopping rvddt Execution}
+
+Introduce ebreak \& demonstrate.
+
+
+\section{Other Instructions With Immediate Operands}
+\begin{verbatim}
+    addi
+    andi
+    ori
+    xori
+
+    slti
+    sltiu
+    srai
+    slli
+    srli
+\end{verbatim}
+
+
+\section{Transferring Data Between Registers and Memory}
+
+RV is a load-store architecture.  This means that the only way that the
+CPU can interact with the memory is via the {\em load} and {\em store}
+instructions.  All other data manipulation must be performed on register
+values.
+
+Copying values from memory to a register (first examples using regs set with addi):
+\begin{verbatim}
+    lb
+    lh
+    lw
+    lbu
+    lhu
+\end{verbatim}
+
+Copying values from a register to memory:
+\begin{verbatim}
+    sb
+    sh
+    sw
+\end{verbatim}
+
+\enote{Mention the rvddt UART I/O address for writing to the console here?}
+
+\section{RR operations}
+\begin{verbatim}
+    add
+    sub
+    and
+    or
+    sra
+    srl
+    sll
+    xor
+    sltu
+    slt
+\end{verbatim}
+
+
+\section{Setting values to large values using lui with addi}
+
+\begin{verbatim}
+    addi        // useful for values from -2048 to 2047
+    lui         // useful for loading any multiple of 0x1000
+
+    Setting a register to any other value must be done using a combo of insns:
+
+    auipc       // Load an address relative the the current PC (see la pseudo)
+    addi
+
+
+    lui         // Load constant into into bits 31:12  (see li pseudo)
+    addi        // add a constant to fill in bits 11:0
+                    if bit 11 is set then need to +1 the lui value to compensate
+\end{verbatim}
+
+
+\section{Labels and Branching}
+
+Start to introduce addressing here?
+
+\begin{verbatim}
+    beq
+    bne
+    blt
+    bge
+    bltu
+    bgeu
+
+    bgt rs, rt, offset      # pseudo for: blt rt, rs, offset    (reverse the operands)
+    ble rs, rt, offset      # pseudo for: bge rt, rs, offset    (reverse the operands)
+    bgtu rs, rt, offset     # pseudo for: bltu rt, rs, offset   (reverse the operands)
+    bleu rs, rt, offset     # pseudo for: bgeu rt, rs, offset   (reverse the operands)
+
+    beqz beqz rs, offset    # pseudo for: beq rs, x0, offset
+    bnez rs, offset         # pseudo for: bne rs, x0, offset
+    blez rs, offset         # pseudo for: bge x0, rs, offset
+    bgez rs, offset         # pseudo for: bge rs, x0, offset
+    bltz rs, offset         # pseudo for: blt rs, x0, offset
+    bgtz rs, offset         # pseudo for: blt x0, rs, offset
+\end{verbatim}
+
+
+\section{Relocation}
+
+\begin{verbatim}
+Absolute:
+    %hi(symbol)         
+    %lo(symbol)         
+
+PC-relative:
+    %pcrel_hi(symbol)   
+    %pcrel_lo(label)    
+
+Using the auipc & addi pair with label references:
+    The %pcrel_lo() uses the label to find the associated %pcrel_hi()
+    The label MUST be on a line that used a %pcrel_hi() or get an error.
+    This is needed to calculate the proper offset.
+    Things like this are legal (though not sure of the value):
+    label:  auipc   t1, %pcrel_hi(symbol)
+        addi    t2, t1, %pcrel_lo(label)
+        addi    t3, t1, %pcrel_lo(label)
+        lw      t4, %pcrel_lo(label)(t1)
+        sw      t5, %pcrel_lo(label)(t1)
+
+Discuss how relaxation works.
+see:  https://github.com/riscv/riscv-elf-psabi-doc/blob/master/riscv-elf.md
+\end{verbatim}
+
+
+\section{Jumps}
+
+Introduce and present subroutines but not nesting until introduce stack operations.
+
+\begin{verbatim}
+    jal
+    jalr
+\end{verbatim}
+
+
+
+\section{Pseudo Operations}
+
+\enote{Explain why we have pseudo ops.   These mappings are lifted from the ISM, Vol 1, V2.2}%
+\begin{verbatim}
+    la rd, symbol
+                    auipc rd, symbol[31:12]
+                    addi rd, rd, symbol[11:0]
+
+    l{b|h|w|d} rd, symbol
+                    auipc rd, symbol[31:12]
+                    l{b|h|w|d} rd, symbol[11:0](rd)
+
+    s{b|h|w|d} rd, symbol, rt                   # rt is the temp reg to use for the operation
+                    auipc rt, symbol[31:12]
+                    s{b|h|w|d} rd, symbol[11:0](rt)
+
+
+    j offset        jal x0, offset
+    jal offset      jal x1, offset
+    jr rs           jalr x0, rs, 0
+    jalr rs         jalr x1, rs, 0
+    ret             jalr x0, x1, 0
+
+    call offset     auipc x6, offset[31:12]
+                    jalr x1, x6, offset[11:0]
+
+    tail offset     auipc x6, offset[31:12]     # same as call but no x1
+                    jalr x0, x6, offset[11:0]
+\end{verbatim}
+
+
+\section{The Linker and Relaxation}
+
+\enote{Needs research.
+I'm not sure if/how the linker alone can relax the AUIPC+JALR pair since 
+the assembler could have used a pcrel branch across one of these pairs.}%
+I don't know where this should go just yet.
+
+\section{pic and nopic}
+
+pic is {\em needed} for shared libs.  Should discuss it but probably best 
+to leave the topic for a later chapter.
