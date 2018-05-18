@@ -4,7 +4,7 @@
 At its core, a digital computer has at least one \acrfull{cpu}.  A
 CPU executes a continuous stream of instructions called a \gls{program}.  
 These program instructions are expressed in what is called 
-\gls{MachineLanguage}.  Each machine language instruction is a binary value.  
+\gls{MachineLanguage}.  Each machine language instruction is a \gls{binary} value.  
 In order to provide a method to simplify the management of machine language 
 programs a symbolic mapping is provided where a \gls{mnemonic} can be used to 
 specify each machine instruction and any of its parameters\ldots\ rather 
@@ -35,8 +35,8 @@ drives, USB drives, etc.), a CPU (with one or more cores), input peripherals
 Computer storage systems are used to hold the data and instructions
 for the CPU.
 
-Types of computer storage can be classified into two categories.
-Volatile and non-volatile.
+Types of computer storage can be classified into two categories:
+volatile and non-volatile.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Volatile Storage}
@@ -94,8 +94,8 @@ This text is not particularly concerned with non-volatile storage.
 \enote{Add a block diagram of the CPU components described here.}
 The \acrshort{cpu} is a collection of registers and circuitry designed
 manipulate the register data and to exchange data and instructions with the 
-storage system.  The instructions that it reads from the main memory tells 
-the CPU to perform various mathematical and logical operations on the data 
+storage system.  The instructions that are read from the main memory tell 
+the CPU to perform various mathematic and logical operations on the data 
 in its registers and where to save the results of those operations.
 
 \subsubsection{Execution Unit}
@@ -110,8 +110,11 @@ The execution unit also controls the ALU (Arithmetic and Logic Unit).
 \index{ALU}
 
 When an instruction manipulates data by performing things like an {\em addition},
-{\em subtraction}, {\em comparison} or other similar operations, the ALU is what
-will calculate the sum, difference, and so on.
+{\em subtraction}, {\em comparison} or other similar operations , the ALU is what
+will calculate the sum, difference, and so on\ldots\ under the control of the 
+execution unit.
+
+
 
 \subsubsection{Registers}
 \index{register}
@@ -125,7 +128,7 @@ itself does not prescribe any particular function to any these registers.)
 Two important special-purpose registers are \reg{x0} and \reg{pc}.
 
 Register \reg{x0} will always represent the value zero or logical {\em false}  
-no matter what.  If any instruction tries to change the value is \reg{x0} value the 
+no matter what.  If any instruction tries to change the value in \reg{x0} the 
 operation will fail.  The need for {\em zero} is so common that, other than the 
 fact that it is hard-wired to zero, the \reg{x0} register is made available as 
 if it were otherwise a general purpose register.%
@@ -136,6 +139,7 @@ to be simplified.  Thus reducing its complexity, power consumption and cost.}
 The \reg{pc} register is called the {\em program counter}.  The CPU uses it to
 remember the memory address where its program instructions are located.
 
+\enote{Say something about XLEN?}%
 The number of bits in each register is defined by the \acrfull{isa}.
 
 \subsubsection{Harts}
@@ -229,12 +233,15 @@ extensions as it is expected to be a common combination.
 
 The process of executing a program is continuously repeating series of
 \index{instruction cycle}{\em instruction cycles} that are each comprised
-of an {\em instruction fetch} and an {\em instruction execute} phase.
+of a {\em fetch}, {\em decode} and {\em execute} phase.
  
-The current status of a CPU is entirely embodied in the data values that
+The current status of a CPU hart is entirely embodied in the data values that
 are stored in its registers at any moment in time.  Of particular interest
 to an executing a program is the \reg{pc} register.  The \reg{pc} contains
-the memory address containing the instruction that the CPU will execute next.
+the memory address containing the instruction that the CPU is currently 
+executing.\footnote{In the RISC-V ISA the \reg{pc} register points to the 
+{\em current} instruction where in most other designs, the \reg{pc}
+register points to the {\em next} instruction.}
 
 For this to work, the instructions to be executed must have been previously 
 stored in adjacent main memory locations and the address of the first instruction 
@@ -259,7 +266,16 @@ a {\em memory read} operation and then the CPU can treat that {\em fetched}
 value as an instruction and execute it.\footnote{RV32I instructions are 
 more than one byte in size, but this general description is suitable for now.}
 
-Once an instruction has been fetched, it can be executed.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Instruction Decode}
+\index{instruction decode}
+
+Once an instruction has been fetched, it must be inspected to determine what
+operation(s) are to be performed.  This primairly boils down to inspecting
+the portions of the instruction that dictate which registers are involved
+and, if the ALU is required, what it should do.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Instruction Execute}
@@ -271,7 +287,7 @@ register into the main memory at some given address.
 
 Also part of every instruction is a notion of what should be done next.
 
-Most of the time an instruction will be complete by indicating that
+Most of the time an instruction will complete by indicating that
 the CPU should proceed to fetch and execute the instruction at the next
 larger main memory address.  In these cases the \reg{pc} is incremented
 to point to the memory address after the current instruction.
@@ -299,4 +315,4 @@ the comparison.\footnote{This is the fundamental method used by a CPU
 to make decisions.}
 
 Once the instruction execution phase has completed, the next instruction 
-cycle will be performed using the new \reg{pc} register address.
+cycle will be performed using the new value in the \reg{pc} register.
