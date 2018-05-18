@@ -147,7 +147,7 @@ The number of bits in each register is defined by the \acrfull{isa}.
 
 Analogous to a {\em core} in other types of CPUs, a {\em \acrshort{hart}} 
 (hardware \gls{thread}) in a RISC-V CPU refers to the collection of 32 registers,
-instruction execution unit and ALU.
+instruction execution unit and ALU.\cite[p.~20]{rvismv1v22:2017}
 
 When more than one hart is present in a CPU, a different stream of instructions can 
 be executed on each hart all at the same time.
@@ -183,10 +183,10 @@ process each one.
 
 The RISC-V ISA is defined as a set of modules.  The purpose of
 dividing the ISA into modules is to allow an implementer to select which 
-features to incorporate into a CPU design.
+features to incorporate into a CPU design.\cite[p.~4]{rvismv1v22:2017}
 
 Any given RISC-V implementation must provide one of the {\em base}
-modules and zero or more of the {\em extension} modules.
+modules and zero or more of the {\em extension} modules.\cite[p.~4]{rvismv1v22:2017}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{RV Base Modules}
@@ -194,7 +194,7 @@ modules and zero or more of the {\em extension} modules.
 
 The base modules are RV32I (32-bit general purpose), 
 RV32E (32-bit embedded), RV64I (64-bit general purpose) 
-and RV128I (128-bit general purpose).
+and RV128I (128-bit general purpose).\cite[p.~4]{rvismv1v22:2017}
 
 These base modules provide the minimal functional set of integer operations
 needed to execute a useful application.  The differing bit-widths address
@@ -207,7 +207,7 @@ This text primarily focuses on the RV32I base module and how to program it.
 \subsection{Extension Modules}
 
 RISC-V extension modules may be included by an implementer interested
-in optimizing a design for one or more purposes.
+in optimizing a design for one or more purposes.\cite[p.~4]{rvismv1v22:2017}
 
 \index{RV32M}%
 \index{RV32A}%

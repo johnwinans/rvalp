@@ -45,11 +45,18 @@
 \usepackage{makeidx,showidx}	% showidx breaks hyperref when loaded before hyperref
 
 
-% put line numbers on every page
+% for one-sided on left margin
 \usepackage{lineno}
 \linenumbers
 
+% for two-sided on inside margin
+%\usepackage[switch*,pagewise]{lineno}
+%\linenumbers
+%\runningpagewiselinenumbers
 
+%\renewcommand\linenumberfont{\normalfont\small\sffamily}
+%\renewcommand\linenumberfont{\normalfont\footnotesize\sffamily}
+\renewcommand\linenumberfont{\normalfont\scriptsize\sffamily}
 
 
 %\usepackage{url}
