@@ -3,32 +3,43 @@
 
 This chapter discusses how data are represented and stored in a computer.
 
+In the context of computing, {\em boolean} refers to a condition that can 
+be either true and false and {\em binary} refers to the use of a base-2 
+numeric system to rpresent numbers.
+
+RISC-V assembly language uses binary to represent all values, be they 
+boolean or numeric.  It is the context within which they are used that
+determines whether they are boolean or numeric.
+
+RISC-V assembly language uses zero to represent {\em false} and one 
+to represent {\em true}.  In general, however, it is useful to relax 
+this and define zero {\bf and only zero} to be {\em false} and anything 
+that is not {\em false} is therefore {\em true}.%
+\footnote{This is how {\em true} and {\em false} behave in C, C++, and
+many other languages as well as the common assembly language idioms
+discussed in this text.}
+
+\enote{Add some diagrams here showing bits, bytes and the MSB, 
+LSB,\ldots\ perhaps relocated from the RV32I chapter?}%
+The reason for this relaxation is because, while a single binary digit 
+(\gls{bit}) can represent the two values zero and one, the vast majority 
+of the time data is processed by the CPU in groups of bits.  These
+groups have names like \gls{byte}, \gls{halfword} and \gls{fullword}.
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Context}
-%
-%Numbers can be interpreted differently depending on the context in 
-%which they are used.  For example a number may represent the quantity 
-%of millimeters between two points.  It may enumerate  a 
-%a letter of the alphabet -- ie.  $01000001=A$, $01000010=B$, 
-%$01000011=C$\ldots\ In fact, any finite set of items can be identified 
-%(enumerated) by a assigning a code number to each element in this fashon.
+\section{Boolean Functions}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Logical/Boolean Functions}
-
-\enote{This is unclear.  Need to define bit positions and probably
-should add basic truth table diagrams.}%
-Unlike addition and subtraction, boolean functions apply 
-on a per-bit basis.
+\enote{Probably should add basic truth table diagrams.}%
+Boolean functions apply on a per-bit basis.
 %in that they do not impact neighboring bits.
 %by generating things like a carry or a borrow.
 When applied to multi-bit values, each bit position is operated upon 
 independently of the other bits.
-\enote{Need to define 1 as true and 0 as false somewhere.}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -534,38 +545,123 @@ Discuss the details of truncation and overflow here.
 {\em truncation} and {\em overflow} as occur with signed and unsigned
 addition and subtraction.}
 
+I prefer to define {\em truncation} as the loss of data as result of 
+the bit-length of the destination being too small to hold result of an 
+operation and {\em overflow} as when the carry into a sign bit is not 
+the same as the carry out of the sign bit.
+
+Where addition and subtraction on the RV32 is concerned, the sum or difference of 
+two unsigned 32-bit numbers will be {\em truncated} when the operation results in 
+a carry out of bit 31.  Unsinged operations can not overflow (as defined above).
+
+(show a truncation picture here)
+
+An Overflow occurs with signed numbers when the two addends are positive and 
+sum is negative or the addends are both negative and the sum is positive.
+
+(show an overflow picture here)
+
+(show mixed overflow and truncation situations here to drive home the need
+to ignore truncation when dealing with signed numbers.)
+
+0xffffffff + 0x00000002 has truncation but not overflow 
+(OK for signed, not OK for unsigned).
+
+0xffffffff + 0xfffffffe also has truncation but not overflow.
+
+0x40000000 + 0x40000000 has overflow but not truncation. (We care if are signed numbers.)
+
+0x80000000 + 0x80000000 has both overflow and truncation. (we care regardless of signedness)
+
+Where subtraction is concerned the notion of a borrow is the same as carry.
 
 
+\enote{I think that overloading the word {\em overflow} like this can be is 
+confusing to new programmers.}%
+Page 13 of~\cite{rvismv1v22:2017} mixes these two notions of 
+(and never mentions the word {\em truncate}) like this:
+\begin{quote}
+We did not include special instruction set support for overflow checks on 
+integer arithmetic operations in the base instruction set, as many overflow 
+checks can be cheaply implemented using RISC-V branches. Overflow checking for 
+unsigned addition requires only a single additional branch instruction after the 
+addition: \verb@add t0, t1, t2; bltu t0, t1, overflow@.  
+
+For signed addition, if one operand's sign is known, overflow checking requires 
+only a single branch after the addition: 
+\verb@addi t0, t1, +imm; blt t0, t1, overflow@. This covers the common 
+case of addition with an immediate operand.
+
+For general signed addition, three additional instructions after the addition 
+are required, leveraging the observation that the sum should be less than one 
+of the operands if and only if the other operand is negative.
+\begin{verbatim}
+add t0, t1, t2
+slti t3, t2, 0
+slt t4, t0, t1
+bne t3, t4, overflow
+\end{verbatim}
+In RV64, checks of 32-bit signed additions can be optimized further by comparing 
+the results of ADD and ADDW on the operands.
+\end{quote}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Sign and Zero Extension}
+
+\enote{Refactor the sx() and zx() discussion in the RV32I chapter 
+and locate the details here.}%
+Seems like a good place to discuss extension.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Shifting}
+
+Seems like a good place to discuss logical and arithmetic shifting.
+
+shift left logical
+
+shift right logical
+
+shift right arithmetic
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Main Memory Storage}
 
-\enote{Refactor this section and the memory discussion in RV32 reference chapter}%
+\enote{Consider refactoring the memory discussion in RV32 reference chapter
+and placing some of it in this section.}%
 When transferring data between its registers registers and main memory a
 RISC-V system uses the little-endian byte order.\footnote{
 See\cite{IEN137} for some history of the big/little-endian ``controversy.''}
 
-\enote{Discuss byte ordering, addressing and character strings.}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Memory Dump}
 
 Introduce the memory dump and how to read them here.
 
-Discuss the pitfalls of assuming what a set of bytes is used for based 
-on their contents!
+\listing{rvddt_memdump.out}{{\tt rvddt} memory dump}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Big Endian Representation}
 
 Using the memory dump contents in prior section, discuss how 
 big endian values are stored.
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Little Endian Representation}
 
 Using the memory dump contents in prior section, discuss how 
 little endian values are stored.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Character Strings and Arrays}
 
 Define character strings and arrays.
@@ -573,11 +669,23 @@ Define character strings and arrays.
 Using the prior memory dump, discuss how and where things are stored and
 retrieved.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Context is Important!}
+
+Data values can be interpreted differently depending on the context in 
+which they are used.  Assuming what a set of bytes is used for based on 
+their contents can be very misleading!  For example, there is a 0x76 at 
+address 0x00002658.  This is a `v' is you use it as an ASCII 
+(see~\autoref{chapter:ascii}) character, a $118_{10}$ if it is an integer 
+value and TRUE if it is a conditional.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Alignment}
 
 Draw a diagram showing the overlapping data types when they are all aligned.
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Instruction Alignment}
 
 \enote{Rewrite this section for data rather than instructions and then
