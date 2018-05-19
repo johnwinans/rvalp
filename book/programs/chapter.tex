@@ -1,9 +1,14 @@
 \chapter{Writing RISC-V Programs}
 
+\enote{Introduce the ISA register names and aliases in here?}%
+This chapter introduces each of the RV32I instructions by developing programs 
+that demonstrate their usefulness.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Using {\tt ebreak} to Stop \rvddt{} Execution}
+\section{Use {\tt ebreak} to Stop \rvddt{} Execution}
+\index{instruction!ebreak}
 
 The \insn{ebreak} instruction exists for the sole purpose of transferring control back 
 to a debugging environment.\cite[p.~24]{rvismv1v22:2017}
@@ -29,17 +34,137 @@ I needed for myself \tt:-)}
 \listing{ebreak/ebreak.out}{\insn{ebreak} stopps \rvddt{} without advancing \reg{pc}.}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Using the \insn{addi} Instruction}
+\index{instruction!addi}
+
+\enote{Define what constant and immediate values are somewhere.}%
+The detailed description of how the \insn{addi} instruction is executed
+is that it:
+\begin{enumerate}
+\item Sign-extends the immediate operand.
+\item Add the sign-extended immediate operand to the contents of the \reg{rs1} register.
+\item Store the sum in the \reg{rd} register.
+\item Add four to the \reg{pc} register (point to the next instruction.)
+\end{enumerate}
+
+In the following example \reg{rs1} = \reg{x28}, \reg{rd} = \reg{x29} and
+the immediate operand is -1.
+
+\DrawInsnTypeIPicture{addi x29, x28, -1}{11111111111111100000111010010011}
+
+Depending on the values of the fields in this instruction a number of
+different operations can be performed.  The most obvious is that it
+can add things.  But it can also be used to copy registers, set a 
+register to zero and even, when you need to, accomplish nothing.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{todo}
+\subsection{No Operation}
+\index{instruction!nop}
+
+It might seem odd but it is sometimes important to be able to execute
+an instruction that accomplishes nothing while simply advancing the 
+\reg{pc} to the next instruction.  One reason for this is to fill 
+unused memory between two instructions in a program.%
+\footnote{This can happen during the evolution of one portion of code 
+that reduces in size but has to continue to fit into a system without 
+altering any other code\ldots\ or some times you just need to waste 
+a small amount of time in a device driver.}
+
+An instruction that accomplishes nothing is called a \insn{nop}
+(some times systems call these \insn{noop}).  The name means 
+{\em no operation}.  
+The intent of a \insn{nop} is to execute without having any side effects 
+other than to advance the \reg{pc} register.
+
+The \insn{addi} instruction can serve as a \insn{nop} by coding it like this:
+
+\DrawInsnTypeIPicture{addi x0, x0, 0}{00000000000000000000000000010011}
+
+The result will be to add zero to zero and discard the result (because you
+can never store a value into the x0 register.)
+
+The RISC-V assembler provides a pseudoinstruction specifically for this 
+purpose that you can use to improve the readability of your code.  Note 
+that the \insn{addi} and \insn{nop} instructions in \listingRef{nop/nop.S}
+are assembled into the exact same binary machine instruction (The
+\hex{00000013} you can see are stored at addresses \hex{0} and \hex{4})
+as seen by looking at the objdump listing in \listingRef{nop/nop.lst}.
+In fact, you can see that objdump shows both instructions as a \insn{nop}
+while \listingRef{nop/nop.out} shows that \rvddt{} displays both as 
+\verb@addi x0, x0, 0@.  
+
+\listing{nop/nop.S}{Demonstrate that an \insn{addi} can be the same as \insn{nop}.}
+
+\index{objdump}
+\listing{nop/nop.lst}{Using \insn{addi} to perform a \insn{nop}}
+
+\listing{nop/nop.out}{Using \insn{addi} to perform a \insn{nop}}
 
 
-\enote{Introduce the register names and aliases here.  
-Should we use ISA names or actual names here?}%
-Ideas for order of introducing operations and instructions.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Copying the Contents of One Register to Another}
 
-\section{Using {\tt addi} to Set Register Values}
+By adding zero to one register and storing the sum in another register
+the \insn{addi} instruction can be used to copy the value stored in one
+register to another register.  The following instruction will copy
+the contents of \reg{t4} into \reg{t3}.
+
+\DrawInsnTypeIPicture{addi t3, t4, 0}{00000000000011101000111000010011}
+
+\index{instruction!mv}
+This is a commonly required operation.  To make your intent clear
+you may use the \insn{mv} pseudoinstruction for this purpose.  
+
+\listingRef{mv/mv.S} shows the source of a program that is dumped in 
+\listingRef{mv/mv.lst} illustrating that the assembler has generated the
+same machine instruction (\hex{000e8e13} at addresses \hex{0} and \hex{4}) 
+for both of the instructions.
+
+\listing{mv/mv.S}{Comparing \insn{addi} to \insn{mv}}
+
+\listing{mv/mv.lst}{An objdump of an \insn{addi} and \insn{mv} Instruction.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Setting a Register to Zero}
+
+Recall that \reg{x0} always contains the value zero.  Any register
+can be set to zero by copying the contents of \reg{x0} using \insn{mv} 
+(aka \insn{addi}).%
+\footnote{There are other pseudoinstructions (such as \insn{li}) that can also 
+turn into an \insn{addi} instruction.  Objdump might display `{\tt addi t3,x0,0}'
+as `{\tt mv t3,x0}' or `{\tt li t3,0}'.}
+
+For example, to set \reg{t3} to zero: 
+
+\DrawInsnTypeIPicture{addi t3, x0, 0}{00000000000000000000111000010011}
+
+\listing{mvzero/mv.S}{Using \insn{mv} (aka \insn{addi}) to zero-out a register.}
+
+\listingRef{mvzero/mv.out} traces the execution of the program in 
+\listingRef{mvzero/mv.S} showing how \reg{t3} is changed from \hex{f0f0f0f0} 
+(seen on $\ell 16$) to \hex{00000000} (seen on $\ell 26$.)
+
+\listing{mvzero/mv.out}{Setting \reg{t3} to zero.}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Adding a 12-bit Signed Value}
+
+
+\DrawInsnTypeIPicture{addi x1, x7, 4}{00000000010000111000000010010011}
+
+
+
+
+
 \begin{verbatim}
     addi    t0, zero, 4     # t0 = 4
     addi    t1, t1, 100     # t1 = 104
@@ -49,10 +174,19 @@ Ideas for order of introducing operations and instructions.
 
     addi    t0, zero, 0xfff     # t0 = 0xffffffff (-1)  (diagram out the chaining carry)
                                 # refer back to the overflow/truncation discussion in binary chapter
+
+	addi x0, x0, 0				# no operation (pseudo: nop)
+	addi rd, rs, 0				# copy reg rs to rd (pseudo: mv rd, rs)
 \end{verbatim}
 
 Demonstrate various addi instructions. 
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{todo}
+
+Ideas for the order of introducing instructions.
 
 
 \section{Other Instructions With Immediate Operands}
@@ -110,7 +244,7 @@ Copying values from a register to memory:
 \end{verbatim}
 
 
-\section{Setting values to large values using lui with addi}
+\section{Setting registers to large values using lui with addi}
 
 \begin{verbatim}
     addi        // useful for values from -2048 to 2047
