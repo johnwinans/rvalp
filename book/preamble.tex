@@ -1,21 +1,24 @@
 
 \oddsidemargin=.82in
-\evensidemargin=1.82in
+%\evensidemargin=1.82in
+\evensidemargin=1.72in
 
 %\topmargin=-.5in
 \headheight=12pt
 \headsep=20pt
 
-\hoffset=-1.2in      % for 8.5x11
+%\hoffset=-1.2in      % for 8.5x11
+\hoffset=-1.1in      % for 8.5x11
+
 %\voffset=-1.15in        % for 8.5x11
 \voffset=-.8in        % for 8.5x11
+
 %\textheight=9.75in   % for 8.5x11
 \textheight=9in   % for 8.5x11
 %\textheight=8.75in   % for 8.5x11
 
-%\textwidth=348pt    % for 8.5x11
-%\textwidth=6in    % for 8.5x11
-\textwidth=6.25in    % for 8.5x11
+\textwidth=6.1in    % for 8.5x11
+%\textwidth=6.25in    % for 8.5x11
 
 \marginparsep=7pt
 %\marginparwidth=71pt
@@ -45,6 +48,7 @@
 \usepackage{makeidx,showidx}	% showidx breaks hyperref when loaded before hyperref
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % for one-sided on left margin
 \usepackage{lineno}
 \linenumbers
@@ -56,7 +60,19 @@
 
 %\renewcommand\linenumberfont{\normalfont\small\sffamily}
 %\renewcommand\linenumberfont{\normalfont\footnotesize\sffamily}
-\renewcommand\linenumberfont{\normalfont\scriptsize\sffamily}
+%\renewcommand\linenumberfont{\normalfont\scriptsize\sffamily}
+%\renewcommand\linenumberfont{\normalfont\tiny\sffamily\color{red}}
+\renewcommand\linenumberfont{\normalfont\tiny\sffamily\bfseries\color{violet}}
+
+% lineno is screwy for displayed equations
+\let\oldequation\equation
+\let\oldendequation\endequation
+\renewenvironment{equation}
+  {\linenomathNonumbers\oldequation}
+  {\oldendequation\endlinenomath}
+
+\setlength\linenumbersep{6mm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %\usepackage{url}
