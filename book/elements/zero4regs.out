@@ -1,5 +1,5 @@
-[winans@w510 src]$ ./rvddt -f ../t1/load4regs.bin
-Loading '../t1/load4regs.bin' to 0x0
+[winans@w510 src]$ ./rvddt -f ../examples/load4regs.bin
+Loading '../examples/load4regs.bin' to 0x0
 ddt> t4
    x0: 00000000 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
    x8: f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
