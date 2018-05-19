@@ -1,0 +1,55 @@
+
+ARCH=riscv32-unknown-elf
+
+CC=$(ARCH)-gcc
+AS=$(ARCH)-as
+LD=$(ARCH)-ld
+OBJCOPY=$(ARCH)-objcopy
+OBJDUMP=$(ARCH)-objdump
+SIZE=$(ARCH)-size
+
+#LDFLAGS+=-nostdlib -Wl,-Ttext=0x0,-Tdata=0x8000
+LDFLAGS+=-nostdlib -Wl,-Ttext=0x0
+
+CFLAGS+=-ffreestanding -fno-pic
+CFLAGS+=-march=rv32i -mabi=ilp32
+CFLAGS+=-Wl,--no-relax			# see: https://github.com/riscv/riscv-gcc/issues/120
+
+ASFLAGS+=$(CFLAGS)
+
+CLEAN_DIRS=$(SUBDIRS:%=clean-%)
+ALL_DIRS=$(SUBDIRS:%=all-%)
+
+.PHONY: all clean world $(CLEAN_DIRS) $(ALL_DIRS)
+
+
+%.bin : %
+	$(OBJCOPY) $< -O binary $@
+
+%.lst : %
+	$(OBJDUMP) -dr $< > $<.lst
+
+% : %.o
+	$(LINK.c) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+	$(SIZE) -x -A $@
+
+%.s: %.c
+	$(COMPILE.c) -S -o $@ $<
+
+%.srec: %
+	$(OBJCOPY) $< -O srec $@ 
+
+
+
+
+all:: $(ALL_DIRS)
+
+clean:: $(CLEAN_DIRS)
+
+$(ALL_DIRS)::
+	$(MAKE) -C $(@:all-%=%) all
+
+$(CLEAN_DIRS)::
+	$(MAKE) -C $(@:clean-%=%) clean
+
+world:: clean all

@@ -1,9 +1,42 @@
 \chapter{Writing RISC-V Programs}
 
 
-\enote{Introduce the register names and aliases here.  
-Should we use ISA names or actual names here?}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Using {\tt ebreak} to Stop \rvddt{} Execution}
 
+The \insn{ebreak} instruction exists for the sole purpose of transferring control back 
+to a debugging environment.\cite[p.~24]{rvismv1v22:2017}
+
+When \rvddt{} executes an \insn{ebreak} instruction, it will immediately terminate any
+executing {\em trace} or {\em go} command currently executing and return to the
+command prompt without advancing the \reg{pc} register.  
+
+The machine language encoding shows that \insn{ebreak} has no operands.
+
+\DrawInsnTypeEPicture{ebreak}{00000000000100000000000001110011}
+
+\listingRef{ebreak/ebreak.out} demonstrates that since \rvddt{} does 
+not advance the \reg{pc} when it encounters an \insn{ebreak} instruction, 
+subsequent {\em trace} and/or {\em go} commands will re-execute the same \insn{ebreak} 
+and halt the simulation again (and again).  
+This feature is intended to help prevent overzealous users from accidently 
+running past the end of a code fragment.\footnote{This was one of the first {\em enhancements}
+I needed for myself \tt:-)}
+
+\listing{ebreak/ebreak.S}{A one-line \insn{ebreak} program.}
+
+\listing{ebreak/ebreak.out}{\insn{ebreak} stopps \rvddt{} without advancing \reg{pc}.}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{todo}
+
+
+\enote{Introduce the register names and aliases here.  
+Should we use ISA names or actual names here?}%
 Ideas for order of introducing operations and instructions.
 
 \section{Using {\tt addi} to Set Register Values}
@@ -20,9 +53,6 @@ Ideas for order of introducing operations and instructions.
 
 Demonstrate various addi instructions. 
 
-\section{Using {\tt ebreak} to Stopping rvddt Execution}
-
-Introduce ebreak \& demonstrate.
 
 
 \section{Other Instructions With Immediate Operands}

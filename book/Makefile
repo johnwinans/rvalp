@@ -1,9 +1,11 @@
+SUBDIRS=
+#	programs/src
+
 TOP=..
 include $(TOP)/Make.rules
 
-TEXPATH=./float:./intro:./rv32:./copyright:./license:./elements:binary
+TEXPATH=float:intro:rv32:copyright:license:elements:binary:programs/src
 
-SUBDIRS=
 
 all:: book.pdf
 
