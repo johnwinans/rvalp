@@ -27,7 +27,7 @@ ALL_DIRS=$(SUBDIRS:%=all-%)
 	$(OBJCOPY) $< -O binary $@
 
 %.lst : %
-	$(OBJDUMP) -dr $< > $<.lst
+	$(OBJDUMP) -dr $< | grep -v '^$$' > $<.lst
 
 % : %.o
 	$(LINK.c) $(LDFLAGS) -o $@ $^ $(LDLIBS)
