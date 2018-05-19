@@ -1,0 +1,13 @@
+li:     file format elf32-littleriscv
+Disassembly of section .text:
+00000000 <_start>:
+   0:	123452b7          	lui	t0,0x12345
+   4:	67828293          	addi	t0,t0,1656 # 12345678 <__global_pointer$+0x12343e50>
+   8:	11112337          	lui	t1,0x11112
+   c:	fff30313          	addi	t1,t1,-1 # 11111fff <__global_pointer$+0x111107d7>
+  10:	00000313          	li	t1,0
+  14:	fff00313          	li	t1,-1
+  18:	00100313          	li	t1,1
+  1c:	f1f1f337          	lui	t1,0xf1f1f
+  20:	1f130313          	addi	t1,t1,497 # f1f1f1f1 <__global_pointer$+0xf1f1d9c9>
+  24:	00100073          	ebreak

@@ -1,0 +1,5 @@
+mv:     file format elf32-littleriscv
+Disassembly of section .text:
+00000000 <_start>:
+   0:	00000e13          	li	t3,0
+   4:	00100073          	ebreak

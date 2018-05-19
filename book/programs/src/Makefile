@@ -1,5 +1,7 @@
 
 SUBDIRS=\
+	nop\
+	li\
 	ebreak
 
 TOP=.
