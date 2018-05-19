@@ -16,10 +16,13 @@ LATEX_CLEANFILES = *.aux *.log *.dvi *.toc *.lof *.bbl *.blg *.ind *.ilg *.idx *
 		( export TEXINPUTS=$(TEXPATH):$(TEXLIB)::; \
 		BIBINPUTS=${TEXINPUTS}; export BIBINPUTS; \
 		pdflatex $(LATEXFLAGS) $<; \
+		cp $@ out-$@; \
 		bibtex ${<:.tex=}; \
 		makeindex -s $(TEXLIB)/index.ist ${<:.tex=}; \
 		pdflatex $(LATEXFLAGS) $<; \
-		pdflatex $(LATEXFLAGS) $<; )
+		cp $@ out-$@; \
+		pdflatex $(LATEXFLAGS) $<;\
+		cp $@ out-$@; )
 
 #makeglossaries ${<:.tex=}; \
 
