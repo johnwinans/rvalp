@@ -147,14 +147,16 @@ In a line of code the above might read like this: \verb@output = A ^ B@
 A binary integer is constructed with only 1s and 0s in the same
 manner as decimal numbers are constructed with values from 0 to 9.
 
-Counting in binary is the same as in decimal.  For example, when
-adding 1 to 9, the carry is added to the next place value.  When
-subtracting 1 from 0, a borrow is required and so on.
+Counting in binary (base-2) uses the same basic rules as decimal (base-10).  
+The difference comes in when we consider that there are ten decimal digits and 
+only two binary digits.  Therefore, in base-10, we must carry when adding one to 
+nine (because there is no digit representing a ten) and, in base-2, we must 
+carry when adding one to one (because there is no digit representing a two.)
 
-Figure~\autoref{Figure:integers} shows an abridged table of the 
-decimal, binary and hexadecimal values from 0 to 129.
+\autoref{Figure:integers} shows an abridged table of the decimal, binary and hexadecimal 
+values ranging from $0_{10}$ to $129_{10}$.
 
-\begin{figure}[ht]
+\begin{figure}[t]
 \begin{center}
 \begin{tabular}{|c|c|c||c|c|c|c|c|c|c|c||c|c|}
 \hline
@@ -196,17 +198,27 @@ $10^2$	& $10^1$	& $10^0$	& $2^7$ & $2^6$ & $2^5$ & $2^4$ & $2^3$ & $2^2$ & $2^1$
 \label{Figure:integers}
 \end{figure}
 
-
 One way to look at this table is on a per-row basis where each place 
 value is represented by the base raised to the power of the place value
 position (shown in the column headings.)  This is useful when
 converting arbitrary values between bases.  For example to interpret
 the decimal value on the fourth row: 
-\[ 0 \times 10^2 + 0 \times 10^1 + 3 \times 10^0 = 3_{10} \]
-And to interpret binary value on the same row by converting it to decimal:
-\[ 0 \times 2^7 + 0 \times 2^6 +0 \times 2^5 +0 \times 2^4 +0 \times 2^3 +0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 = 3_{10} \]
-And the same for the hexadecimal value:
-\[ 0 \times 16^1 + 3 \times 16^0 = 3_{10} \]
+
+\begin{equation}
+0 \times 10^2 + 0 \times 10^1 + 3 \times 10^0 = 3_{10}
+\end{equation}
+
+Interpreting the binary value on the fourth row by converting it to decimal:
+
+\begin{equation}
+0 \times 2^7 + 0 \times 2^6 +0 \times 2^5 +0 \times 2^4 +0 \times 2^3 +0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 = 3_{10}
+\end{equation}
+
+Interpreting the hexadecimal value on the fourth row by converting it to decimal:
+
+\begin{equation}
+0 \times 16^1 + 3 \times 16^0 = 3_{10}
+\end{equation}
 
 
 Another way to look at this table is on a per-column basis.  When
