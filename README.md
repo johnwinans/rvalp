@@ -12,7 +12,7 @@ that don't wish to build their own.
 
 You can find the rvddt simulator mentioned in the text here: https://github.com/johnwinans/rvddt
     
-I developed this using LaTeX via texlive.  LaTeX is very portable, you should 
+I developed this using LaTeX via texlive.  LaTeX is very portable.  You should 
 be able to tinker with it on most any platform.  
 
 The following worked for me on Ubuntu 16.04 LTS:
