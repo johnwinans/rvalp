@@ -8,7 +8,7 @@ that demonstrate their usefulness.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Use {\tt ebreak} to Stop \rvddt{} Execution}
-\index{instruction!ebreak}
+\index{Instruction!ebreak}
 
 The \insn{ebreak} instruction exists for the sole purpose of transferring control back 
 to a debugging environment.\cite[p.~24]{rvismv1v22:2017}
@@ -38,7 +38,7 @@ I needed for myself \tt:-)}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Using the \insn{addi} Instruction}
-\index{instruction!addi}
+\index{Instruction!addi}
 
 \enote{Define what constant and immediate values are somewhere.}%
 The detailed description of how the \insn{addi} instruction is executed
@@ -63,7 +63,7 @@ register to zero and even, when you need to, accomplish nothing.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{No Operation}
-\index{instruction!nop}
+\index{Instruction!nop}
 
 It might seem odd but it is sometimes important to be able to execute
 an instruction that accomplishes nothing while simply advancing the 
@@ -116,7 +116,7 @@ the contents of \reg{t4} into \reg{t3}.
 
 \DrawInsnTypeIPicture{addi t3, t4, 0}{00000000000011101000111000010011}
 
-\index{instruction!mv}
+\index{Instruction!mv}
 This is a commonly required operation.  To make your intent clear
 you may use the \insn{mv} pseudoinstruction for this purpose.  
 
