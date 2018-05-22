@@ -79,22 +79,24 @@
 % putting a chapter here causes it to be unnumbered
 
 
-\clearpage
+%\clearpage
 \bibliography{bibliography}
 \addcontentsline{toc}{chapter}{Bibliography}
 \nocite{*}  % force all bib items to file appear even if not cited
 %\bibliographystyle{alpha}
 \bibliographystyle{ieeetr}
 
-\clearpage
-\phantomsection
-\addcontentsline{toc}{chapter}{\indexname}
-\printindex
-
 %\clearpage
 %\phantomsection
 \glsaddall
 \printnoidxglossaries
 %\printglossary
+
+
+%\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{\indexname}
+\printindex
+
 
 \end{document}
