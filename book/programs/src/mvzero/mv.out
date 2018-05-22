@@ -12,7 +12,7 @@ ddt> t 0 1000
    a2 x12 f0f0f0f0  a3 x13 f0f0f0f0  a4 x14 f0f0f0f0  a5 x15 f0f0f0f0
    a6 x16 f0f0f0f0  a7 x17 f0f0f0f0  s2 x18 f0f0f0f0  s3 x19 f0f0f0f0
    s4 x20 f0f0f0f0  s5 x21 f0f0f0f0  s6 x22 f0f0f0f0  s7 x23 f0f0f0f0
-   s8 x24 f0f0f0f0  s9 x25 f0f0f0f0 s10 x26 f0f0f0f0 S11 x27 f0f0f0f0
+   s8 x24 f0f0f0f0  s9 x25 f0f0f0f0 s10 x26 f0f0f0f0 s11 x27 f0f0f0f0
    t3 x28 f0f0f0f0  t4 x29 f0f0f0f0  t5 x30 f0f0f0f0  t6 x31 f0f0f0f0
        pc 00000000
 00000000: 00000e13  addi    t3, zero, 0   # t3 = 0x00000000 = 0x00000000 + 0x00000000
@@ -22,7 +22,7 @@ ddt> t 0 1000
    a2 x12 f0f0f0f0  a3 x13 f0f0f0f0  a4 x14 f0f0f0f0  a5 x15 f0f0f0f0
    a6 x16 f0f0f0f0  a7 x17 f0f0f0f0  s2 x18 f0f0f0f0  s3 x19 f0f0f0f0
    s4 x20 f0f0f0f0  s5 x21 f0f0f0f0  s6 x22 f0f0f0f0  s7 x23 f0f0f0f0
-   s8 x24 f0f0f0f0  s9 x25 f0f0f0f0 s10 x26 f0f0f0f0 S11 x27 f0f0f0f0
+   s8 x24 f0f0f0f0  s9 x25 f0f0f0f0 s10 x26 f0f0f0f0 s11 x27 f0f0f0f0
    t3 x28 00000000  t4 x29 f0f0f0f0  t5 x30 f0f0f0f0  t6 x31 f0f0f0f0
        pc 00000004
 00000004: ebreak

@@ -2,6 +2,8 @@
 SUBDIRS=\
 	nop\
 	li\
+	mv\
+	mvzero\
 	ebreak
 
 TOP=.
