@@ -4,19 +4,15 @@ Loading 'ebreak.bin' to 0x0
 This is rvddt.  Enter ? for help.
 ddt> d 0 16
  00000000: 73 00 10 00 a5 a5 a5 a5-a5 a5 a5 a5 a5 a5 a5 a5 *s...............*
-ddt> t 0 1000
+ddt> r
    x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
    x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
   x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
   x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
    pc 00000000
+ddt> ti 0 1000
 00000000: ebreak
-ddt> t
-   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-   pc 00000000
+ddt> ti
 00000000: ebreak
 ddt> g 0
 00000000: ebreak

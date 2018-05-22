@@ -3,8 +3,9 @@ cmd="rvddt -f ebreak.bin"
 echo "$prompt $cmd"
 $cmd <<!
 d 0 16
-t 0 1000
-t
+r
+ti 0 1000
+ti
 g 0
 r
 !
