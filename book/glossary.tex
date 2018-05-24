@@ -2,7 +2,7 @@
 {
     name=LaTeX,
     description={Is a mark up language specially suited
-    for scientific documents}
+    	for scientific documents}
 }
 
 \newglossaryentry{binary}
@@ -10,13 +10,13 @@
 	name=binary,
 	description={Something that has two parts or states.  In computing
 		these two states are represented by the numbers one and zero or
-		by the conditions true and false and can be stored in one bit}
+		by the conditions true and false and can be stored in one \gls{bit}}
 }
 \newglossaryentry{hexadecimal}
 {
 	name=hexadecimal,
-	description={A base-16 numbering system whose digits are 
-		0123456789abcdef.  The hex digits (hits) are not case-sensitive}
+	description={A base-16 numbering system whose digits are 0123456789abcdef.  
+		The hex digits (\gls{hit}s) are not case-sensitive}
 }
 \newglossaryentry{bit}
 {
@@ -26,59 +26,65 @@
 \newglossaryentry{hit}
 {
 	name={hit},
-	description={One hex digit}
+	description={One \gls{hexadecimal} digit}
+}
+\newglossaryentry{nybble}
+{
+	name={nybble},
+	description={Half of a {\em \gls{byte}} is a {\em nybble}
+		(sometimes spelled nibble.)  Another word for {\em \gls{hit}}}
 }
 \newglossaryentry{byte}
 {
 	name=byte,
-	description={A binary value represented by 8 bits}
+	description={A \gls{binary} value represented by 8 \gls{bit}s}
 }
 \newglossaryentry{halfword}
 {
 	name={halfword},
-	description={A binary value represented by 16 bits}
+	description={A \gls{binary} value represented by 16 \gls{bit}s}
 }
 \newglossaryentry{fullword}
 {
 	name={fullword},
-	description={A binary value represented by 32 bits}
+	description={A \gls{binary} value represented by 32 \gls{bit}s}
 }
 \newglossaryentry{doubleword}
 {
 	name={doubleword},
-	description={A binary value represented by 64 bits}
+	description={A \gls{binary} value represented by 64 \gls{bit}s}
 }
 \newglossaryentry{quadword}
 {
 	name={quadword},
-	description={A binary value represented by 128 bits}
+	description={A \gls{binary} value represented by 128 \gls{bit}s}
 }
 \newglossaryentry{HighOrderBits}
 {
 	name={high order bits},
-	description={Some number of MSBs}
+	description={Some number of \acrshort{msb}s}
 }
 \newglossaryentry{LowOrderBits}
 {
     name={low order bits},
-    description={Some number of LSBs}
+    description={Some number of \acrshort{lsb}s}
 }
 
 \newglossaryentry{xlen}
 {
 	name=XLEN,
-	description={The number of bits a RISC-V x integer register 
-		(such as x0).  For RV32 XLEN=32, RV64 XLEN=64 etc}
+	description={The number of bits a RISC-V x integer \gls{register}
+		(such as x0).  For RV32 XLEN=32, RV64 XLEN=64 and so on}
 }
 \newglossaryentry{rv32}
 {
 	name=RV32,
-	description={Short for RISC-V 32.  The number 32 refers to the XLEN}
+	description={Short for RISC-V 32.  The number 32 refers to the \gls{xlen}}
 }
 \newglossaryentry{rv64}
 {
 	name=RV64,
-	description={Short for RISC-V 64.  The number 64 refers to the XLEN}
+	description={Short for RISC-V 64.  The number 64 refers to the \gls{xlen}}
 }
 \newglossaryentry{overflow}
 {
@@ -101,12 +107,12 @@
 {
 	name={machine language},
 	description={The instructions that are executed by a CPU that are expressed
-		in the form of binary values}
+		in the form of \gls{binary} values}
 }
 \newglossaryentry{register}
 {
 	name={register},
-	description={A unit of storage inside a CPU with the capacity of XLEN bits}
+	description={A unit of storage inside a CPU with the capacity of \gls{xlen} \gls{bit}s}
 }
 \newglossaryentry{program}
 {
@@ -116,7 +122,7 @@
 \newglossaryentry{address}
 {
 	name={address},
-	description={A numeric value used to uniquely identify each byte of main memory}
+	description={A numeric value used to uniquely identify each \gls{byte} of main memory}
 }
 \newglossaryentry{alignment}
 {
@@ -139,7 +145,7 @@
 	name={big endian},
 	description={A number format where the most significant values are 
 	printed to the left of the lesser significant values.  This is the
-	method that everyone used to write decimal numbers every day}
+	method that everyone uses to write decimal numbers every day}
 }
 \newglossaryentry{littleendian}
 {
@@ -147,7 +153,7 @@
 	description={A number format where the least significant values are 
 		printed to the left of the more significant values.  This is the
 		opposite ordering that everyone learns in grade school when learning
-		how to count.  For example a big endian number written as ``1234''
+		how to count.  For example a \gls{bigendian} number written as ``1234''
 		would be written in little endian form as ``4321''}
 }
 \newglossaryentry{rvddt}
@@ -178,3 +184,5 @@
 \newacronym{lsb}{LSB}{Least Significant Bit}
 \newacronym{isa}{ISA}{Instruction Set Architecture}
 \newacronym{cpu}{CPU}{Central Processing Unit}
+\newacronym{ram}{RAM}{Random Access Memory}
+\newacronym{rom}{ROM}{Read Only Memory}
