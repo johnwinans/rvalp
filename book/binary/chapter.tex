@@ -11,6 +11,17 @@ RISC-V assembly language uses binary to represent all values, be they
 boolean or numeric.  It is the context within which they are used that
 determines whether they are boolean or numeric.
 
+\enote{Add some diagrams here showing bits, bytes and the MSB, 
+LSB,\ldots\ perhaps relocated from the RV32I chapter?}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Boolean Functions}
+
+Boolean functions apply on a per-bit basis.
+When applied to multi-bit values, each bit position is operated upon 
+independently of the other bits.
+
 RISC-V assembly language uses zero to represent {\em false} and one 
 to represent {\em true}.  In general, however, it is useful to relax 
 this and define zero {\bf and only zero} to be {\em false} and anything 
@@ -19,27 +30,11 @@ that is not {\em false} is therefore {\em true}.%
 many other languages as well as the common assembly language idioms
 discussed in this text.}
 
-\enote{Add some diagrams here showing bits, bytes and the MSB, 
-LSB,\ldots\ perhaps relocated from the RV32I chapter?}%
 The reason for this relaxation is because, while a single binary digit 
 (\gls{bit}) can represent the two values zero and one, the vast majority 
 of the time data is processed by the CPU in groups of bits.  These
-groups have names like \gls{byte}, \gls{halfword} and \gls{fullword}.
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Boolean Functions}
-
-\enote{Probably should add basic truth table diagrams.}%
-Boolean functions apply on a per-bit basis.
-%in that they do not impact neighboring bits.
-%by generating things like a carry or a borrow.
-When applied to multi-bit values, each bit position is operated upon 
-independently of the other bits.
-
-
+groups have names like \gls{byte} (8 bits), \gls{halfword} (16 bits) 
+and \gls{fullword} (32 bits).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -54,8 +49,34 @@ If the input is 1 then the output is 0.  If the input is 0 then the
 output is 1.  In other words, the output value is {\em not} that of the 
 input value.
 
-This text will use the operator used in the C language when discussing 
+Expressing the {\em not} function in the form a a truth table:
+
+\begin{center}
+\begin{tabular}{c|c}
+A & $\overline{\mbox{A}}$\\
+\hline
+0 & 1 \\
+1 & 0 \\
+\end{tabular}
+\end{center}
+
+A truth table is drawn by indicating all of the possible input values on 
+the left of the vertical bar with each row displaying the output values 
+that correspond to the input for that row.  The column headings are used
+to define the illustrated operation expressed using a mathematical 
+notation.  The {\em not} operation is indicated by the presense of
+an {\em overline}.
+
+In computer programming languages, things like an overline can not be 
+efficiently expressed using a standard keyboard.  Therefore it is common 
+to use a notation such as that used  by the C language when discussing 
 the {\em NOT} operator in symbolic form.  Specifically the tilde: `\verb@~@'.
+
+It is also uncommon to for programming languages to express boolean operations 
+on single-bit input(s).  A more generalized operation is used that applies 
+to a set of bits all at once.  For example, performing a {\em not} operation
+of eight bits at once can be illustrated as:
+
 
 \begin{verbatim}
   ~ 1 1 1 1 0 1 0 1  <== A
@@ -73,12 +94,30 @@ The boolean {\em and} function has two or more inputs and the output is a
 single bit.  The output is 1 if and only if all of the input values are 1.
 Otherwise it is 0.
 
+This function works like it does in spoken language.  For example
+if A is 1 {\em AND} B is 1 then the output is 1 (true).
+Otherwise the output is 0 (false).  
+
+In mathamatical notion, the {\em and} operator is expressed the same way
+as is {\em multiplication}.  That is by a raised dot between, or by 
+juxtaposition of, two variable names.  It is also worth noting that,
+in base-2, the {\em and} operation actually {\em is} multiplication!
+
+\begin{center}
+\begin{tabular}{cc|c}
+A & B & AB \\
+\hline
+0 & 0 & 0 \\
+0 & 1 & 0 \\
+1 & 0 & 0 \\
+1 & 1 & 1 \\
+\end{tabular}
+\end{center}
+
 This text will use the operator used in the C language when discussing 
 the {\em AND} operator in symbolic form.  Specifically the ampersand: `\verb@&@'.
 
-This function works like it does in spoken language.  For example
-if A is 1 {\em AND} B is 1 then the output is 1 (true).
-Otherwise the output is 0 (false).  For example:
+An eight-bit example:
 
 \begin{verbatim}
     1 1 1 1 0 1 0 1  <== A
@@ -96,12 +135,28 @@ In a line of code the above might read like this: \verb@output = A & B@
 The boolean {\em or} function has two or more inputs and the output is a
 single bit.  The output is 1 if at least one of the input values are 1.
 
+This function works like it does in spoken language.  For example
+if A is 1 {\em OR} B is 1 then the output is 1 (true).
+Otherwise the output is 0 (false).  
+
+In mathamatical notion, the {\em or} operator is expressed using the plus 
+($+$).  
+
+\begin{center}
+\begin{tabular}{cc|c}
+A & B & A$+$B \\
+\hline
+0 & 0 & 0 \\
+0 & 1 & 1 \\
+1 & 0 & 1 \\
+1 & 1 & 1 \\
+\end{tabular}
+\end{center}
+
 This text will use the operator used in the C language when discussing
 the {\em OR}  operator in symbolic form.  Specifically the pipe: `\verb@|@'.
 
-This function works like it does in spoken language.  For example
-if A is 1 {\em OR} B is 1 then the output is 1 (true).
-Otherwise the output is 0 (false).  For example:
+An eight-bit example:
 
 \begin{verbatim}
     1 1 1 1 0 1 0 1  <== A
@@ -120,14 +175,29 @@ The boolean {\em exclusive or} function has two or more inputs and the
 output is a single bit.  The output is 1 if only an odd number of inputs 
 are 1. Otherwise the output will be 0.
 
-This text will use the operator used in the C language when discussing
-the {\em XOR}  operator in symbolic form.  Specifically the carrot: `\verb@^@'.
-
 Note that when {\em XOR} is used with two inputs, the output
 is set to 1 (true) when the inputs have different values and 0 
 (false) when the inputs both have the same value.
 
-For example:
+In mathamatical notion, the {\em xor} operator is expressed using the plus
+in a circle ($\oplus$).
+
+\begin{center}
+\begin{tabular}{cc|c}
+A & B & A$\oplus{}$B \\
+\hline
+0 & 0 & 0 \\
+0 & 1 & 1 \\
+1 & 0 & 1 \\
+1 & 1 & 0 \\
+\end{tabular}
+\end{center}
+
+This text will use the operator used in the C language when discussing
+the {\em XOR}  operator in symbolic form.  Specifically the carrot: `\verb@^@'.
+
+
+An eight-bit example:
 
 \begin{verbatim}
     1 1 1 1 0 1 0 1  <== A
@@ -200,9 +270,9 @@ $10^2$	& $10^1$	& $10^0$	& $2^7$ & $2^6$ & $2^5$ & $2^4$ & $2^3$ & $2^2$ & $2^1$
 
 One way to look at this table is on a per-row basis where each place 
 value is represented by the base raised to the power of the place value
-position (shown in the column headings.)  This is useful when
-converting arbitrary values between bases.  For example to interpret
-the decimal value on the fourth row: 
+position (shown in the column headings.)  
+%This is useful when converting arbitrary numeric values between bases.  
+For example to interpret the decimal value on the fourth row: 
 
 \begin{equation}
 0 \times 10^2 + 0 \times 10^1 + 3 \times 10^0 = 3_{10}
@@ -219,6 +289,15 @@ Interpreting the hexadecimal value on the fourth row by converting it to decimal
 \begin{equation}
 0 \times 16^1 + 3 \times 16^0 = 3_{10}
 \end{equation}
+
+\index{Most significant bit}\index{MSB|see {Most significant bit}}%
+\index{Least significant bit}\index{LSB|see {Least significant bit}}%
+We refer to the place values with the largest exponenet (the one furthest to the 
+left for any given base) as the {\em most significant} digit and the place value
+with the lowest exponenet as the {\em least significant} digit.  For binary
+numbers these are the \acrfull{msb} and \acrfull{lsb} respectively.%
+\footnote{Changing the value of the MSB will have a more {\em significant}
+impact on the numeric value than changing the value of the LSB.} 
 
 
 Another way to look at this table is on a per-column basis.  When
@@ -242,8 +321,8 @@ for readability.
 
 The relationship between binary and hex values is also worth taking
 note.  Because $2^4 = 16$, there is a clean and simple grouping
-of 4 \gls{bit}s to 1 \gls{hit}.  There is no such relationship
-between binary and decimal.  
+of 4 \gls{bit}s to 1 \gls{hit} (aka \gls{nybble}).  
+There is no such relationship between binary and decimal.  
 
 Writing and reading numbers in binary that are longer than 8 bits 
 is cumbersome and prone to error.  The simple conversion between 
@@ -283,8 +362,9 @@ To convert from binary to decimal, put the decimal value of the place values
 {\ldots8 4 2 1} over the binary digits like this:
 
 \begin{verbatim}
-    128 64 32 16  8  4  2  1
-      0  0  0  1  1  0  1  1
+Base-2 place values: 128 64 32 16  8  4  2  1
+Binary:                0  0  0  1  1  0  1  1
+Decimal:                       16 +8    +2 +1 = 27
 \end{verbatim}
 
 Now sum the place-values that are expressed in decimal for each 
@@ -303,9 +383,9 @@ extend the binary to the left with zeros to make it so.
 Grouping the bits into sets of four and summing:
 
 \begin{verbatim}
-Place:         8 4 2 1     8 4 2 1     8 4 2 1     8 4 2 1
-Binary:        0 1 1 0     1 1 0 1     1 0 1 0     1 1 1 0
-Decimal:         4+2  =6   8+4+  1=13  8+  2  =10  8+4+2  =14
+Base-2 place values:   8 4 2 1     8 4 2 1     8 4 2 1     8 4 2 1
+Binary:                0 1 1 0     1 1 0 1     1 0 1 0     1 1 1 0
+Decimal:                 4+2  =6   8+4+  1=13  8+  2  =10  8+4+2  =14
 \end{verbatim}
 
 After the summing, convert each decimal value to hex.  The decimal
@@ -339,10 +419,9 @@ method discussed in \autoref{section:bindec}.
 For example:
 
 \begin{verbatim}
-Hex:           4            C
-Binary:        0  1  0  0   1 1 0 0
-Decimal:     128 64 32 16   8 4 2 1
-Sum:             64+        8+4       = 76
+Hex:                     7          C
+Decimal Sum:       4+2+1=7  8+4    =12
+Binary:          0 1 1 1    1 1 0 0
 \end{verbatim}
 
 
@@ -356,8 +435,9 @@ of the place values that would yield a non-negative result.
 
 For example, to convert $1234_{10}$ to binary:
 
+
 \begin{verbatim}
-Place values: 2048-1024-512-256-128-64-32-16-8-4-2-1
+Base-2 place values: 2048-1024-512-256-128-64-32-16-8-4-2-1
 
    0          2048      (too big)
    1   1234 - 1024 = 210
@@ -429,19 +509,45 @@ negate the place value of the \acrshort{msb}.  For example, the
 number one is represented the same as discussed before:
 
 \begin{verbatim}
-   -128 64 32 16  8  4  2  1
-      0  0  0  0  0  0  0  1
+Base-2 place values:  -128 64 32 16  8  4  2  1
+Binary:                  0  0  0  0  0  0  0  1
 \end{verbatim}
 
 The \acrshort{msb} of any negative number in this format will always
 be 1.  For example the value $-1_{10}$ is:
 
 \begin{verbatim}
-   -128 64 32 16  8  4  2  1
-      1  1  1  1  1  1  1  1
+Base-2 place values:  -128 64 32 16  8  4  2  1
+Binary:                  1  1  1  1  1  1  1  1
 \end{verbatim}
 
 \ldots because: $-128+64+32+16+8+4+2+1=-1$.
+
+
+Calculating $4+5 = 9$
+
+\begin{verbatim}
+	   1    <== carries
+	 000100 <== 4
+	+000101 <== 5
+     ------
+	 001001 <== 9
+\end{verbatim}
+
+Calculating $-4+ -5 = -9$
+
+\begin{verbatim}
+	1 11     <== carries
+	  111100 <== -4
+	 +111011 <== -5
+   ---------
+	1 110111 <== -9 (with a truncation)
+
+  -32 16 8 4 2 1
+    1  1 0 1 1 1
+ -32 + 16 + 4 + 2 + 1 = -9
+\end{verbatim}
+
 
 This format has the virtue of allowing the same addition logic 
 discussed above to be used to calculate $-1+1=0$.
@@ -452,11 +558,11 @@ discussed above to be used to calculate $-1+1=0$.
       1  1  1  1  1  1  1  1 <== addend (-1)
     + 0  0  0  0  0  0  0  1 <== addend (1)
       ----------------------
-   1  0  0  0  0  0  0  0  0 <== sum (0 with an overflow)
+   1  0  0  0  0  0  0  0  0 <== sum (0 with a truncation)
 \end{verbatim}
 
-In order for this to work, the \gls{overflow} carry out of the 
-sum of the MSBs is ignored.
+In order for this to work, the carry out of the sum of the MSBs is 
+ignored.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Converting between Positive and Negative}
@@ -623,10 +729,78 @@ the results of ADD and ADDW on the operands.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Sign and Zero Extension}
 
-\enote{Refactor the sx() and zx() discussion in the RV32I chapter 
-and locate the details here.}%
-Seems like a good place to discuss extension.
+\index{sign extension}
+\label{SignExtension}
+Due to the nature of the two's complement encoding scheme, the following 
+numbers all represent the same value:
+\begin{verbatim}
+                                   1111 <== -1
+                               11111111 <== -1
+                   11111111111111111111 <== -1
+           1111111111111111111111111111 <== -1
+\end{verbatim}
+As do these:
+\begin{verbatim}
+                                  01100 <== 12
+                             0000001100 <== 12
+    00000000000000000000000000000001100 <== 12
+\end{verbatim}
 
+The phenomenon illustrated here is called {\em sign extension}.  That is
+any signed number can have any quantity of additional MSBs added to it,
+provided that they repeat the value of the sign bit.
+
+\autoref{Figure:SignExtendNegative} illustrates extending the negative sign
+bit of {\em val} to the left by replicating it.
+When {\em val} is negative, its \acrshort{msb} (bit 19 in this example) will
+be set to 1.   Extending this value to the left will set all the new bits
+to the left of it to 1 as well.
+
+\begin{figure}[ht]
+\centering
+\DrawBitBoxSignExtendedPicture{32}{10100000000000000010}
+\captionof{figure}{Sign-extending a negative integer from 20 bits to 32 bits.}
+\label{Figure:SignExtendNegative}
+\end{figure}
+
+\autoref{Figure:SignExtendPositive} illustrates extending the positive sign
+bit of {\em val} to the left by replicating it.
+When {\em val} is positive, its \acrshort{msb} will be set to 0.  Extending this
+value to the left will set all the new bits to the left of it to 0 as well.
+
+\begin{figure}[ht]
+\centering
+\DrawBitBoxSignExtendedPicture{32}{01000000000000000010}
+\captionof{figure}{Sign-extending a positive integer from 20 bits to 32 bits.}
+\label{Figure:SignExtendPositive}
+\end{figure}
+
+
+\label{ZeroExtension}
+In a similar vein, any {\em unsigned} number also may have any quantity of 
+additional MSBs added to it provided that htey are all zero.  For example,
+the following all represent the same value:
+\begin{verbatim}
+                                   1111 <== 15
+                                  01111 <== 15
+          00000000000000000000000001111 <== 15
+\end{verbatim}
+
+The observation here is that any {\em unsigned} number may be
+{\em zero extended} to any size.
+
+\autoref{Figure:ZeroExtend} illustrates zero-extending a 20-bit {\em val} to the
+left to form a 32-bit fullword.
+
+\begin{figure}[ht]
+\centering
+\DrawBitBoxZeroExtendedPicture{32}{10000000000000000010}
+\captionof{figure}{Zero-extending an unsigned integer from 20 bits to 32 bits.}
+\label{Figure:ZeroExtend}
+\end{figure}
+
+%Sign- and zero-extending binary numbers are common operations used to 
+%fit a byte or halfword into a fullword.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -694,28 +868,59 @@ value and TRUE if it is a conditional.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Alignment}
 
-Draw a diagram showing the overlapping data types when they are all aligned.
+\enote{Include the obligatory diagram showing the overlapping data types 
+when they are all aligned.}%
+With respect to memory and storage, {\em \gls{alignment}} refers to the 
+{\em location} of a data element when the address that it is stored is 
+a precise multiple of a power-of-2. 
+
+The primary alignments of concern are typically 2 (a halfword), 
+4 (a fullword), 8 (a double word) and 16 (a quad-word) bytes.
+
+For example, any data element that is aligned to 2-byte boundary
+must have an (hex) address that ends in any of: 0, 2, 4, 6, 8, A, 
+C or E.
+Any 4-byte aligned element must be located at an address ending
+in 0, 4, 8 or C.  An 8-byte aligned element at an address ending
+with 0 or 8, and 16-byte aligned elements must be located at
+addresses ending in zero.
+
+Such alignments are important when exchanging data between the CPU 
+and memory because the hardware implementations are optimized to
+transfer aligned data.  Therefore, aligning data used by any program
+will reap the benefit of running faster.
+
+An element of data is considered to be {\em aligned to its natural size}
+when its address is an exact multiple of the number of bytes used to 
+represent the data.  Note that the ISA we are concerned with {\em only}
+operates on elements that have sizes that are powers of two.
+
+For example, a 32-bit integer consumes one full word.  If the four bytes
+are stored in main memory at an address than is a multiple of 4 then
+the integer is considered to naturally aligned.  
+
+The same would apply to 16-bit, 64-bit, 128-bit and other such values 
+as they fit into 2, 8 and 16 byte elements respectively.
+
+Some CPUs can deliver four (or more) bytes at the same time while others 
+might only be capable of delivering one or two bytes at a time.  Such 
+differences in hardware typically impact the cost and performance of a 
+system.%
+\footnote{The design and implementation
+choices that determine how any given system operates are part of what is
+called a system's {\em organization} and is beyond the scope of this text.
+See~\cite{codriscv:2017} for more information on computer organization.}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Instruction Alignment}
 
-\enote{Rewrite this section for data rather than instructions and then
-note here that instructions must be naturally aligned.  For RV32 that
-is on a 4-byte boundary}%
+The RISC-V ISA requires that all instructions be aligned to their
+natural boundaries.
+
 Every possible instruction that an RV32I CPU can execute contains
-exactly 32 bits.  Therefore each one must be stored in four bytes 
-of the main memory.
-
-To simplify the hardware, each instruction must be placed into four 
-adjacent bytes whose numeric address sequence begins with a multiple 
-four.  For example, an instruction might be located in bytes 
-4, 5, 6 and 7 (but not in 5, 6, 7 and 8 nor in 9, 3, 1, and 0\ldots).
-
-This sort of addressing requirement is common and is referred to as
-\gls{alignment}.  An aligned instruction begins at a memory address
-that is a multiple of four.  An {\em unaligned} instruction would
-be one beginning at any other address and is {\em illegal}.
+exactly 32 bits.  Therefore they are always stored on a full word
+boundary.  Any {\em unaligned} instruction would is {\em illegal}.
 
 An attempt to fetch an instruction from an unaligned address
 will result in an error referred to as an alignment {\em \gls{exception}}.
@@ -724,15 +929,3 @@ current instruction and start executing a different set of instructions
 that are prepared to handle the problem.  Often an exception is
 handled by completely stopping the program in a way that is commonly
 referred to as a system or application {\em crash}.
-
-Given a properly aligned instruction address, the CPU can request
-that the main memory locate and deliver the values of the four bytes
-in the address sequence to the CPU using what is called a memory
-read operation.  Some systems can deliver four (or more) bytes at the
-same time while others might only be capable of delivering one or
-two bytes at a time.  These differences in hardware typically impact the
-cost and performance of a system.\footnote{The design and implementation
-choices that determine how any given system operates are part of what is
-called a system's {\em organization} and is beyond the scope of this text.
-See~\cite{codriscv:2017} for more information on computer organization.}
-

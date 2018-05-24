@@ -27,37 +27,8 @@ This is used to convert a signed integer value expressed using some number of
 bits to a larger number of bits by adding more bits to the left.  In doing so, 
 the sign will be preserved.  In this case {\em val} represents the least 
 \acrshort{msb}s of the value.  
-For more on binary numbers see \autoref{chapter:NumberSystems}.
 
-\autoref{Figure:SignExtendNegative} illustrates extending the negative sign 
-bit of {\em val} to the left by replicating it.
-When {\em val} is negative, its \acrshort{msb} (bit 19 in this example) will 
-be set to 1.   Extending this value to the left will set all the new bits 
-to the left of it to 1 as well.
-
-
-\begin{figure}[ht]
-\centering
-\DrawBitBoxSignExtendedPicture{32}{10100000000000000010}
-\captionof{figure}{Sign-extending a negative integer from 20 bits to 32 bits.}
-\label{Figure:SignExtendNegative}
-\end{figure}
-
-
-\autoref{Figure:SignExtendPositive} illustrates extending the positive sign 
-bit of {\em val} to the left by replicating it.
-When {\em val} is positive, its \acrshort{msb} will be set to 0.  Extending this 
-value to the left will set all the new bits to the left of it to 0 as well.  
-
-
-\begin{figure}[ht]
-\centering
-\DrawBitBoxSignExtendedPicture{32}{01000000000000000010}
-\captionof{figure}{Sign-extending a positive integer from 20 bits to 32 bits.}
-\label{Figure:SignExtendPositive}
-\end{figure}
-
-
+For more on sign-extension see \autoref{SignExtension}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{zx(val)}
@@ -69,19 +40,8 @@ This is used to convert an unsigned integer value expressed using some number of
 bits to a larger number of bits by adding more bits to the left.  In doing so, 
 the new bits added will all be set to zero.  As is the case with \verb@sx(val)@,
 {\em val} represents the \acrshort{lsb}s of the final value.  
-\autoref{Figure:ZeroExtend} illustrates zero-extending a 20-bit {\em val} to the 
-left to form a 32-bit fullword.
 
-For more on binary numbers see \autoref{chapter:NumberSystems}.
-
-\begin{figure}[ht]
-\centering
-\DrawBitBoxZeroExtendedPicture{32}{10000000000000000010}
-\captionof{figure}{Zero-extending an unsigned integer from 20 bits to 32 bits.}
-\label{Figure:ZeroExtend}
-\end{figure}
-
-
+For more on zero-extension see \autoref{ZeroExtension}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
