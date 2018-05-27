@@ -534,6 +534,57 @@
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand\xTInsnStatement[4]{%
+	\parbox{3.5cm}{{\sffamily\large\bfseries #2}\\
+	\tt#3}\hspace{5mm}\parbox{5cm}{\bfseries#1}\parbox{12cm}{#4}%
+}
+
+\newcommand\TInsnStatement[4]{%
+	\begin{tabular}{lll}
+	\parbox[t]{3.5cm}{{\sffamily\large\bfseries #2}\\
+	\tt#3} & \parbox[t]{5cm}{\bfseries #1} & \parbox[t]{12cm}{#4}\\
+	\end{tabular}
+}
+
+\newcommand\TDrawInsnTypeUPicture[5]{%
+	\TInsnStatement{#1}{#2}{#3}{#4}\\
+    \DrawInsnTypeUTikz{#5}%
+}
+
+\newcommand\TDrawInsnTypeJPicture[5]{%
+	\TInsnStatement{#1}{#2}{#3}{#4}\\
+    \DrawInsnTypeJTikz{#5}%
+}
+
+\newcommand\TDrawInsnTypeBPicture[5]{%
+	\TInsnStatement{#1}{#2}{#3}{#4}\\
+    \DrawInsnTypeBTikz{#5}%
+}
+
+\newcommand\TDrawInsnTypeIPicture[5]{%
+	\TInsnStatement{#1}{#2}{#3}{#4}\\
+    \DrawInsnTypeITikz{#5}%
+}
+\newcommand\TDrawInsnTypeSPicture[5]{%
+	\TInsnStatement{#1}{#2}{#3}{#4}\\
+    \DrawInsnTypeSTikz{#5}%
+}
+\newcommand\TDrawInsnTypeRPicture[5]{%
+	\TInsnStatement{#1}{#2}{#3}{#4}\\
+    \DrawInsnTypeRTikz{#5}%
+}
+
+\newcommand\TDrawInsnTypeRShiftPicture[5]{
+	\TInsnStatement{#1}{#2}{#3}{#4}\\
+	\DrawInsnTypeRShiftTikz{#5}
+}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
