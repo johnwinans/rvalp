@@ -17,7 +17,7 @@ be able to tinker with it on most any platform.
 
 The following worked for me on Ubuntu 16.04 LTS:
 
-    sudo apt install wget gksu perl-tk
+    sudo apt install wget perl-tk
     wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
     tar -xzf install-tl-unx.tar.gz
     cd install-tl-20180303
@@ -28,9 +28,9 @@ coffee, do some laundry...]
 
 Put the following into .bashrc:
 
-    export PATH=/usr/local/texlive/2017/bin/x86_64-linux:$PATH    
-    export INFOPATH=$INFOPATH:/usr/local/texlive/2017/texmf-dist/doc/info
-    export MANPATH=$MANPATH:/usr/local/texlive/2017/texmf-dist/doc/man
+    export PATH=/usr/local/texlive/2018/bin/x86_64-linux:$PATH    
+    export INFOPATH=$INFOPATH:/usr/local/texlive/2018/texmf-dist/doc/info
+    export MANPATH=$MANPATH:/usr/local/texlive/2018/texmf-dist/doc/man
 
 Then clone and build this repo:
 
