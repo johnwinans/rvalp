@@ -45,6 +45,10 @@
     linkcolor=blue		%choose some color if you want links to stand out
 }
 
+% don't say subsection and subsubsection in auto-references
+\let\subsectionautorefname\sectionautorefname
+\let\subsubsectionautorefname\sectionautorefname
+
 \usepackage{makeidx,showidx}	% showidx breaks hyperref when loaded before hyperref
 
 
