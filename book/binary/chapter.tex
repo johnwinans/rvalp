@@ -806,14 +806,53 @@ left to form a 32-bit fullword.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Shifting}
 
-Seems like a good place to discuss logical and arithmetic shifting.
+We were all taught how to multiply and divide decimal numbers by ten
+by moving (or {\em shifting}) the decimal point to the right or left 
+respectively.  Doing the same in any other base has the same effect 
+in that it will multiply or divide the number by the value of the base.
 
-shift left logical
+Multiplication and division are only two reasons for shifting.  There
+can be other occasions where doing so is useful.
 
-shift right logical
+As implemented by a CPU, shifting applies to the value in a register
+and the results stored back into a register of finite size.  Therefore
+a shift result will always be truncated to fit into a register.
 
-shift right arithmetic
+Note that when dealing with numeric values, any truncation performed 
+during a right-shift will manifest itself as rounding toward zero.
 
+\subsection{Logical Shifting}
+
+Shifting {\em logically} to the left or right is a matter of re-aligning
+the bits in a register and trncating the result.
+
+\enote{Redraw these with arrows tracking the shifted bits and the truncated values}%
+To shift left two positions:
+
+\DrawBitBoxUnsignedPicture{10111000000000000010}\\
+\DrawBitBoxUnsignedPicture{11100000000000001000}
+
+To shift right one position:
+
+\DrawBitBoxUnsignedPicture{10111000000000000010}\\
+\DrawBitBoxUnsignedPicture{01011100000000000001}
+
+Note that the vacated bit positions are always filled with zero.
+
+\subsection{Arithmetic Shifting}
+
+Some times it is desirable to retain the value of the sign bit when
+shifting.  The RISC-V ISA provides an arithmetic right shift 
+instruction for this purpose (there is no arithmetic left shift for 
+this ISA.)
+
+When shifting to the right {\em arithmetically}, vacated bit positions are
+filled by replicating the value of the sign bit. 
+
+An arithmetic right shift of a negative number by 4 bit positions:
+
+\DrawBitBoxSignedPicture{10111000000000000010}\\
+\DrawBitBoxSignedPicture{11111011100000000000}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -821,7 +860,7 @@ shift right arithmetic
 
 \enote{Consider refactoring the memory discussion in RV32 reference chapter
 and placing some of it in this section.}%
-When transferring data between its registers registers and main memory a
+When transferring data between its registers and main memory a
 RISC-V system uses the little-endian byte order.\footnote{
 See\cite{IEN137} for some history of the big/little-endian ``controversy.''}
 
