@@ -3,79 +3,79 @@
 
 \begin{tabular}{|ll|l|l|}
 \hline
-lui   & t0, 3        & Load Upper Immediate       & {\tt rd $\leftarrow$ zr(imm), pc $\leftarrow$ pc+4}\\
+add   & rd, rs1, rs2   & \hyperref[insn:add]{Add}                       & {\tt rd $\leftarrow$ rs1 + rs2, pc $\leftarrow$ pc+4}\\
 \hline
-auipc & t0, 3        & Add Upper Immediate to PC  & {\tt rd $\leftarrow$ pc + zr(imm), pc $\leftarrow$ pc+4}\\
+addi  & rd, rs1, imm  & \hyperref[insn:addi]{Add Immediate}             & {\tt rd $\leftarrow$ rs1+sx(imm), pc $\leftarrow$ pc+4}\\
 \hline
-jal   & rd, imm      & Jump And Link              & {\tt{}rd $\leftarrow$ pc+4, pc $\leftarrow$ pc+sx(imm<<1)}\\
+and   & rd, rs1, rs2   & \hyperref[insn:and]{And}                       & {\tt rd $\leftarrow$ rs1 \& rs2, pc $\leftarrow$ pc+4}\\
 \hline
-jalr  & rd, rs1, imm & Jump And Link Register     & {\tt{}rd $\leftarrow$ pc+4, pc $\leftarrow$ (rs1+sx(imm))\&\textasciitilde{}1}\\
+andi  & rd, rs1, imm  & \hyperref[insn:andi]{And Immediate}             & {\tt rd $\leftarrow$ rs1 \& sx(imm), pc $\leftarrow$ pc+4}\\
 \hline
-beq   & rs1, rs2, imm & Branch Equal              & {\tt{}pc $\leftarrow$ \verb@(rs1==rs2) ? pc+sx(imm[12:1]<<1) : pc+4@}\\
+auipc & t0, 3        & \hyperref[insn:auipc]{Add Upper Immediate to PC} & {\tt rd $\leftarrow$ pc + zr(imm), pc $\leftarrow$ pc+4}\\
 \hline
-bne   & rs1, rs2, imm & Branch Not Equal          & {\tt pc $\leftarrow$ (rs1!=rs2) ? pc+sx(imm[12:1]<<1) : pc+4}\\
+beq   & rs1, rs2, imm & \hyperref[insn:beq]{Branch Equal}               & {\tt{}pc $\leftarrow$ \verb@(rs1==rs2) ? pc+sx(imm[12:1]<<1) : pc+4@}\\
 \hline
-blt   & rs1, rs2, imm & Branch Less Than          & {\tt pc $\leftarrow$ (rs1<rs2) ? pc+sx(imm[12:1]<<1) : pc+4}\\
+bge   & rs1, rs2, imm & \hyperref[insn:bge]{Branch Greater or Equal}    & {\tt pc $\leftarrow$ (rs1>=rs2) ? pc+sx(imm[12:1]<<1) : pc+4}\\
 \hline
-bge   & rs1, rs2, imm & Branch Greater or Equal   & {\tt pc $\leftarrow$ (rs1>=rs2) ? pc+sx(imm[12:1]<<1) : pc+4}\\
+bgeu  & rs1, rs2, imm & \hyperref[insn:bgeu]{Branch Greater or Equal Unsigned} & {\tt pc $\leftarrow$ (rs1>=rs2) ? pc+sx(imm[12:1]<<1) : pc+4}\\
 \hline
-bltu  & rs1, rs2, imm & Branch Less Than Unsigned & {\tt pc $\leftarrow$ (rs1<rs2) ? pc+sx(imm[12:1]<<1) : pc+4}\\
+blt   & rs1, rs2, imm & \hyperref[insn:blt]{Branch Less Than}           & {\tt pc $\leftarrow$ (rs1<rs2) ? pc+sx(imm[12:1]<<1) : pc+4}\\
 \hline
-bgeu  & rs1, rs2, imm & Branch Greater or Equal Unsigned & {\tt pc $\leftarrow$ (rs1>=rs2) ? pc+sx(imm[12:1]<<1) : pc+4}\\
+bltu  & rs1, rs2, imm & \hyperref[insn:bltu]{Branch Less Than Unsigned} & {\tt pc $\leftarrow$ (rs1<rs2) ? pc+sx(imm[12:1]<<1) : pc+4}\\
 \hline
-lb    & rd, imm(rs1)  & Load Byte                 & {\tt rd $\leftarrow$ sx(m8(rs1+sx(imm))), pc $\leftarrow$ pc+4}\\
+bne   & rs1, rs2, imm & \hyperref[insn:bne]{Branch Not Equal}           & {\tt pc $\leftarrow$ (rs1!=rs2) ? pc+sx(imm[12:1]<<1) : pc+4}\\
 \hline
-lh    & rd, imm(rs1)  & Load Halfword             & {\tt rd $\leftarrow$ sx(m16(rs1+sx(imm))), pc $\leftarrow$ pc+4}\\
+jal   & rd, imm      & \hyperref[insn:jal]{Jump And Link}               & {\tt{}rd $\leftarrow$ pc+4, pc $\leftarrow$ pc+sx(imm<<1)}\\
 \hline
-lw    & rd, imm(rs1)  & Load Word                 & {\tt rd $\leftarrow$ sx(m32(rs1+sx(imm))), pc $\leftarrow$ pc+4}\\
+jalr  & rd, rs1, imm & \hyperref[insn:jalr]{Jump And Link Register}     & {\tt{}rd $\leftarrow$ pc+4, pc $\leftarrow$ (rs1+sx(imm))\&\textasciitilde{}1}\\
 \hline
-lbu   & rd, imm(rs1)  & Load Byte Unsigned        & {\tt rd $\leftarrow$ zx(m8(rs1+sx(imm))), pc $\leftarrow$ pc+4}\\
+lb    & rd, imm(rs1)  & \hyperref[insn:lb]{Load Byte}                   & {\tt rd $\leftarrow$ sx(m8(rs1+sx(imm))), pc $\leftarrow$ pc+4}\\
 \hline
-lhu   & rd, imm(rs1)  & Load Halfword Unsigned    & {\tt rd $\leftarrow$ zx(m16(rs1+sx(imm))), pc $\leftarrow$ pc+4}\\
+lbu   & rd, imm(rs1)  & \hyperref[insn:lbu]{Load Byte Unsigned}         & {\tt rd $\leftarrow$ zx(m8(rs1+sx(imm))), pc $\leftarrow$ pc+4}\\
 \hline
-sb    & rs2, imm(rs1) & Store Byte                & {\tt m8(rs1+sx(imm)) $\leftarrow$ rs2[7:0], pc $\leftarrow$ pc+4}\\
+lh    & rd, imm(rs1)  & \hyperref[insn:lh]{Load Halfword}               & {\tt rd $\leftarrow$ sx(m16(rs1+sx(imm))), pc $\leftarrow$ pc+4}\\
 \hline
-sh    & rs2, imm(rs1) & Store Halfword            & {\tt m16(rs1+sx(imm)) $\leftarrow$ rs2[15:0], pc $\leftarrow$ pc+4}\\
+lhu   & rd, imm(rs1)  & \hyperref[insn:lhu]{Load Halfword Unsigned}     & {\tt rd $\leftarrow$ zx(m16(rs1+sx(imm))), pc $\leftarrow$ pc+4}\\
 \hline
-sw    & rs2, imm(rs1) & Store Word                & {\tt m16(rs1+sx(imm)) $\leftarrow$ rs2[31:0], pc $\leftarrow$ pc+4}\\
+lui   & t0, 3        & \hyperref[insn:lui]{Load Upper Immediate}        & {\tt rd $\leftarrow$ zr(imm), pc $\leftarrow$ pc+4}\\
 \hline
-addi  & rd, rs1, imm  & Add Immediate             & {\tt rd $\leftarrow$ rs1+sx(imm), pc $\leftarrow$ pc+4}\\
+lw    & rd, imm(rs1)  & \hyperref[insn:lw]{Load Word}                   & {\tt rd $\leftarrow$ sx(m32(rs1+sx(imm))), pc $\leftarrow$ pc+4}\\
 \hline
-slti  & rd, rs1, imm  & Set Less Than Immediate   & {\tt rd $\leftarrow$ (rs1 < sx(imm)) ? 1 : 0, pc $\leftarrow$ pc+4}\\
+or    & rd, rs1, rs2   & \hyperref[insn:or]{Or}                         & {\tt rd $\leftarrow$ rs1 | rs2, pc $\leftarrow$ pc+4}\\
 \hline
-sltiu & rd, rs1, imm  & Set Less Than Immediate Unsigned & {\tt rd $\leftarrow$ (rs1 < sx(imm)) ? 1 : 0, pc $\leftarrow$ pc+4}\\
+ori   & rd, rs1, imm  & \hyperref[insn:ori]{Or Immediate}               & {\tt rd $\leftarrow$ rs1 | sx(imm), pc $\leftarrow$ pc+4}\\
 \hline
-xori  & rd, rs1, imm  & Exclusive Or Immediate    & {\tt rd $\leftarrow$ rs1 \^{} sx(imm), pc $\leftarrow$ pc+4}\\
+sb    & rs2, imm(rs1) & \hyperref[insn:sb]{Store Byte}                  & {\tt m8(rs1+sx(imm)) $\leftarrow$ rs2[7:0], pc $\leftarrow$ pc+4}\\
 \hline
-ori   & rd, rs1, imm  & Or Immediate              & {\tt rd $\leftarrow$ rs1 | sx(imm), pc $\leftarrow$ pc+4}\\
+sh    & rs2, imm(rs1) & \hyperref[insn:sh]{Store Halfword}              & {\tt m16(rs1+sx(imm)) $\leftarrow$ rs2[15:0], pc $\leftarrow$ pc+4}\\
 \hline
-andi  & rd, rs1, imm  & And Immediate             & {\tt rd $\leftarrow$ rs1 \& sx(imm), pc $\leftarrow$ pc+4}\\
+sll   & rd, rs1, rs2   & \hyperref[insn:sll]{Shift Left Logical}        & {\tt rd $\leftarrow$ rs1 << rs2, pc $\leftarrow$ pc+4}\\
 \hline
-slli  & rd, rs1, shamt & Shift Left Logical Immediate & {\tt rd $\leftarrow$ rs1 << shamt, pc $\leftarrow$ pc+4}\\
+slli  & rd, rs1, shamt & \hyperref[insn:slli]{Shift Left Logical Immediate} & {\tt rd $\leftarrow$ rs1 << shamt, pc $\leftarrow$ pc+4}\\
 \hline
-srli  & rd, rs1, shamt & Shift Right Logical Immediate & {\tt rd $\leftarrow$ rs1 >> shamt, pc $\leftarrow$ pc+4}\\
+slt   & rd, rs1, rs2   & \hyperref[insn:slt]{Set Less Than}             & {\tt rd $\leftarrow$ rs1 < rs2) ? 1 : 0, pc $\leftarrow$ pc+4}\\
 \hline
-srai  & rd, rs1, shamt & Shift Right Arithmetic Immediate & {\tt rd $\leftarrow$ rs1 >> shamt, pc $\leftarrow$ pc+4}\\
+slti  & rd, rs1, imm  & \hyperref[insn:slti]{Set Less Than Immediate}   & {\tt rd $\leftarrow$ (rs1 < sx(imm)) ? 1 : 0, pc $\leftarrow$ pc+4}\\
 \hline
-add   & rd, rs1, rs2   & Add                      & {\tt rd $\leftarrow$ rs1 + rs2, pc $\leftarrow$ pc+4}\\
+sltiu & rd, rs1, imm  & \hyperref[insn:sltiu]{Set Less Than Immediate Unsigned} & {\tt rd $\leftarrow$ (rs1 < sx(imm)) ? 1 : 0, pc $\leftarrow$ pc+4}\\
 \hline
-sub   & rd, rs1, rs2   & Subtract                 & {\tt rd $\leftarrow$ rs1 - rs2, pc $\leftarrow$ pc+4}\\
+sltu  & rd, rs1, rs2   & \hyperref[insn:sltu]{Set Less Than Unsigned}   & {\tt rd $\leftarrow$ (rs1 < rs2) ? 1 : 0, pc $\leftarrow$ pc+4}\\
 \hline
-sll   & rd, rs1, rs2   & Shift Left Logical       & {\tt rd $\leftarrow$ rs1 << rs2, pc $\leftarrow$ pc+4}\\
+sra   & rd, rs1, rs2   & \hyperref[insn:sra]{Shift Right Arithmetic}    & {\tt rd $\leftarrow$ rs1 >> rs2, pc $\leftarrow$ pc+4}\\
 \hline
-slt   & rd, rs1, rs2   & Set Less Than            & {\tt rd $\leftarrow$ rs1 < rs2) ? 1 : 0, pc $\leftarrow$ pc+4}\\
+srai  & rd, rs1, shamt & \hyperref[insn:srai]{Shift Right Arithmetic Immediate} & {\tt rd $\leftarrow$ rs1 >> shamt, pc $\leftarrow$ pc+4}\\
 \hline
-sltu  & rd, rs1, rs2   & Set Less Than Unsigned   & {\tt rd $\leftarrow$ (rs1 < rs2) ? 1 : 0, pc $\leftarrow$ pc+4}\\
+srl   & rd, rs1, rs2   & \hyperref[insn:srl]{Shift Right Logical}       & {\tt rd $\leftarrow$ rs1 >> rs2, pc $\leftarrow$ pc+4}\\
 \hline
-xor   & rd, rs1, rs2   & Exclusive Or             & {\tt rd $\leftarrow$ rs1 \^{} rs2, pc $\leftarrow$ pc+4}\\
+srli  & rd, rs1, shamt & \hyperref[insn:srli]{Shift Right Logical Immediate} & {\tt rd $\leftarrow$ rs1 >> shamt, pc $\leftarrow$ pc+4}\\
 \hline
-srl   & rd, rs1, rs2   & Shift Right Logical      & {\tt rd $\leftarrow$ rs1 >> rs2, pc $\leftarrow$ pc+4}\\
+sub   & rd, rs1, rs2   & \hyperref[insn:sub]{Subtract}                  & {\tt rd $\leftarrow$ rs1 - rs2, pc $\leftarrow$ pc+4}\\
 \hline
-sra   & rd, rs1, rs2   & Shift Right Arithmetic   & {\tt rd $\leftarrow$ rs1 >> rs2, pc $\leftarrow$ pc+4}\\
+sw    & rs2, imm(rs1) & \hyperref[insn:sw]{Store Word}                  & {\tt m16(rs1+sx(imm)) $\leftarrow$ rs2[31:0], pc $\leftarrow$ pc+4}\\
 \hline
-or    & rd, rs1, rs2   & Or                       & {\tt rd $\leftarrow$ rs1 | rs2, pc $\leftarrow$ pc+4}\\
+xor   & rd, rs1, rs2   & \hyperref[insn:xor]{Exclusive Or}              & {\tt rd $\leftarrow$ rs1 \^{} rs2, pc $\leftarrow$ pc+4}\\
 \hline
-and   & rd, rs1, rs2   & And                      & {\tt rd $\leftarrow$ rs1 \& rs2, pc $\leftarrow$ pc+4}\\
+xori  & rd, rs1, imm  & \hyperref[insn:xori]{Exclusive Or Immediate}    & {\tt rd $\leftarrow$ rs1 \^{} sx(imm), pc $\leftarrow$ pc+4}\\
 \hline
 \end{tabular}
 
