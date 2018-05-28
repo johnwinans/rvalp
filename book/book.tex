@@ -2,6 +2,7 @@
 %\documentclass[letterpaper]{book}
 \documentclass[oneside,letterpaper]{book}
 
+
 \input{preamble}
 \input{colors}
 \input{insnformats}
@@ -22,9 +23,10 @@
 \makenoidxglossaries
 \include{glossary}
 
+%\includeonly{refcard/chapter}
+
 \begin{document}
 \include{indexrefs}		% The see-references for the index
-
 
 % Why does this (apparently) have to go here????
 \newlength{\fullwidth}
@@ -61,7 +63,6 @@
 \include{intro/chapter}
 \include{binary/chapter}
 \include{elements/chapter}
-\include{toolchain/chapter}
 \include{programs/chapter}
 \include{rv32/chapter}
 
@@ -69,7 +70,9 @@
 % These 'chapters' are lettered rather than numbered
 
 \appendix
+\include{insnsummary/chapter}
 \include{install/chapter}
+\include{toolchain/chapter}
 \include{float/chapter}
 \include{ascii/chapter}
 \include{license/chapter}
@@ -78,25 +81,22 @@
 \backmatter
 % putting a chapter here causes it to be unnumbered
 
-
-%\clearpage
 \bibliography{bibliography}
 \addcontentsline{toc}{chapter}{Bibliography}
 \nocite{*}  % force all bib items to file appear even if not cited
 %\bibliographystyle{alpha}
 \bibliographystyle{ieeetr}
 
-%\clearpage
 %\phantomsection
 \glsaddall
 \printnoidxglossaries
 %\printglossary
 
 
-%\clearpage
 \phantomsection
 \addcontentsline{toc}{chapter}{\indexname}
 \printindex
 
+\include{refcard/chapter}
 
 \end{document}

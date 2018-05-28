@@ -1,0 +1,346 @@
+\chapter{Instruction Set Summary}
+
+\enote{Once the RV32I section is re-factored, it may end up turning into this.}
+
+\TDrawInsnTypeUPicture
+{Load Upper Immediate}
+{lui rd, imm}
+{lui t0, 3}
+{\tt%
+rd $\leftarrow$ pc + sx(imm<<1)\\
+pc $\leftarrow$ pc + 4}
+{00000000000000000011001010110111}
+
+\TDrawInsnTypeUPicture
+{Add Upper Immediate PC}
+{auipc rd, imm}
+{auipc t0, 3}
+{\tt%
+rd $\leftarrow$ pc + zr(imm)\\
+pc $\leftarrow$ pc + 4}
+{000000000000000000110010101xxxxx}
+
+\TDrawInsnTypeJPicture
+{Jump And Link}
+{jal rd, imm}
+{jal x7, .+16}
+{\tt%
+rd $\leftarrow$ pc + 4\\
+pc $\leftarrow$ pc + sx(imm<<1)}
+{00000001000000000000001111101111}
+
+\TDrawInsnTypeIPicture
+{Jump And Link Register}
+{jalr rd, rs1, imm}
+{jalr x1, x7, 4}
+{\tt%
+rd $\leftarrow$ pc + 4\\
+pc $\leftarrow$ (rs1 + sx(imm)) \& \textasciitilde{}1}
+{00000000010000111000000011100111}
+
+\enote{These branches (and likely other insns) are not encoded properly!}
+\TDrawInsnTypeBPicture
+{Branch Equal}
+{beq rs1, rs2, imm}
+{beq x3, x15, 2064}
+{\tt pc $\leftarrow$ (rs1==rs2) ? pc+sx(imm[12:1]<<1) : pc+4}
+{00000000111100011000100011100011}
+
+\TDrawInsnTypeBPicture
+{Branch Not Equal}
+{bne rs1, rs2, imm}
+{bne x3, x15, 2064}
+{\tt pc $\leftarrow$ (rs1!=rs2) ? pc+sx(imm[12:1]<<1) : pc+4}
+{00000000111100011001100011100011}
+
+\TDrawInsnTypeBPicture
+{Branch Less Than}
+{blt rs1, rs2, imm}
+{blt x3, x15, 2064}
+{\tt pc $\leftarrow$ (rs1<rs2) ? pc+sx(imm[12:1]<<1) : pc+4}
+{00000000111100011100100011100011}
+
+\TDrawInsnTypeBPicture
+{Branch Greater or Equal}
+{bge rs1, rs2, imm}
+{bge x3, x15, 2064}
+{\tt pc $\leftarrow$ (rs1>=rs2) ? pc+sx(imm[12:1]<<1) : pc+4}
+{00000000111100011101100011100011}
+
+\TDrawInsnTypeBPicture
+{Branch Less Than Unsigned}
+{bltu rs1, rs2, imm}
+{bltu x3, x15, 2064}
+{\tt pc $\leftarrow$ (rs1<rs2) ? pc+sx(imm[12:1]<<1) : pc+4}
+{00000000111100011110100011100011}
+
+\TDrawInsnTypeBPicture
+{Branch Greater or Equal Unsigned}
+{bgeu rs1, rs2, imm}
+{bgeu x3, x15, 2064}
+{\tt pc $\leftarrow$ (rs1>=rs2) ? pc+sx(imm[12:1]<<1) : pc+4}
+{00000000111100011111100011100011}
+
+\TDrawInsnTypeIPicture
+{Load Byte}
+{lb rd, imm(rs1)}
+{lb x7, 4(x3)}
+{\tt%
+rd $\leftarrow$ sx(m8(rs1+sx(imm)))\\
+pc $\leftarrow$ pc+4}
+{00000000010000011000001110000011}
+
+\TDrawInsnTypeIPicture
+{Load Halfword}
+{lh rd, imm(rs1)}
+{lh x7, 4(x3)}
+{\tt%
+rd $\leftarrow$ sx(m16(rs1+sx(imm)))\\
+pc $\leftarrow$ pc+4}
+{00000000010000011001001110000011}
+
+\TDrawInsnTypeIPicture
+{Load Word}
+{lw rd, imm(rs1)}
+{lw x7, 4(x3)}
+{\tt%
+rd $\leftarrow$ sx(m32(rs1+sx(imm)))\\
+pc $\leftarrow$ pc+4}
+{00000000010000011010001110000011}
+
+\TDrawInsnTypeIPicture
+{Load Byte Unsigned}
+{lbu rd, imm(rs1)}
+{lbu x7, 4(x3)}
+{\tt%
+rd $\leftarrow$ zx(m8(rs1+sx(imm)))\\
+pc $\leftarrow$ pc+4}
+{00000000010000011100001110000011}
+
+\TDrawInsnTypeIPicture
+{Load Halfword Unsigned}
+{lhu rd, imm(rs1)}
+{lhu x7, 4(x3)}
+{\tt%
+rd $\leftarrow$ zx(m16(rs1+sx(imm)))\\
+pc $\leftarrow$ pc+4}
+{00000000010000011101001110000011}
+
+\TDrawInsnTypeSPicture
+{Store Byte}
+{sb rs2, imm(rs1)}
+{sb x3, 19(x15)}
+{\tt%
+m8(rs1+sx(imm)) $\leftarrow$ rs2[7:0]\\
+pc $\leftarrow$ pc+4}
+{00000000111100011000100110100011}
+
+\TDrawInsnTypeSPicture
+{Store Halfword}
+{sh rs2, imm(rs1)}
+{sh x3, 19(x15)}
+{\tt%
+m16(rs1+sx(imm)) $\leftarrow$ rs2[15:0]\\
+pc $\leftarrow$ pc+4}
+{00000000111100011001100110100011}
+
+\TDrawInsnTypeSPicture
+{Store Word}
+{sw rs2, imm(rs1)}
+{sw x3, 19(x15)}
+{\tt%
+m16(rs1+sx(imm)) $\leftarrow$ rs2[31:0]\\
+pc $\leftarrow$ pc+4}
+{00000000111100011010100110100011}
+
+\TDrawInsnTypeIPicture
+{Add Immediate}
+{addi rd, rs1, imm}
+{addi x1, x7, 4}
+{\tt%
+rd $\leftarrow$ rs1+sx(imm)\\
+pc $\leftarrow$ pc+4}
+{00000000010000111000000010010011}
+
+\TDrawInsnTypeIPicture
+{Set Less Than Immediate}
+{slti rd, rs1, imm}
+{slti x1, x7, 4}
+{\tt%
+rd $\leftarrow$ (rs1 < sx(imm)) ? 1 : 0\\
+pc $\leftarrow$ pc+4}
+{00000000010000111010000010010011}
+
+\TDrawInsnTypeIPicture
+{Set Less Than Immediate Unsigned}
+{sltiu rd, rs1, imm}
+{sltiu x1, x7, 4}
+{\tt%
+rd $\leftarrow$ (rs1 < sx(imm)) ? 1 : 0\\
+pc $\leftarrow$ pc+4}
+{00000000010000111011000010010011}
+
+\TDrawInsnTypeIPicture
+{Exclusive Or Immediate}
+{xori rd, rs1, imm}
+{xori x1, x7, 4}
+{\tt%
+rd $\leftarrow$ rs1 \^{} sx(imm)\\
+pc $\leftarrow$ pc+4}
+{00000000010000111100000010010011}
+
+\TDrawInsnTypeIPicture
+{Or Immediate}
+{ori rd, rs1, imm}
+{ori x1, x7, 4}
+{\tt%
+rd $\leftarrow$ rs1 | sx(imm)\\
+pc $\leftarrow$ pc+4}
+{00000000010000111110000010010011}
+
+\TDrawInsnTypeIPicture
+{And Immediate}
+{andi rd, rs1, imm}
+{andi x1, x7, 4}
+{\tt%
+rd $\leftarrow$ rs1 \& sx(imm)\\
+pc $\leftarrow$ pc+4}
+{00000000010000111111000010010011}
+
+
+\TDrawInsnTypeRShiftPicture
+{Shift Left Logical Immediate}
+{slli rd, rs1, shamt}
+{slli x7, x3, 2}
+{\tt%
+rd $\leftarrow$ rs1 << shamt\\
+pc $\leftarrow$ pc+4}
+{00000000001000011001001110100011}
+
+
+\TDrawInsnTypeRShiftPicture
+{Shift Right Logical Immediate}
+{srli rd, rs1, shamt}
+{srli x7, x3, 2}
+{\tt%
+rd $\leftarrow$ rs1 >> shamt\\
+pc $\leftarrow$ pc+4}
+{00000000001000011101001110010011}
+
+\TDrawInsnTypeRShiftPicture
+{Shift Right Arithmetic Immediate}
+{srai rd, rs1, shamt}
+{srai x7, x3, 2}
+{\tt%
+rd $\leftarrow$ rs1 >> shamt\\
+pc $\leftarrow$ pc+4}
+{01000000001000011101001110010011}
+
+\TDrawInsnTypeRPicture
+{Add}
+{add rd, rs1, rs2}
+{add x7, x3, x31}
+{\tt%
+rd $\leftarrow$ rs1 + rs2\\
+pc $\leftarrow$ pc+4}
+{00000001111100011000001110110011}
+
+\TDrawInsnTypeRPicture
+{Subtract}
+{sub rd, rs1, rs2}
+{SUB x7, x3, x31}
+{\tt%
+rd $\leftarrow$ rs1 - rs2\\
+pc $\leftarrow$ pc+4}
+{01000001111100011000001110110011}
+
+\TDrawInsnTypeRPicture
+{Shift Left Logical}
+{sll rd, rs1, rs2}
+{sll x7, x3, x31}
+{\tt%
+rd $\leftarrow$ rs1 << rs2\\
+pc $\leftarrow$ pc+4}
+{00000001111100011001001110110011}
+
+\TDrawInsnTypeRPicture
+{Set Less Than}
+{slt rd, rs1, rs2}
+{slt x7, x3, x31}
+{\tt%
+rd $\leftarrow$ rs1 < rs2) ? 1 : 0\\
+pc $\leftarrow$ pc+4}
+{00000001111100011010001110110011}
+
+\TDrawInsnTypeRPicture
+{Set Less Than Unsigned}
+{sltu rd, rs1, rs2}
+{sltu x7, x3, x31}
+{\tt%
+rd $\leftarrow$ (rs1 < rs2) ? 1 : 0\\
+pc $\leftarrow$ pc+4}
+{00000001111100011011001110110011}
+
+\TDrawInsnTypeRPicture
+{Exclusive Or}
+{xor rd, rs1, rs2}
+{xor x7, x3, x31}
+{\tt%
+rd $\leftarrow$ rs1 \^{} rs2\\
+pc $\leftarrow$ pc+4}
+{00000001111100011100001110110011}
+
+\TDrawInsnTypeRPicture
+{Shift Right Logical}
+{srl rd, rs1, rs2}
+{srl x7, x3, x31}
+{\tt%
+rd $\leftarrow$ rs1 >> rs2\\
+pc $\leftarrow$ pc+4}
+{00000001111100011101001110110011}
+
+\TDrawInsnTypeRPicture
+{Shift Right Arithmetic}
+{sra rd, rs1, rs2}
+{sra x7, x3, x31}
+{\tt%
+rd $\leftarrow$ rs1 >> rs2\\
+pc $\leftarrow$ pc+4}
+{01000001111100011101001110110011}
+
+\TDrawInsnTypeRPicture
+{Or}
+{or rd, rs1, rs2}
+{or x7, x3, x31}
+{\tt%
+rd $\leftarrow$ rs1 | rs2\\
+pc $\leftarrow$ pc+4}
+{00000001111100011101001110110011}
+
+\TDrawInsnTypeRPicture
+{And}
+{and rd, rs1, rs2}
+{and x7, x3, x31}
+{\tt%
+rd $\leftarrow$ rs1 \& rs2\\
+pc $\leftarrow$ pc+4}
+{00000001111100011110001110110011}
+
+%\DrawInsnTypeFPicture{FENCE iorw, iorw}{00001111111100000000000000001111}
+%\DrawInsnTypeFPicture{FENCE.I}{00000000000000000001000000001111}
+%\DrawInsnTypeEPicture{ECALL}{00000000000000000000000001110011}
+%\DrawInsnTypeEPicture{EBREAK}{00000000000100000000000001110011}
+%\DrawInsnTypeCSPicture{CSRRW x3, 2, x15}{00000000001001111001000111110011}
+%\DrawInsnTypeCSPicture{CSRRS x3, 2, x15}{00000000001001111010000111110011}
+%\DrawInsnTypeCSPicture{CSRRC x3, 2, x15}{00000000001001111011000111110011}
+%\DrawInsnTypeCSIPicture{CSRRWI x3, 2, 7}{00000000001000111101000111110011}
+%\DrawInsnTypeCSIPicture{CSRRSI x3, 2, 7}{00000000001000111110000111110011}
+%\DrawInsnTypeCSIPicture{CSRRCI x3, 2, 7}{00000000001000111111000111110011}
+%\DrawInsnTypeRPicture{MUL x7, x3, x31}{00000011111100111000001110110011}
+%\DrawInsnTypeRPicture{MULH x7, x3, x31}{00000011111100111001001110110011}
+%\DrawInsnTypeRPicture{MULHS x7, x3, x31}{00000011111100111010001110110011}
+%\DrawInsnTypeRPicture{MULHU x7, x3, x31}{00000011111100111011001110110011}
+%\DrawInsnTypeRPicture{DIV x7, x3, x31}{00000011111100111100001110110011}
+%\DrawInsnTypeRPicture{DIVU x7, x3, x31}{00000011111100111101001110110011}
+%\DrawInsnTypeRPicture{REM x7, x3, x31}{00000011111100111110001110110011}
+%\DrawInsnTypeRPicture{REMU x7, x3, x31}{00000011111100111111001110110011}
