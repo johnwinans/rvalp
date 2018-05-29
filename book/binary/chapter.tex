@@ -953,7 +953,7 @@ be used by the CPU if it were to read them as a multi-byte value.
 Note that in a little-endian system, the number of bytes used to represent
 the value does not change the place value of the first byte(s).  In this
 example, the \hex{76} at address \hex{00002658} is the least significant
-bytes in all representations.  
+byte in all representations.  
 
 In the Risc-V ISA it is noted that ``A minor point is that we have also found 
 little-endian memory systems to be more natural for hardware 
@@ -962,12 +962,94 @@ on big-endian data structures, and so we leave open the possibility of
 non-standard big-endian or bi-endian systems.''\cite[p.~6]{rvismv1v22:2017}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Character Strings and Arrays}
+\subsection{Arrays and Character Strings}
 
-Define character strings and arrays.
+While Endianness defines to how single values are stored in memory,
+the {\em array} defines how multiple values are stored.
 
-Using the prior memory dump, discuss how and where things are stored and
-retrieved.
+An array is a data structure comprised of an ordered set of elements.
+This text will limit its definition of {\em array} to those sets
+of elements that are all of the same {\em type}.  Where {\em type}
+refers to the size (number of bytes) and representation (signed,
+unsigned) of each element.
+
+In an array, the elements are stored adjacent to one another such that the
+address of any element may be defined as:
+
+\begin{equation}
+e = a + n * s
+\end{equation}
+
+Where $n$ is the element number of interest, $e$ is the address of element 
+of interest, $a$ is the address of the first element in the array, $s$ 
+is the size of each element, $a[0]$ is the first element of the array
+and $a[n-1]$ is the last element of the array.%
+\footnote{Some computing languages (C, C++, Java, C\#, Python, Perl,\ldots) 
+define an array such that the first element is indexed as $a[0]$.  
+While others (FORTRAN, MATLAB) define the first element of an 
+array to be $a[1]$.}
+
+Using this definition, \listingRef{rvddt_memdump.out}, knowledge that 
+we are using a little-endian machine and given that
+$a = $\hex{00002656} and $s = 2$, the values of the first 8 elements 
+of array $a$ are:
+
+\begin{itemize}
+\item $a[0]$ is \hex{0000} and is stored at \hex{00002656}.
+\item $a[1]$ is \hex{6176} and is stored at \hex{00002658}.
+\item $a[2]$ is \hex{3d6c} and is stored at \hex{0000265a}.
+\item $a[3]$ is \hex{0000} and is stored at \hex{0000265c}.
+\item $a[4]$ is \hex{0000} and is stored at \hex{00002660}.
+\item $a[5]$ is \hex{0000} and is stored at \hex{00002662}.
+\item $a[6]$ is \hex{8480} and is stored at \hex{00002664}.
+\item $a[7]$ is \hex{412e} and is stored at \hex{00002666}.
+\end{itemize}
+
+As a general rule, there is no fixed rule or notion as to how many 
+elements an array has.  It is up to the programmer to ensure that
+the starting address and the nubmer of elements in any given array
+(its size) are used properly so that data bytes outside an array
+are not accidently used as elements.
+
+There is, however, a common convention used for an array of 
+characters that is used to hold a text message 
+(called a {\em character string} or just {\em string}).
+
+When an array is used to hold a string the element past the last
+character in the string is set to zero.  This is because 1) zero 
+is not a valid printable ASCII character and 2) it simplifies
+software in that knowing no more than the starting address of a
+string is all that is needed to processes it.  Without this zero
+{\em sentinel} value (called a {\em null} terminator), some knowledge
+of the number of characters in the string would have to otherwise 
+be conveyed to any code needing to consume or process the string.
+
+In \listingRef{rvddt_memdump.out}, the 5-byte long array starting 
+at address \hex{00002658} contains a string whose value can be
+expressed as either of:
+
+\begin{itemize}
+\item \verb@76 61 6c 3d 00@
+\item \verb@"val="@
+\end{itemize}
+
+\index{ASCII}
+\index{ASCIIZ}
+When the double-quoted text form is used, the GNU assembler used in 
+this text differentiates between {\em ascii} and {\em asciiz} strings
+such that an ascii string is {\em not} null terminated and an
+asciiz string {\em is} null terminated.  
+
+The value of providing a method to create a string that is {\em not} 
+null terminated is that a program may define a large string by 
+concatenating a number of ascii strings together and following the 
+last with a byte of zero to null-terminate the lot.
+
+It is a common mistake to create a string with a missing
+null terminator.  The result of printing such a ``string'' is that
+the string is printed and as well as whatever random data bytes in 
+memory that follows it until a byte whose value is zero is found 
+by chance.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Context is Important!}
@@ -1034,7 +1116,9 @@ natural boundaries.
 
 Every possible instruction that an RV32I CPU can execute contains
 exactly 32 bits.  Therefore they are always stored on a full word
-boundary.  Any {\em unaligned} instruction would is {\em illegal}.
+boundary.  Any {\em unaligned} instruction is {\em illegal}.%
+\footnote{This rule is relaxed by the C extension to allow an 
+instruction to start at any even address.\cite[p.~5]{rvismv1v22:2017}}
 
 An attempt to fetch an instruction from an unaligned address
 will result in an error referred to as an alignment {\em \gls{exception}}.
