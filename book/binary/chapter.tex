@@ -5,7 +5,7 @@ This chapter discusses how data are represented and stored in a computer.
 
 In the context of computing, {\em boolean} refers to a condition that can 
 be either true and false and {\em binary} refers to the use of a base-2 
-numeric system to rpresent numbers.
+numeric system to represent numbers.
 
 RISC-V assembly language uses binary to represent all values, be they 
 boolean or numeric.  It is the context within which they are used that
@@ -64,7 +64,7 @@ A truth table is drawn by indicating all of the possible input values on
 the left of the vertical bar with each row displaying the output values 
 that correspond to the input for that row.  The column headings are used
 to define the illustrated operation expressed using a mathematical 
-notation.  The {\em not} operation is indicated by the presense of
+notation.  The {\em not} operation is indicated by the presence of
 an {\em overline}.
 
 In computer programming languages, things like an overline can not be 
@@ -98,7 +98,7 @@ This function works like it does in spoken language.  For example
 if A is 1 {\em AND} B is 1 then the output is 1 (true).
 Otherwise the output is 0 (false).  
 
-In mathamatical notion, the {\em and} operator is expressed the same way
+In mathematical notion, the {\em and} operator is expressed the same way
 as is {\em multiplication}.  That is by a raised dot between, or by 
 juxtaposition of, two variable names.  It is also worth noting that,
 in base-2, the {\em and} operation actually {\em is} multiplication!
@@ -139,7 +139,7 @@ This function works like it does in spoken language.  For example
 if A is 1 {\em OR} B is 1 then the output is 1 (true).
 Otherwise the output is 0 (false).  
 
-In mathamatical notion, the {\em or} operator is expressed using the plus 
+In mathematical notion, the {\em or} operator is expressed using the plus 
 ($+$).  
 
 \begin{center}
@@ -179,7 +179,7 @@ Note that when {\em XOR} is used with two inputs, the output
 is set to 1 (true) when the inputs have different values and 0 
 (false) when the inputs both have the same value.
 
-In mathamatical notion, the {\em xor} operator is expressed using the plus
+In mathematical notion, the {\em xor} operator is expressed using the plus
 in a circle ($\oplus$).
 
 \begin{center}
@@ -292,9 +292,9 @@ Interpreting the hexadecimal value on the fourth row by converting it to decimal
 
 \index{Most significant bit}\index{MSB|see {Most significant bit}}%
 \index{Least significant bit}\index{LSB|see {Least significant bit}}%
-We refer to the place values with the largest exponenet (the one furthest to the 
+We refer to the place values with the largest exponent (the one furthest to the 
 left for any given base) as the {\em most significant} digit and the place value
-with the lowest exponenet as the {\em least significant} digit.  For binary
+with the lowest exponent as the {\em least significant} digit.  For binary
 numbers these are the \acrfull{msb} and \acrfull{lsb} respectively.%
 \footnote{Changing the value of the MSB will have a more {\em significant}
 impact on the numeric value than changing the value of the LSB.} 
@@ -656,74 +656,171 @@ To calculate $-4-8 = -12$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Truncation and Overflow}
+\subsection{Truncation}
+\index{truncation}
+\index{overflow}
+\index{carry}
 
-Discuss the details of truncation and overflow here.
-\enote{This chapter should be made consistent in its use of 
-{\em truncation} and {\em overflow} as occur with signed and unsigned
-addition and subtraction.}
+So far we have been ignoring (truncating) the carries that can come from 
+the MSBs when adding and subtracting.  We have also been ignoring the 
+potential impact of a carry causing a signed number to change its sign in
+a destructive way.
 
-I prefer to define {\em truncation} as the loss of data as result of 
-the bit-length of the destination being too small to hold result of an 
-operation and {\em overflow} as when the carry into a sign bit is not 
-the same as the carry out of the sign bit.
+The RV ISA refers to the discarding the carry out of the MSB after an 
+add (or subtract) of two {\em unsigned} numbers as an {\em unsigned overflow}%
+\footnote{Most microprocessors refer to {\em unsigned overflow} simply as a 
+{\em carry} condition.}
+and the situation where carries result in an incorrect sign in the
+result of adding (or subtracting) two {\em signed} numbers as a
+{\em signed overflow}.~\cite[p.~13]{rvismv1v22:2017}
 
-Where addition and subtraction on the RV32 is concerned, the sum or difference of 
-two unsigned 32-bit numbers will be {\em truncated} when the operation results in 
-a carry out of bit 31.  Unsinged operations can not overflow (as defined above).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Unsigned Overflow}
+\index{overflow!unsigned}
 
-(show a truncation picture here)
+When adding {\em unsigned} numbers, an overflow only occurs when there 
+is a carry out of the MSB resulting in a sum that is truncated to fit 
+into the number of bits allocated for the result.
 
-An Overflow occurs with signed numbers when the two addends are positive and 
-sum is negative or the addends are both negative and the sum is positive.
+When subtracting {\em unsigned} numbers, an overflow only occurs when the
+difference is negative (because there are no negative unsigned numbers.)
 
-(show an overflow picture here)
+\autoref{sum:240+17} illustrates an unsigned overflow.
 
-(show mixed overflow and truncation situations here to drive home the need
-to ignore truncation when dealing with signed numbers.)
+\begin{figure}[H]
+\centering
+\begin{BVerbatim}
+   1 1 1 1 0 0 0 0   <== carries
+     1 1 1 1 0 0 0 0 <== 240
+ +   0 0 0 1 0 0 0 1 <== 17
+---------------------
+     0 0 0 0 0 0 0 1 <== sum = 1
+\end{BVerbatim}
+%{\captionof{figure}{$240+16=0$ (overflow)}\label{sum:240+17}}
+\caption{$240+17=1$ (overflow)}
+\label{sum:240+17}
+\end{figure}
 
-0xffffffff + 0x00000002 has truncation but not overflow 
-(OK for signed, not OK for unsigned).
+Some times an overflow like this is referred to as a {\em wrap around}
+because of the way that successive additions will result in a value that
+increases until it {\em wraps} back {\em around} to zero and then 
+returns to increasing in value until it, again, wraps around again.
 
-0xffffffff + 0xfffffffe also has truncation but not overflow.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Signed Overflow}
+\index{overflow!signed}
 
-0x40000000 + 0x40000000 has overflow but not truncation. (We care if are signed numbers.)
+When adding {\em signed} numbers, an overflow only occurs when the two 
+addends are positive and sum is negative or the addends are both negative 
+and the sum is positive.  
 
-0x80000000 + 0x80000000 has both overflow and truncation. (we care regardless of signedness)
+When subtracting {\em unsigned}, an overflow only occurs when the
+minuend is positive and the subtrahend is negative and difference is negative
+or when the minuend is negative and the subtrahend is positive and the 
+difference is positive.%
+\footnote{Yeah, I had to look it up to remember which were which 
+too\ldots\ it is: minuend - subtrahend = difference.\cite{subtrahend}}
 
-Where subtraction is concerned the notion of a borrow is the same as carry.
+Consider the results of the addition of two {\em signed} numbers
+while looking more closely at the carry values.
 
-
-\enote{I think that overloading the word {\em overflow} like this can be is 
-confusing to new programmers.}%
-Page 13 of~\cite{rvismv1v22:2017} mixes these two notions of 
-(and never mentions the word {\em truncate}) like this:
-\begin{quote}
-We did not include special instruction set support for overflow checks on 
-integer arithmetic operations in the base instruction set, as many overflow 
-checks can be cheaply implemented using RISC-V branches. Overflow checking for 
-unsigned addition requires only a single additional branch instruction after the 
-addition: \verb@add t0, t1, t2; bltu t0, t1, overflow@.  
-
-For signed addition, if one operand's sign is known, overflow checking requires 
-only a single branch after the addition: 
-\verb@addi t0, t1, +imm; blt t0, t1, overflow@. This covers the common 
-case of addition with an immediate operand.
-
-For general signed addition, three additional instructions after the addition 
-are required, leveraging the observation that the sum should be less than one 
-of the operands if and only if the other operand is negative.
-\begin{verbatim}
-add t0, t1, t2
-slti t3, t2, 0
-slt t4, t0, t1
-bne t3, t4, overflow
-\end{verbatim}
-In RV64, checks of 32-bit signed additions can be optimized further by comparing 
-the results of ADD and ADDW on the operands.
-\end{quote}
+\begin{figure}[H]
+\centering
+\begin{BVerbatim}
+   0 1 0 0 0 0 0 0   <== carries
+     0 1 0 0 0 0 0 0 <== 64
+ +   0 1 0 0 0 0 0 0 <== 64
+---------------------
+     1 0 0 0 0 0 0 0 <== sum = -128
+\end{BVerbatim}
+\caption{$64+64 = -128$ (overflow)}
+\label{sum:64+64}
+\end{figure}
 
 
+
+\autoref{sum:64+64} is an example of an {\em overflow}.  As you can see, the problem is 
+that the sum of two positive numbers has resulted in an obviously incorrect
+negative result due to a carry flowing into the sign-bit in the MSB.
+
+Granted, if these same values were added using larger than 8-bit values
+then the sum would have been correct.  However, in these examples we will
+assume that all the operations are performed on 8-bit values.  Given any
+finite-number of bits, there are values that could be added such that
+ an overflow occurs.
+
+\index{truncation}
+\autoref{sum:-128+-128} shows another overflow situation that is caused 
+by the fact that there is nowhere for the carry out of the sign-bit to go.  
+We say that this result has been {\em truncated}.
+
+\begin{figure}[H]
+\centering
+\begin{BVerbatim}
+   1 0 0 0 0 0 0 0   <== carries
+     1 0 0 0 0 0 0 0 <== -128
+ +   1 0 0 0 0 0 0 0 <== -128
+---------------------
+     0 0 0 0 0 0 0 0 <== sum = 0 
+\end{BVerbatim}
+\caption{$-128+-128 = 0$ (overflow)}
+\label{sum:-128+-128}
+\end{figure}
+
+Truncation is not necessarily a bad thing.  Consider figures 
+\ref{sum:-3+-5} and \ref{sum:-2+10} where truncation is not a problem.  
+In fact \autoref{sum:-2+10} demonstrates the importance of discarding 
+the carry from the sum of the MSBs of {\em signed} numbers when addends
+do not have the same sign.
+
+\begin{figure}[H]
+\centering
+\begin{BVerbatim}
+   1 1 1 1 1 1 1 1   <== carries
+     1 1 1 1 1 1 0 1 <== -3
+ +   1 1 1 1 1 0 1 1 <== -5
+---------------------
+     1 1 1 1 1 0 0 0  <== sum = -8
+\end{BVerbatim}
+\captionof{figure}{$-3+-5 = -8$}
+\label{sum:-3+-5}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{BVerbatim}
+   1 1 1 1 1 1 1 0   <== carries
+     1 1 1 1 1 1 1 0 <== -2
+ +   0 0 0 0 1 0 1 0 <== 10
+---------------------
+     0 0 0 0 1 0 0 0 <== sum = 8
+\end{BVerbatim}
+\captionof{figure}{$-2+10 = 8$}
+\label{sum:-2+10}
+\end{figure}
+
+Just like an unsigned number can {\em wrap around} as a result of
+successive additions, a signed number can so the same thing.  The
+only difference is that signed numbers won't wrap from the maximum 
+value back to zero, instead it will wrap to the most negative value
+as shown in \autoref{sum:127+1}.
+ 
+\begin{figure}[H]
+\centering
+\begin{BVerbatim}
+   0 1 1 1 1 1 1 1   <== carries
+     0 1 1 1 1 1 1 1 <== 127
+ +   0 0 0 0 1 0 0 1 <== 1
+---------------------
+     1 0 0 0 0 0 0 0 <== sum = -128
+\end{BVerbatim}
+\captionof{figure}{$127+1 = -128$}
+\label{sum:127+1}
+\end{figure}
+
+Formally, a {\em signed overflow} occurs when ever the carry
+{\em into} the MSB is not the same as the carry {\em out of} 
+the MSB.  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -778,7 +875,7 @@ value to the left will set all the new bits to the left of it to 0 as well.
 
 \label{ZeroExtension}
 In a similar vein, any {\em unsigned} number also may have any quantity of 
-additional MSBs added to it provided that htey are all zero.  For example,
+additional MSBs added to it provided that they are all zero.  For example,
 the following all represent the same value:
 \begin{verbatim}
                                    1111 <== 15
@@ -824,7 +921,7 @@ during a right-shift will manifest itself as rounding toward zero.
 \subsection{Logical Shifting}
 
 Shifting {\em logically} to the left or right is a matter of re-aligning
-the bits in a register and trncating the result.
+the bits in a register and truncating the result.
 
 \enote{Redraw these with arrows tracking the shifted bits and the truncated values}%
 To shift left two positions:
@@ -878,7 +975,7 @@ for the default quantity (\hex{100}) of bytes.
 \listing{rvddt_memdump.out}{{\tt rvddt} memory dump}
 
 \begin{itemize}
-\item [$\ell$ 1] The rvddt prompt shwing the dump command.
+\item [$\ell$ 1] The rvddt prompt showing the dump command.
 \item [$\ell$ 2] From left to right. the dump is presented as the address 
 	of the first byte (\hex{00002600}) followed by a colon, the value
 	of the byte at address \hex{00002600} expressed in hex, the next byte
@@ -907,7 +1004,7 @@ containing the \acrfull{msb} (the {\em big} end) go first or does
 the byte with the \acrfull{lsb} (the {\em little} end) go first/into 
 the lowest memory address?
 
-On the one hand the choice is arbitrairy.  On the other hand, it is 
+On the one hand the choice is arbitrary.  On the other hand, it is 
 possible that the choice could impact the performance of the system.%
 \footnote{See\cite{IEN137} for some history of the big/little-endian ``controversy.''}
 
@@ -1007,9 +1104,9 @@ of array $a$ are:
 
 As a general rule, there is no fixed rule or notion as to how many 
 elements an array has.  It is up to the programmer to ensure that
-the starting address and the nubmer of elements in any given array
+the starting address and the number of elements in any given array
 (its size) are used properly so that data bytes outside an array
-are not accidently used as elements.
+are not accidentally used as elements.
 
 There is, however, a common convention used for an array of 
 characters that is used to hold a text message 
