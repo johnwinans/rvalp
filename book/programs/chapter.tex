@@ -194,6 +194,15 @@ Ideas for the order of introducing instructions.
 
 
 \section{Other Instructions With Immediate Operands}
+
+\label{insn:andi}
+\label{insn:ori}
+\label{insn:xori}
+\label{insn:slti}
+\label{insn:sltiu}
+\label{insn:srai}
+\label{insn:slli}
+\label{insn:srli}
 \begin{verbatim}
     addi
     andi
@@ -216,6 +225,11 @@ instructions.  All other data manipulation must be performed on register
 values.
 
 Copying values from memory to a register (first examples using regs set with addi):
+\label{insn:lb}
+\label{insn:lh}
+\label{insn:lw}
+\label{insn:lbu}
+\label{insn:lhu}
 \begin{verbatim}
     lb
     lh
@@ -225,6 +239,9 @@ Copying values from memory to a register (first examples using regs set with add
 \end{verbatim}
 
 Copying values from a register to memory:
+\label{insn:sb}
+\label{insn:sh}
+\label{insn:sw}
 \begin{verbatim}
     sb
     sh
@@ -234,6 +251,16 @@ Copying values from a register to memory:
 \enote{Mention the rvddt UART I/O address for writing to the console here?}
 
 \section{RR operations}
+\label{insn:add}
+\label{insn:sub}
+\label{insn:and}
+\label{insn:or}
+\label{insn:sra}
+\label{insn:srl}
+\label{insn:sll}
+\label{insn:xor}
+\label{insn:sltu}
+\label{insn:slt}
 \begin{verbatim}
     add
     sub
@@ -250,6 +277,8 @@ Copying values from a register to memory:
 
 \section{Setting registers to large values using lui with addi}
 
+\label{insn:lui}
+\label{insn:auipc}
 \begin{verbatim}
     addi        // useful for values from -2048 to 2047
     lui         // useful for loading any multiple of 0x1000
@@ -270,6 +299,21 @@ Copying values from a register to memory:
 
 Start to introduce addressing here?
 
+\label{insn:beq}
+\label{insn:bne}
+\label{insn:blt}
+\label{insn:bge}
+\label{insn:bltu}
+\label{insn:bgeu}
+\label{insn:bgt}
+\label{insn:ble}
+\label{insn:bgtu}
+\label{insn:beqz}
+\label{insn:bnez}
+\label{insn:blez}
+\label{insn:bgez}
+\label{insn:bltz}
+\label{insn:bgtz}
 \begin{verbatim}
     beq
     bne
@@ -283,7 +327,7 @@ Start to introduce addressing here?
     bgtu rs, rt, offset     # pseudo for: bltu rt, rs, offset   (reverse the operands)
     bleu rs, rt, offset     # pseudo for: bgeu rt, rs, offset   (reverse the operands)
 
-    beqz beqz rs, offset    # pseudo for: beq rs, x0, offset
+    beqz rs, offset         # pseudo for: beq rs, x0, offset
     bnez rs, offset         # pseudo for: bne rs, x0, offset
     blez rs, offset         # pseudo for: bge x0, rs, offset
     bgez rs, offset         # pseudo for: bge rs, x0, offset
@@ -323,6 +367,8 @@ see:  https://github.com/riscv/riscv-elf-psabi-doc/blob/master/riscv-elf.md
 
 Introduce and present subroutines but not nesting until introduce stack operations.
 
+\label{insn:jal}
+\label{insn:jalr}
 \begin{verbatim}
     jal
     jalr
