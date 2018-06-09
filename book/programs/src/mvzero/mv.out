@@ -4,7 +4,7 @@ Loading 'mv.bin' to 0x0
 This is rvddt.  Enter ? for help.
 ddt> a
 ddt> d 0 16
- 00000000: 13 0e 00 00 73 00 10 00-a5 a5 a5 a5 a5 a5 a5 a5 *....s...........*
+ 00000000: 13 0e 00 00 73 00 10 00  a5 a5 a5 a5 a5 a5 a5 a5 *....s...........*
 ddt> t 0 1000
  zero  x0 00000000  ra  x1 f0f0f0f0  sp  x2 0000fff0  gp  x3 f0f0f0f0
    tp  x4 f0f0f0f0  t0  x5 f0f0f0f0  t1  x6 f0f0f0f0  t2  x7 f0f0f0f0

@@ -3,66 +3,66 @@ sp initialized to top of memory: 0x0000fff0
 Loading 'li.bin' to 0x0
 This is rvddt.  Enter ? for help.
 ddt> d 0 16
- 00000000: b7 52 34 12 93 82 82 67-37 23 11 11 13 03 f3 ff *.R4....g7#......*
+ 00000000: b7 52 34 12 93 82 82 67  37 23 11 11 13 03 f3 ff *.R4....g7#......*
 ddt> t 0 1000
-   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
    pc 00000000
 00000000: 123452b7  lui     x5, 0x12345   # x5 = 0x12345000
-   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0-f0f0f0f0 12345000 f0f0f0f0 f0f0f0f0
-   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0  f0f0f0f0 12345000 f0f0f0f0 f0f0f0f0
+   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
    pc 00000004
 00000004: 67828293  addi    x5, x5, 1656  # x5 = 0x12345678 = 0x12345000 + 0x00000678
-   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0-f0f0f0f0 12345678 f0f0f0f0 f0f0f0f0
-   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0  f0f0f0f0 12345678 f0f0f0f0 f0f0f0f0
+   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
    pc 00000008
 00000008: 11112337  lui     x6, 0x11112   # x6 = 0x11112000
-   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0-f0f0f0f0 12345678 11112000 f0f0f0f0
-   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0  f0f0f0f0 12345678 11112000 f0f0f0f0
+   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
    pc 0000000c
 0000000c: fff30313  addi    x6, x6, -1    # x6 = 0x11111fff = 0x11112000 + 0xffffffff
-   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0-f0f0f0f0 12345678 11111fff f0f0f0f0
-   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0  f0f0f0f0 12345678 11111fff f0f0f0f0
+   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
    pc 00000010
 00000010: 00000313  addi    x6, x0, 0     # x6 = 0x00000000 = 0x00000000 + 0x00000000
-   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0-f0f0f0f0 12345678 00000000 f0f0f0f0
-   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0  f0f0f0f0 12345678 00000000 f0f0f0f0
+   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
    pc 00000014
 00000014: fff00313  addi    x6, x0, -1    # x6 = 0xffffffff = 0x00000000 + 0xffffffff
-   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0-f0f0f0f0 12345678 ffffffff f0f0f0f0
-   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0  f0f0f0f0 12345678 ffffffff f0f0f0f0
+   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
    pc 00000018
 00000018: 00100313  addi    x6, x0, 1     # x6 = 0x00000001 = 0x00000000 + 0x00000001
-   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0-f0f0f0f0 12345678 00000001 f0f0f0f0
-   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0  f0f0f0f0 12345678 00000001 f0f0f0f0
+   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
    pc 0000001c
 0000001c: f1f1f337  lui     x6, 0xf1f1f   # x6 = 0xf1f1f000
-   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0-f0f0f0f0 12345678 f1f1f000 f0f0f0f0
-   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0  f0f0f0f0 12345678 f1f1f000 f0f0f0f0
+   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
    pc 00000020
 00000020: 1f130313  addi    x6, x6, 497   # x6 = 0xf1f1f1f1 = 0xf1f1f000 + 0x000001f1
-   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0-f0f0f0f0 12345678 f1f1f1f1 f0f0f0f0
-   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
-  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0-f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+   x0 00000000 f0f0f0f0 0000fff0 f0f0f0f0  f0f0f0f0 12345678 f1f1f1f1 f0f0f0f0
+   x8 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x16 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
+  x24 f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0  f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
    pc 00000024
 00000024: ebreak
 ddt> x
