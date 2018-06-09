@@ -2,8 +2,7 @@
 
 RISC-V Assemly Language Programming
 
-This is currently a bootstrap of something that might, some day, be worth 
-turning into a book on RISC-V programming in assembly language.
+This is an attempt to create a book on RISC-V programming in assembly language.
 
 Pull requests are welcome.
 
@@ -15,22 +14,13 @@ You can find the rvddt simulator mentioned in the text here: https://github.com/
 I developed this using LaTeX via texlive.  LaTeX is very portable.  You should 
 be able to tinker with it on most any platform.  
 
-The following worked for me on Ubuntu 16.04 LTS:
+On Ubuntu 18.04 LTS, loading the following packages worked for me:
 
-    sudo apt install wget perl-tk
-    wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
-    tar -xzf install-tl-unx.tar.gz
-    cd install-tl-20180303
-    sudo ./install-tl
+	sudo apt install make      
+	sudo apt install git
+	sudo apt install texlive-latex-extra
 
-[Take all the defaults and press I at the install prompt... have a cup of 
-coffee, do some laundry...]
-
-Put the following into .bashrc:
-
-    export PATH=/usr/local/texlive/2018/bin/x86_64-linux:$PATH    
-    export INFOPATH=$INFOPATH:/usr/local/texlive/2018/texmf-dist/doc/info
-    export MANPATH=$MANPATH:/usr/local/texlive/2018/texmf-dist/doc/man
+I suspect the same (above) would work on 16.04 as well.
 
 Then clone and build this repo:
 
