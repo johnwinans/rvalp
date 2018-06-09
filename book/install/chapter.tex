@@ -1,67 +1,73 @@
 \chapter{Installing a RISC-V Toolchain}
 \label{chapter:install}
 
+All of the software presented in this text was assembled using the
+GNU toolchain and executed using the rvddt simulator on a Linux
+(Ubuntu 18.04 LTS) operating system.
+
+The installation instructions provided here were tested on a
+clean OS install on June 9, 2018.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The GNU Toolchain}
 
-Discuss the GNU toolchain elements used to experiment with the 
-material in this book.
-
 \enote{It would be good to find some Mac and Windows users to write 
 and test proper variations on this section to address those systems.
 Pull requests, welcome!}%
-The instructions and examples here were all implemented on Ubuntu 16.04 LTS. 
-
-Install custom code in a location that will not cause interference with
-other applications and allow for easy cleanup.  These instructions 
-install the toolchain in \verb@/usr/local/riscv@.  At any time
+In order to install custom code in a location that will not cause 
+interference with other applications (and allow for easy hacking and
+cleanup), these will install the toolchain under
+a private directory: \verb@~/projects/riscv/install@.  At any time
 you can remove the lot and start over by executing the following 
 command:
 
-\begin{verbatim}
-rm -rf /usr/local/riscv/*
-\end{verbatim}
+\begin{tty}
+rm -rf ~/projects/riscv/install
+\end{tty}
 
+Be {\em very} careful how you type the above \verb@rm@ command.  
+If typed incorrectly, it could irreversibly remove many of your files!
 
-Tested on Ubuntu 16.04 LTS.   
-18.04 was just released\ldots\ update accordingly.
+Before building the toolchain, a number of utilities must be present on 
+your system.  The following will install those that are needed:
 
-These are the only commands that you should perform as root when installing
-the toolchain:
+\begin{tty}
+sudo apt install autoconf automake autotools-dev curl libmpc-dev \
+    libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf \
+    libtool patchutils bc zlib1g-dev libexpat-dev
+\end{tty}
 
-\begin{verbatim}
-sudo apt-get install autoconf automake autotools-dev curl libmpc-dev \
-	libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf \
-	libtool patchutils bc zlib1g-dev libexpat-dev
-sudo mkdir -p /usr/local/riscv/
-sudo chmod 777 /usr/local/riscv/ 
-\end{verbatim}
+Note that the above \verb@apt@ command is the only operation that should
+be performed as root.  All other commands should be executed as a regular 
+user.  This will eliminate the possibility of clobbering system files that 
+should not be touched when tinkering with the toolchain applications.
 
-All other commands should be executed as a regular user.  This will eliminate the
-possibility of clobbering system files that should not be touched when tinkering with
-the toolchain applications.
-
+\enote{Discuss the choice of ilp32 as well as what the other variations 
+would do.}%
 To download, compile and ``install'' the toolchain:
 
-\begin{verbatim}
-# riscv toolchain:
-# 
-# https://riscv.org/software-tools/risc-v-gnu-compiler-toolchain/
-
+\begin{tty}
+mkdir ~/projects/riscv
+cd ~/projects/riscv
 git clone --recursive https://github.com/riscv/riscv-gnu-toolchain
 cd riscv-gnu-toolchain
-./configure --prefix=/usr/local/riscv/rv32i --with-arch=rv32i --with-abi=ilp32
+INS_DIR=~/projects/riscv/install/rv32i
+./configure --prefix=$INS_DIR --with-arch=rv32i --with-abi=ilp32
 make
-make install
-\end{verbatim}
+\end{tty}
 
-Need to discuss augmenting the PATH environment variable.
+After building the toolchain, make it available by putting it into
+your PATH by adding the following to the end of your \verb@.bashrc@ file:
 
-Discuss the choice of ilp32 as well as what the other variations would do.
+\begin{tty}
+export PATH=$PATH:~/projects/riscv/install/rv32i/bin
+\end{tty}
 
-Discuss rv32im and note that the details are found in \autoref{chapter:RV32}.
+For this \verb@PATH@ change to take place, start a new terminal or paste the
+same \verb@export@ command into your existing terminal.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -69,4 +75,49 @@ Discuss rv32im and note that the details are found in \autoref{chapter:RV32}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{rvddt}
 
-Discuss installing the rvddt simulator here.
+Download and install the rvddt simulator by executing the following 
+commands.
+Building the rvddt example programs will verify that the GNU toolchain
+has been built and installed properly.
+
+%git clone git@github.com:johnwinans/rvddt.git
+\begin{tty}
+cd ~/projects/riscv
+git clone https://github.com/johnwinans/rvddt.git
+cd rvddt/src
+make world
+cd ../examples
+make world
+\end{tty}
+
+After building rvddt, make it available by putting it into your PATH 
+by adding the following to the end of your \verb@.bashrc@ file:
+
+\begin{tty}
+export PATH=$PATH:~/projects/riscv/rvddt/src
+\end{tty}
+
+For this \verb@PATH@ change to take place, start a new terminal or paste the
+same \verb@export@ command into your existing terminal.
+
+
+Test the rvddt build by executing one of the examples:
+
+\begin{tty}
+winans@ux410:~/projects/riscv/rvddt/examples$ rvddt -f counter/counter.bin
+sp initialized to top of memory: 0x0000fff0
+Loading 'counter/counter.bin' to 0x0
+This is rvddt.  Enter ? for help.
+ddt> ti 0 1000
+00000000: 00300293  addi    x5, x0, 3     # x5 = 0x00000003 = 0x00000000 + 0x00000003
+00000004: 00000313  addi    x6, x0, 0     # x6 = 0x00000000 = 0x00000000 + 0x00000000
+00000008: 00130313  addi    x6, x6, 1     # x6 = 0x00000001 = 0x00000000 + 0x00000001
+0000000c: fe534ee3  blt     x6, x5, -4    # pc = (0x1 < 0x3) ? 0x8 : 0x10
+00000008: 00130313  addi    x6, x6, 1     # x6 = 0x00000002 = 0x00000001 + 0x00000001
+0000000c: fe534ee3  blt     x6, x5, -4    # pc = (0x2 < 0x3) ? 0x8 : 0x10
+00000008: 00130313  addi    x6, x6, 1     # x6 = 0x00000003 = 0x00000002 + 0x00000001
+0000000c: fe534ee3  blt     x6, x5, -4    # pc = (0x3 < 0x3) ? 0x8 : 0x10
+00000010: ebreak
+ddt> x
+winans@ux410:~/projects/riscv/rvddt/examples$ 
+\end{tty}
