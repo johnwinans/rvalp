@@ -223,8 +223,8 @@ only two binary digits.  Therefore, in base-10, we must carry when adding one to
 nine (because there is no digit representing a ten) and, in base-2, we must 
 carry when adding one to one (because there is no digit representing a two.)
 
-\autoref{Figure:integers} shows an abridged table of the decimal, binary and hexadecimal 
-values ranging from $0_{10}$ to $129_{10}$.
+\autoref{Figure:integers} shows an abridged table of the decimal, binary and 
+hexadecimal values ranging from $0_{10}$ to $129_{10}$.
 
 \begin{figure}[t]
 \begin{center}
@@ -346,6 +346,15 @@ allowing for easy conversion back to binary.
 
 The decimal value in this example does not easily convey a sense
 of the binary value.
+
+\begin{tcolorbox}
+In programming languages like the C, its derivitives and RISC-V 
+assembly, numeric values are interpreted as decimal {\bfseries unless} 
+they start with a zero (0).  
+Numbers that start with 0 are interpreted as octal (base-8), 
+numbers starting with 0x are interpreted as hexadecimal and 
+numbers that start with 0b are interpreted as binary.
+\end{tcolorbox}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -670,7 +679,7 @@ The RV ISA refers to the discarding the carry out of the MSB after an
 add (or subtract) of two {\em unsigned} numbers as an {\em unsigned overflow}%
 \footnote{Most microprocessors refer to {\em unsigned overflow} simply as a 
 {\em carry} condition.}
-and the situation where carries result in an incorrect sign in the
+and the situation where carries create an incorrect sign in the
 result of adding (or subtracting) two {\em signed} numbers as a
 {\em signed overflow}.~\cite[p.~13]{rvismv1v22:2017}
 
@@ -680,7 +689,7 @@ result of adding (or subtracting) two {\em signed} numbers as a
 
 When adding {\em unsigned} numbers, an overflow only occurs when there 
 is a carry out of the MSB resulting in a sum that is truncated to fit 
-into the number of bits allocated for the result.
+into the number of bits allocated to contain the result.
 
 When subtracting {\em unsigned} numbers, an overflow only occurs when the
 difference is negative (because there are no negative unsigned numbers.)
@@ -743,11 +752,11 @@ while looking more closely at the carry values.
 that the sum of two positive numbers has resulted in an obviously incorrect
 negative result due to a carry flowing into the sign-bit in the MSB.
 
-Granted, if these same values were added using larger than 8-bit values
-then the sum would have been correct.  However, in these examples we will
-assume that all the operations are performed on 8-bit values.  Given any
-finite-number of bits, there are values that could be added such that
- an overflow occurs.
+Granted, if the same values were added using values larger than 8-bits 
+then the sum would have been correct.  However, these examples assume that 
+all the operations are performed on (and results stored into) 8-bit values.  
+Given any finite-number of bits, there are values that could be added such that
+an overflow occurs.
 
 \index{truncation}
 \autoref{sum:-128+-128} shows another overflow situation that is caused 
@@ -802,8 +811,8 @@ do not have the same sign.
 Just like an unsigned number can {\em wrap around} as a result of
 successive additions, a signed number can so the same thing.  The
 only difference is that signed numbers won't wrap from the maximum 
-value back to zero, instead it will wrap to the most negative value
-as shown in \autoref{sum:127+1}.
+value back to zero, instead it will wrap from the most positive to 
+the most negative value as shown in \autoref{sum:127+1}.
  
 \begin{figure}[H]
 \centering
@@ -818,9 +827,11 @@ as shown in \autoref{sum:127+1}.
 \label{sum:127+1}
 \end{figure}
 
+\begin{tcolorbox}
 Formally, a {\em signed overflow} occurs when ever the carry
 {\em into} the MSB is not the same as the carry {\em out of} 
 the MSB.  
+\end{tcolorbox}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -843,9 +854,12 @@ As do these:
     00000000000000000000000000000001100 <== 12
 \end{verbatim}
 
-The phenomenon illustrated here is called {\em sign extension}.  That is
-any signed number can have any quantity of additional MSBs added to it,
+The phenomenon illustrated here is called {\em sign extension}.  
+
+\begin{tcolorbox}
+Any signed number can have any quantity of additional MSBs added to it,
 provided that they repeat the value of the sign bit.
+\end{tcolorbox}
 
 \autoref{Figure:SignExtendNegative} illustrates extending the negative sign
 bit of {\em val} to the left by replicating it.
@@ -883,9 +897,11 @@ the following all represent the same value:
           00000000000000000000000001111 <== 15
 \end{verbatim}
 
-The observation here is that any {\em unsigned} number may be
-{\em zero extended} to any size.
+\begin{tcolorbox}
+Any {\em unsigned} number may be {\em zero extended} to any size.
+\end{tcolorbox}
 
+\enote{Remove the sign-bit boxes from this figure?}%
 \autoref{Figure:ZeroExtend} illustrates zero-extending a 20-bit {\em val} to the
 left to form a 32-bit fullword.
 
@@ -906,8 +922,9 @@ left to form a 32-bit fullword.
 We were all taught how to multiply and divide decimal numbers by ten
 by moving (or {\em shifting}) the decimal point to the right or left 
 respectively.  Doing the same in any other base has the same effect 
-in that it will multiply or divide the number by the value of the base.
+in that it will multiply or divide the number by its base.
 
+\enote{Include decimal values in the shift diagrams.}%
 Multiplication and division are only two reasons for shifting.  There
 can be other occasions where doing so is useful.
 
@@ -915,6 +932,7 @@ As implemented by a CPU, shifting applies to the value in a register
 and the results stored back into a register of finite size.  Therefore
 a shift result will always be truncated to fit into a register.
 
+\enote{Add some examples showing the rounding of positive and negative values.}%
 Note that when dealing with numeric values, any truncation performed 
 during a right-shift will manifest itself as rounding toward zero.
 
@@ -934,7 +952,9 @@ To shift right one position:
 \DrawBitBoxUnsignedPicture{10111000000000000010}\\
 \DrawBitBoxUnsignedPicture{01011100000000000001}
 
+\begin{tcolorbox}
 Note that the vacated bit positions are always filled with zero.
+\end{tcolorbox}
 
 \subsection{Arithmetic Shifting}
 
@@ -943,8 +963,10 @@ shifting.  The RISC-V ISA provides an arithmetic right shift
 instruction for this purpose (there is no arithmetic left shift for 
 this ISA.)
 
+\begin{tcolorbox}
 When shifting to the right {\em arithmetically}, vacated bit positions are
 filled by replicating the value of the sign bit. 
+\end{tcolorbox}
 
 An arithmetic right shift of a negative number by 4 bit positions:
 
@@ -1029,8 +1051,11 @@ CPU would recognize the contents as follows:
 \item The 32-bit value stored at address \hex{00002658} is \hex{76616c3d}.
 \end{itemize}
 
-Observe that the bytes in the dump are in the same order as they would
-be used by the CPU if it were to read them as a multi-byte value.
+\begin{tcolorbox}
+On a big-endian system, the bytes in the dump are in the same order as 
+they would be used by the CPU if it were to read them as a multi-byte 
+value.
+\end{tcolorbox}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Little-Endian}
@@ -1045,8 +1070,10 @@ CPU would recognize the contents as follows:
 \item The 32-bit value stored at address \hex{00002658} is \hex{3d6c6176}.
 \end{itemize}
 
-Observe that the bytes in the dump are in backwards order as they would
-be used by the CPU if it were to read them as a multi-byte value.
+\begin{tcolorbox}
+On a little-endian syatem, the bytes in the dump are in backwards order as 
+they would be used by the CPU if it were to read them as a multi-byte value.
+\end{tcolorbox}
 
 Note that in a little-endian system, the number of bytes used to represent
 the value does not change the place value of the first byte(s).  In this
@@ -1069,45 +1096,50 @@ An array is a data structure comprised of an ordered set of elements.
 This text will limit its definition of {\em array} to those sets
 of elements that are all of the same {\em type}.  Where {\em type}
 refers to the size (number of bytes) and representation (signed,
-unsigned) of each element.
+unsigned,\ldots) of each element.
 
 In an array, the elements are stored adjacent to one another such that the
-address of any element may be defined as:
+address $e$ of any element $x[n]$ is:
 
 \begin{equation}
 e = a + n * s
 \end{equation}
 
-Where $n$ is the element number of interest, $e$ is the address of element 
-of interest, $a$ is the address of the first element in the array, $s$ 
-is the size of each element, $a[0]$ is the first element of the array
-and $a[n-1]$ is the last element of the array.%
-\footnote{Some computing languages (C, C++, Java, C\#, Python, Perl,\ldots) 
-define an array such that the first element is indexed as $a[0]$.  
-While others (FORTRAN, MATLAB) define the first element of an 
-array to be $a[1]$.}
+Where $x$ is the name of the array, $n$ is the element number of interest, 
+$e$ is the address of interest, $a$ is the address of the first element in 
+the array and $s$ is the size (in bytes) of each element.
 
-Using this definition, \listingRef{rvddt_memdump.out}, knowledge that 
+Given an array $x$ containing $m$ elements, $x[0]$ is the first element of 
+the array and $x[m-1]$ is the last element of the array.%
+\footnote{Some computing languages (C, C++, Java, C\#, Python, Perl,\ldots) 
+define an array such that the first element is indexed as $x[0]$.  
+While others (FORTRAN, MATLAB) define the first element of an 
+array to be $x[1]$.}
+
+Using this definition, and the memory dump shown in 
+\listingRef{rvddt_memdump.out}, and the knowledge that 
 we are using a little-endian machine and given that
-$a = $\hex{00002656} and $s = 2$, the values of the first 8 elements 
-of array $a$ are:
+$a = $ \hex{00002656} and $s = 2$, the values of the first 8 elements 
+of array $x$ are:
 
 \begin{itemize}
-\item $a[0]$ is \hex{0000} and is stored at \hex{00002656}.
-\item $a[1]$ is \hex{6176} and is stored at \hex{00002658}.
-\item $a[2]$ is \hex{3d6c} and is stored at \hex{0000265a}.
-\item $a[3]$ is \hex{0000} and is stored at \hex{0000265c}.
-\item $a[4]$ is \hex{0000} and is stored at \hex{00002660}.
-\item $a[5]$ is \hex{0000} and is stored at \hex{00002662}.
-\item $a[6]$ is \hex{8480} and is stored at \hex{00002664}.
-\item $a[7]$ is \hex{412e} and is stored at \hex{00002666}.
+\item $x[0]$ is \hex{0000} and is stored at \hex{00002656}.
+\item $x[1]$ is \hex{6176} and is stored at \hex{00002658}.
+\item $x[2]$ is \hex{3d6c} and is stored at \hex{0000265a}.
+\item $x[3]$ is \hex{0000} and is stored at \hex{0000265c}.
+\item $x[4]$ is \hex{0000} and is stored at \hex{00002660}.
+\item $x[5]$ is \hex{0000} and is stored at \hex{00002662}.
+\item $x[6]$ is \hex{8480} and is stored at \hex{00002664}.
+\item $x[7]$ is \hex{412e} and is stored at \hex{00002666}.
 \end{itemize}
 
-As a general rule, there is no fixed rule or notion as to how many 
+\begin{tcolorbox}
+In general, there is no fixed rule nor notion as to how many 
 elements an array has.  It is up to the programmer to ensure that
 the starting address and the number of elements in any given array
 (its size) are used properly so that data bytes outside an array
 are not accidentally used as elements.
+\end{tcolorbox}
 
 There is, however, a common convention used for an array of 
 characters that is used to hold a text message 
@@ -1135,12 +1167,12 @@ expressed as either of:
 \index{ASCIIZ}
 When the double-quoted text form is used, the GNU assembler used in 
 this text differentiates between {\em ascii} and {\em asciiz} strings
-such that an ascii string is {\em not} null terminated and an
-asciiz string {\em is} null terminated.  
+such that an {\em ascii} string is {\em not} null terminated and an
+{\em asciiz} string {\em is} null terminated.  
 
 The value of providing a method to create a string that is {\em not} 
 null terminated is that a program may define a large string by 
-concatenating a number of ascii strings together and following the 
+concatenating a number of {\em ascii} strings together and following the 
 last with a byte of zero to null-terminate the lot.
 
 It is a common mistake to create a string with a missing
@@ -1182,7 +1214,9 @@ addresses ending in zero.
 Such alignments are important when exchanging data between the CPU 
 and memory because the hardware implementations are optimized to
 transfer aligned data.  Therefore, aligning data used by any program
-will reap the benefit of running faster.
+will reap the benefit of running faster.%
+\footnote{Alignment of data, while important for efficient performance, 
+is not mandatory for RISC-V systems.\cite[p.~19]{rvismv1v22:2017}}
 
 An element of data is considered to be {\em aligned to its natural size}
 when its address is an exact multiple of the number of bytes used to 
