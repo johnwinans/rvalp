@@ -6,7 +6,7 @@ This is an attempt to create a book on RISC-V programming in assembly language.
 
 Pull requests are welcome.
 
-I will commit PDFs of useful versions into the /releases directory for those 
+I will release PDFs after useful improvements from time to time into the releases area for those 
 that don't wish to build their own.
 
 You can find the rvddt simulator mentioned in the text here: https://github.com/johnwinans/rvddt
