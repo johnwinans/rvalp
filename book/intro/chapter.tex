@@ -20,7 +20,7 @@ There are different types of computers.  A {\em digital} computer is
 the type that most people think of when they hear the word {\em computer}.
 Other varieties of computers include {\em analog} and {\em quantum}.
 
-A digital computer is one that that processes data that are represented
+A digital computer is one that processes data represented
 using numeric values (digits), most commonly expressed in binary
 (ones and zeros) form.
 
@@ -36,7 +36,7 @@ Computer storage systems are used to hold the data and instructions
 for the CPU.
 
 Types of computer storage can be classified into two categories:
-volatile and non-volatile.
+{\em volatile} and {\em non-volatile}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Volatile Storage}
@@ -51,7 +51,7 @@ small blocks called \glspl{register}.  These registers are used to
 hold individual data values that can be manipulated by the instructions
 that are executed by the CPU.  
 
-Another type of volatile storage is main memory 
+Another type of volatile storage is {\em main memory}
 (sometimes called \acrshort{ram})
 Main memory is connected to a computer's CPU and is used to hold
 the data and instructions that can not fit into the CPU registers.
@@ -61,15 +61,15 @@ the main memory can contain many billions of data values.
 
 To keep track of the data values, each register is assigned a number and
 the main memory is broken up into small blocks called \gls{byte}s that 
-are also each assigned number called an \gls{address} 
-(an address is often referred to as a {\em location.}
+each assigned a number called an \gls{address} 
+(an {\em address} is often referred to as a {\em location.}
 
 A CPU can process data in a register at a speed that can be an order 
 of magnitude faster than the rate that it can process (specifically,
 transfer data and instructions to and from) the main memory.  
 
 Register storage costs an order of magnitude more to manufacture than
-main memory.  While it is desirable to have many registers the economics 
+main memory.  While it is desirable to have many registers, the economics 
 dictate that the vast majority of volatile computer storage be provided
 in its main memory.  As a result, optimizing the copying of data between 
 the registers and main memory is a desirable trait of good programs.
@@ -87,7 +87,8 @@ drives.  Prices can vary widely depending on size and transfer speeds.
 It is typical for a computer system's non-volatile storage to operate
 more slowly than its main memory.
 
-This text is not particularly concerned with non-volatile storage. 
+This text will focus on volatile storage.
+%is not particularly concerned with non-volatile storage. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -95,10 +96,10 @@ This text is not particularly concerned with non-volatile storage.
 \index{CPU}
 
 \enote{Add a block diagram of the CPU components described here.}
-The \acrshort{cpu} is a collection of registers and circuitry designed
+The \acrshort{cpu} is a collection of registers and circuitry designed to
 manipulate the register data and to exchange data and instructions with the 
-storage system.  The instructions that are read from the main memory tell 
-the CPU to perform various mathematic and logical operations on the data 
+main memory.  The instructions that are read from the main memory tell 
+the CPU to perform various mathematical and logical operations on the data 
 in its registers and where to save the results of those operations.
 
 \subsubsection{Execution Unit}
@@ -126,8 +127,8 @@ In the RV32 CPU there are 31 general purpose registers that each contain 32 \gls
 (where each bit is one \gls{binary} digit value of one or zero) and a number 
 of special-purpose registers.
 Each of the general purpose registers is given a name such as \reg{x1}, \reg{x2},
-\ldots\ on up to \reg{x31} ({\em general purpose} refers to the fact that the CPU 
-itself does not prescribe any particular function to any these registers.)
+\ldots\ on up to \reg{x31} ({\em general purpose} refers to the fact that the 
+{\em CPU itself} does not prescribe any particular function to any of these registers.)
 Two important special-purpose registers are \reg{x0} and \reg{pc}.
 
 Register \reg{x0} will always represent the value zero or logical {\em false}  
@@ -162,13 +163,13 @@ This text will primarily focus on CPUs that have only one hart.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Peripherals}
 
-A peripheral is a device that is not a CPU or main memory.  They are 
+A {\em peripheral} is a device that is not a CPU or main memory.  They are 
 typically used to transfer information/data into and out of the 
 main memory.
 
-This text is not particularly concerned with the peripherals of a computer
-system other than in those sections where instructions are discussed 
-whose purpose is to address the needs of a peripheral device.  Such
+This text is not concerned with the peripherals of a computer
+system other than in sections where instructions are discussed with the
+purpose of addressing the needs of a peripheral device.  Such
 instructions are used to initiate, execute and/or synchronize data transfers.
 
 
@@ -178,7 +179,7 @@ instructions are used to initiate, execute and/or synchronize data transfers.
 \index{ISA}
 
 The catalog of rules that describes the details of the instructions 
-and features that a given CPU provides is called its \acrfull{isa}.
+and features that a given CPU provides is called an \acrfull{isa}.
 
 An ISA is typically expressed in terms of the specific meaning of
 each binary instruction that a CPU can recognize and how it will
@@ -234,13 +235,13 @@ extensions as it is expected to be a common combination.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{How the CPU Executes a Program}
 
-The process of executing a program is continuously repeating series of
+The process of executing a program is continuous repeats of a series of
 \index{instruction cycle}{\em instruction cycles} that are each comprised
 of a {\em fetch}, {\em decode} and {\em execute} phase.
  
 The current status of a CPU hart is entirely embodied in the data values that
 are stored in its registers at any moment in time.  Of particular interest
-to an executing a program is the \reg{pc} register.  The \reg{pc} contains
+to an executing program is the \reg{pc} register.  The \reg{pc} contains
 the memory address containing the instruction that the CPU is currently 
 executing.\footnote{In the RISC-V ISA the \reg{pc} register points to the 
 {\em current} instruction where in most other designs, the \reg{pc}
@@ -259,9 +260,9 @@ In order to {\em fetch} an instruction from the main memory the CPU
 must have a method to identify which instruction should be fetched and
 a method to fetch it. 
 
-Given that the main memory is broken up and that each of its bytes is 
-assigned an address, the \reg{pc} is used to hold the address of the
-location where the next instruction to execute is located.
+%Given that the main memory is broken up and that each of its bytes is 
+%assigned an address, the \reg{pc} is used to hold the address of the
+%location where the next instruction to execute is located.
 
 Given an instruction address, the CPU can request that the main memory 
 locate and return the value of the data stored there using what is called 
@@ -288,7 +289,7 @@ Typical instructions do things like add a number to the value
 currently stored in one of the registers or store the contents of a
 register into the main memory at some given address.
 
-Also part of every instruction is a notion of what should be done next.
+Part of every instruction is a notion of what should be done next.
 
 Most of the time an instruction will complete by indicating that
 the CPU should proceed to fetch and execute the instruction at the next
@@ -310,8 +311,8 @@ change in the sequential processing of instructions and the word
 
 For example, a (conditional) branch instruction might instruct the CPU 
 to proceed to the instruction at the next main memory address if the value 
-in register number 8 is currently less than the value in register number 
-24 {\em but otherwise} proceed to an instruction at a different address
+in x8 is currently less than the value in x24 {\em but otherwise} 
+proceed to an instruction at a different address
 when it is not.  This type of instruction can therefore result in having 
 one of two different actions pending the resulting {\em condition} of 
 the comparison.\footnote{This is the fundamental method used by a CPU 
