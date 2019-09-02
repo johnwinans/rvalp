@@ -257,18 +257,22 @@ placed into the \reg{pc} register.
 \index{instruction fetch}
 
 In order to {\em fetch} an instruction from the main memory the CPU
-must have a method to identify which instruction should be fetched and
-a method to fetch it. 
+will update the address in the \reg{pc} register and then request that
+the main memory return the value of the data stored at that address.
+\footnote{RV32I instructions are more than one byte in size, but 
+this general description is suitable for now.}
+
+%must have a method to identify which instruction should be fetched and
+%a method to fetch it. 
 
 %Given that the main memory is broken up and that each of its bytes is 
 %assigned an address, the \reg{pc} is used to hold the address of the
 %location where the next instruction to execute is located.
 
-Given an instruction address, the CPU can request that the main memory 
-locate and return the value of the data stored there using what is called 
-a {\em memory read} operation and then the CPU can treat that {\em fetched}
-value as an instruction and execute it.\footnote{RV32I instructions are 
-more than one byte in size, but this general description is suitable for now.}
+%Given an instruction address, the CPU can request that the main memory 
+%locate and return the value of the data stored there using what is called 
+%a {\em memory read} operation and then the CPU can treat that {\em fetched}
+%value as an instruction and execute it.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -276,10 +280,9 @@ more than one byte in size, but this general description is suitable for now.}
 \index{instruction decode}
 
 Once an instruction has been fetched, it must be inspected to determine what
-operation(s) are to be performed.  This primairly boils down to inspecting
-the portions of the instruction that dictate which registers are involved
-and, if the ALU is required, what it should do.
-
+operation(s) are to be performed.  This means inspecting the portions of the 
+instruction that dictate which registers are involved and what that, if 
+anything, ALU should do.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Instruction Execute}
@@ -309,13 +312,18 @@ The RISC-V ISA uses the word {\em jump} to refer to an {\em unconditional}
 change in the sequential processing of instructions and the word
 {\em branch} to refer to a {\em conditional} change.
 
-For example, a (conditional) branch instruction might instruct the CPU 
-to proceed to the instruction at the next main memory address if the value 
-in x8 is currently less than the value in x24 {\em but otherwise} 
-proceed to an instruction at a different address
-when it is not.  This type of instruction can therefore result in having 
-one of two different actions pending the resulting {\em condition} of 
-the comparison.\footnote{This is the fundamental method used by a CPU 
+Conditional branch instructions can be used to tell the CPU to 
+do things like:
+
+\begin{quote}
+If the value in x8 is currently less than the value in x24 then
+proceed to the instruction at the next main memory address, otherwise
+branch to an instruction at a different address.
+\end{quote}
+
+This type of instruction can therefore result in one of two different 
+actions pending the result of the 
+comparison.\footnote{This is the fundamental method used by a CPU 
 to make decisions.}
 
 Once the instruction execution phase has completed, the next instruction 
