@@ -20,15 +20,17 @@ In order to install custom code in a location that will not cause
 interference with other applications (and allow for easy hacking and
 cleanup), these will install the toolchain under
 a private directory: \verb@~/projects/riscv/install@.  At any time
-you can remove the lot and start over by executing the following 
+you can remove everything and start over by executing the following 
 command:
 
 \begin{tty}
 rm -rf ~/projects/riscv/install
 \end{tty}
 
+\begin{tcolorbox}
 Be {\em very} careful how you type the above \verb@rm@ command.  
 If typed incorrectly, it could irreversibly remove many of your files!
+\end{tcolorbox}
 
 Before building the toolchain, a number of utilities must be present on 
 your system.  The following will install those that are needed:
@@ -46,7 +48,7 @@ should not be touched when tinkering with the toolchain applications.
 
 \enote{Discuss the choice of ilp32 as well as what the other variations 
 would do.}%
-To download, compile and ``install'' the toolchain:
+To download, compile and install the toolchain:
 
 \begin{tty}
 mkdir -p ~/projects/riscv
