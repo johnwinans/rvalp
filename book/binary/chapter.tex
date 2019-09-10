@@ -4,7 +4,7 @@
 This chapter discusses how data are represented and stored in a computer.
 
 In the context of computing, {\em boolean} refers to a condition that can 
-be either true and false and {\em binary} refers to the use of a base-2 
+be either true or false and {\em binary} refers to the use of a base-2 
 numeric system to represent numbers.
 
 RISC-V assembly language uses binary to represent all values, be they 
@@ -20,7 +20,7 @@ LSB,\ldots\ perhaps relocated from the RV32I chapter?}
 
 Boolean functions apply on a per-bit basis.
 When applied to multi-bit values, each bit position is operated upon 
-independently of the other bits.
+independent of the other bits.
 
 RISC-V assembly language uses zero to represent {\em false} and one 
 to represent {\em true}.  In general, however, it is useful to relax 
@@ -30,9 +30,10 @@ that is not {\em false} is therefore {\em true}.%
 many other languages as well as the common assembly language idioms
 discussed in this text.}
 
-The reason for this relaxation is because, while a single binary digit 
-(\gls{bit}) can represent the two values zero and one, the vast majority 
-of the time data is processed by the CPU in groups of bits.  These
+The reason for this relaxation is to describe the common case 
+where the CPU processes data, multiple \gls{bit}s at-a-time.
+
+These
 groups have names like \gls{byte} (8 bits), \gls{halfword} (16 bits) 
 and \gls{fullword} (32 bits).
 
@@ -49,7 +50,7 @@ If the input is 1 then the output is 0.  If the input is 0 then the
 output is 1.  In other words, the output value is {\em not} that of the 
 input value.
 
-Expressing the {\em not} function in the form a a truth table:
+Expressing the {\em not} function in the form of a truth table:
 
 \begin{center}
 \begin{tabular}{c|c}
@@ -95,7 +96,7 @@ single bit.  The output is 1 if and only if all of the input values are 1.
 Otherwise it is 0.
 
 This function works like it does in spoken language.  For example
-if A is 1 {\em AND} B is 1 then the output is 1 (true).
+if A is 1 {\em and} B is 1 then the output is 1 (true).
 Otherwise the output is 0 (false).  
 
 In mathematical notion, the {\em and} operator is expressed the same way
@@ -115,7 +116,7 @@ A & B & AB \\
 \end{center}
 
 This text will use the operator used in the C language when discussing 
-the {\em AND} operator in symbolic form.  Specifically the ampersand: `\verb@&@'.
+the {\em and} operator in symbolic form.  Specifically the ampersand: `\verb@&@'.
 
 An eight-bit example:
 
@@ -136,7 +137,7 @@ The boolean {\em or} function has two or more inputs and the output is a
 single bit.  The output is 1 if at least one of the input values are 1.
 
 This function works like it does in spoken language.  For example
-if A is 1 {\em OR} B is 1 then the output is 1 (true).
+if A is 1 {\em or} B is 1 then the output is 1 (true).
 Otherwise the output is 0 (false).  
 
 In mathematical notion, the {\em or} operator is expressed using the plus 
@@ -154,7 +155,7 @@ A & B & A$+$B \\
 \end{center}
 
 This text will use the operator used in the C language when discussing
-the {\em OR}  operator in symbolic form.  Specifically the pipe: `\verb@|@'.
+the {\em or}  operator in symbolic form.  Specifically the pipe: `\verb@|@'.
 
 An eight-bit example:
 
@@ -175,7 +176,7 @@ The boolean {\em exclusive or} function has two or more inputs and the
 output is a single bit.  The output is 1 if only an odd number of inputs 
 are 1. Otherwise the output will be 0.
 
-Note that when {\em XOR} is used with two inputs, the output
+Note that when {\em xor} is used with two inputs, the output
 is set to 1 (true) when the inputs have different values and 0 
 (false) when the inputs both have the same value.
 
@@ -194,7 +195,7 @@ A & B & A$\oplus{}$B \\
 \end{center}
 
 This text will use the operator used in the C language when discussing
-the {\em XOR}  operator in symbolic form.  Specifically the carrot: `\verb@^@'.
+the {\em xor}  operator in symbolic form.  Specifically the carrot: `\verb@^@'.
 
 
 An eight-bit example:
@@ -218,7 +219,7 @@ A binary integer is constructed with only 1s and 0s in the same
 manner as decimal numbers are constructed with values from 0 to 9.
 
 Counting in binary (base-2) uses the same basic rules as decimal (base-10).  
-The difference comes in when we consider that there are ten decimal digits and 
+The difference is when we consider that there are ten decimal digits and 
 only two binary digits.  Therefore, in base-10, we must carry when adding one to 
 nine (because there is no digit representing a ten) and, in base-2, we must 
 carry when adding one to one (because there is no digit representing a two.)
@@ -293,8 +294,8 @@ Interpreting the hexadecimal value on the fourth row by converting it to decimal
 \index{Most significant bit}\index{MSB|see {Most significant bit}}%
 \index{Least significant bit}\index{LSB|see {Least significant bit}}%
 We refer to the place values with the largest exponent (the one furthest to the 
-left for any given base) as the {\em most significant} digit and the place value
-with the lowest exponent as the {\em least significant} digit.  For binary
+left for any given base) as the most significant digit and the place value
+with the lowest exponent as the least significant digit.  For binary
 numbers these are the \acrfull{msb} and \acrfull{lsb} respectively.%
 \footnote{Changing the value of the MSB will have a more {\em significant}
 impact on the numeric value than changing the value of the LSB.} 
@@ -309,7 +310,7 @@ pattern is 0-1-0-1-0-1-0-\ldots) The next column in each base
 will cycle in the same manner except each of the values is repeated
 as many times as is represented by the place value (in the case of 
 decimal, $10^1$ times, binary $2^1$ times, hex $16^1$ times.  Again,
-the for binary numbers this pattern is  0-0-1-1-0-0-1-1-\ldots)
+the binary numbers for this pattern are 0-0-1-1-0-0-1-1-\ldots)
 This continues for as many columns as are needed to represent the 
 magnitude of the desired number.
 
@@ -364,11 +365,11 @@ numbers that start with 0b are interpreted as binary.
 \subsubsection{From Binary to Decimal}
 \label{section:bindec}
 
-Alas, it is occasionally necessary to convert between decimal,
+It is occasionally necessary to convert between decimal,
 binary and/or hex.
 
 To convert from binary to decimal, put the decimal value of the place values 
-{\ldots8 4 2 1} over the binary digits like this:
+{\ldots8, 4, 2, 1} over the binary digits like this:
 
 \begin{verbatim}
 Base-2 place values: 128 64 32 16  8  4  2  1
@@ -416,10 +417,11 @@ Hex:                   6           D           A           E
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{From Hexadecimal to Binary}
 
-Again, the four-bit mapping between binary and hex makes this
-task as straight forward as using a look-up table.
+The four-bit mapping between binary and hex makes this
+task as straight forward as using a look-up table to 
+translate each \gls{hit} (Hex digIT) it to its unique 
+four-bit pattern.
 
-For each \gls{hit} (Hex digIT), translate it to its unique four-bit pattern.
 Perform this task either by memorizing each of the 16 patterns 
 or by converting each hit to decimal first and then converting
 each four-bit binary value to decimal using the place-value summing 
@@ -476,7 +478,7 @@ or by first converting the decimal value to binary and then
 from binary to hex by using the methods discussed above.
 
 Because binary and hex are so closely related, performing
-a conversion by way of binary is quite straight forward.
+a conversion by way of binary is straight forward.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -508,7 +510,7 @@ For example:
 \subsection{Signed Numbers}
 
 There are multiple methods used to represent signed binary integers.
-The method used by most modern computers is called ``two's complement.''
+The method used by most modern computers is called {\em two's complement}.
 
 A two's complement number is encoded in such a manner as to simplify
 the hardware used to add, subtract and compare integers.  
@@ -577,10 +579,10 @@ ignored.
 \subsubsection{Converting between Positive and Negative}
 
 Changing the sign on two's complement numbers can be described as
-inverting all of the bits (which is also known as the one's complement)
+inverting all of the bits (which is also known as the {\em one's complement})
 and then add one.
 
-For example, inverting the number {\em four}:
+For example, inverting the number four:
 
 \begin{verbatim}
    -128 64 32 16  8  4  2  1
@@ -644,8 +646,8 @@ To calculate $-4-8 = -12$
 
 \begin{verbatim}
    -128 64 32 16  8  4  2  1
-      1  1  1  1  1  1  0  0 <== -4
-    - 0  0  0  0  1  0  0  0 <== 8
+      1  1  1  1  1  1  0  0 <== -4  (minuend)
+    - 0  0  0  0  1  0  0  0 <== 8   (subtrahend)
 
 
                   1  1  1    <== carries
@@ -727,7 +729,7 @@ When subtracting {\em unsigned}, an overflow only occurs when the
 minuend is positive and the subtrahend is negative and difference is negative
 or when the minuend is negative and the subtrahend is positive and the 
 difference is positive.%
-\footnote{Yeah, I had to look it up to remember which were which 
+\footnote{I had to look it up to remember which were which 
 too\ldots\ it is: minuend - subtrahend = difference.\cite{subtrahend}}
 
 Consider the results of the addition of two {\em signed} numbers
@@ -748,7 +750,7 @@ while looking more closely at the carry values.
 
 
 
-\autoref{sum:64+64} is an example of an {\em overflow}.  As you can see, the problem is 
+\autoref{sum:64+64} is an example of {\em signed overflow}.  As shown, the problem is 
 that the sum of two positive numbers has resulted in an obviously incorrect
 negative result due to a carry flowing into the sign-bit in the MSB.
 
@@ -776,10 +778,10 @@ We say that this result has been {\em truncated}.
 \label{sum:-128+-128}
 \end{figure}
 
-Truncation is not necessarily a bad thing.  Consider figures 
-\ref{sum:-3+-5} and \ref{sum:-2+10} where truncation is not a problem.  
-In fact \autoref{sum:-2+10} demonstrates the importance of discarding 
-the carry from the sum of the MSBs of {\em signed} numbers when addends
+Truncation is not necessarily a problem.  Consider the truncations in
+figures \ref{sum:-3+-5} and \ref{sum:-2+10}.  
+\autoref{sum:-2+10} demonstrates the importance of discarding 
+the carry from the sum of the MSBs of signed numbers when addends
 do not have the same sign.
 
 \begin{figure}[H]
@@ -808,7 +810,7 @@ do not have the same sign.
 \label{sum:-2+10}
 \end{figure}
 
-Just like an unsigned number can {\em wrap around} as a result of
+Just like an unsigned number can wrap around as a result of
 successive additions, a signed number can so the same thing.  The
 only difference is that signed numbers won't wrap from the maximum 
 value back to zero, instead it will wrap from the most positive to 
@@ -854,7 +856,8 @@ As do these:
     00000000000000000000000000000001100 <== 12
 \end{verbatim}
 
-The phenomenon illustrated here is called {\em sign extension}.  
+The lengthening of these numbers by replicating the digits on the left
+is what is called {\em sign extension}.  
 
 \begin{tcolorbox}
 Any signed number can have any quantity of additional MSBs added to it,
@@ -862,9 +865,9 @@ provided that they repeat the value of the sign bit.
 \end{tcolorbox}
 
 \autoref{Figure:SignExtendNegative} illustrates extending the negative sign
-bit of {\em val} to the left by replicating it.
-When {\em val} is negative, its \acrshort{msb} (bit 19 in this example) will
-be set to 1.   Extending this value to the left will set all the new bits
+bit to the left by replicating it.
+A negative number will have its \acrshort{msb} (bit 19 in this example)
+set to 1.   Extending this value to the left will set all the new bits
 to the left of it to 1 as well.
 
 \begin{figure}[ht]
@@ -874,9 +877,9 @@ to the left of it to 1 as well.
 \label{Figure:SignExtendNegative}
 \end{figure}
 
-\autoref{Figure:SignExtendPositive} illustrates extending the positive sign
-bit of {\em val} to the left by replicating it.
-When {\em val} is positive, its \acrshort{msb} will be set to 0.  Extending this
+\autoref{Figure:SignExtendPositive} illustrates extending the sign bit of a
+positive number to the left by replicating it.
+A positive number will have its \acrshort{msb} set to 0.  Extending this
 value to the left will set all the new bits to the left of it to 0 as well.
 
 \begin{figure}[ht]
@@ -888,8 +891,9 @@ value to the left will set all the new bits to the left of it to 0 as well.
 
 
 \label{ZeroExtension}
-In a similar vein, any {\em unsigned} number also may have any quantity of 
-additional MSBs added to it provided that they are all zero.  For example,
+In a similar vein, any unsigned number also may have any quantity of 
+additional MSBs added to it provided that they are all zero.  This is
+called {\em zero extension}.  For example,
 the following all represent the same value:
 \begin{verbatim}
                                    1111 <== 15
@@ -902,8 +906,8 @@ Any {\em unsigned} number may be {\em zero extended} to any size.
 \end{tcolorbox}
 
 \enote{Remove the sign-bit boxes from this figure?}%
-\autoref{Figure:ZeroExtend} illustrates zero-extending a 20-bit {\em val} to the
-left to form a 32-bit fullword.
+\autoref{Figure:ZeroExtend} illustrates zero-extending a 20-bit number to the
+left to form a 32-bit number.
 
 \begin{figure}[ht]
 \centering
@@ -990,7 +994,7 @@ when using them to dump the contents of memory and/or files.}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Memory Dump}
 
-\listingRef{rvddt_memdump.out} shows a memory dump from the rvddt
+\listingRef{rvddt_memdump.out} shows a {\em memory dump} from the rvddt
 `d' command requesting a dump starting at address \hex{00002600}
 for the default quantity (\hex{100}) of bytes.
 
@@ -1024,16 +1028,16 @@ The choice of which end of a multi-byte value is to be stored at the
 lowest byte address is referred to as {\em endianness.}  For example,
 if a CPU were to store a \gls{halfword} into memory, should the byte 
 containing the \acrfull{msb} (the {\em big} end) go first or does 
-the byte with the \acrfull{lsb} (the {\em little} end) go first/into 
-the lowest memory address?
+the byte with the \acrfull{lsb} (the {\em little} end) go first? 
 
 On the one hand the choice is arbitrary.  On the other hand, it is 
 possible that the choice could impact the performance of the system.%
 \footnote{See\cite{IEN137} for some history of the big/little-endian ``controversy.''}
 
 IBM mainframe CPUs and the 68000 family store their bytes in big-endian 
-order.  While the Intel Pentium and most embedded processors are little 
-endian.  Some CPUs are even {\em bi-endian} in that they instructions that
+order.  While the Intel Pentium and most embedded processors use
+little-endian order.  
+Some CPUs are even {\em bi-endian} in that they have instructions that
 can change their order on the fly. 
 
 The RISC-V system uses the little-endian byte order.
@@ -1071,7 +1075,7 @@ CPU would recognize the contents as follows:
 \end{itemize}
 
 \begin{tcolorbox}
-On a little-endian syatem, the bytes in the dump are in backwards order as 
+On a little-endian system, the bytes in the dump are in reverse order as 
 they would be used by the CPU if it were to read them as a multi-byte value.
 \end{tcolorbox}
 
@@ -1089,12 +1093,12 @@ non-standard big-endian or bi-endian systems.''\cite[p.~6]{rvismv1v22:2017}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Arrays and Character Strings}
 
-While Endianness defines to how single values are stored in memory,
+While Endianness defines how single values are stored in memory,
 the {\em array} defines how multiple values are stored.
 
 An array is a data structure comprised of an ordered set of elements.
-This text will limit its definition of {\em array} to those sets
-of elements that are all of the same {\em type}.  Where {\em type}
+This text will limit its definition of array to a plurality of
+elements that are all of the same type.  Where type
 refers to the size (number of bytes) and representation (signed,
 unsigned,\ldots) of each element.
 
@@ -1156,29 +1160,35 @@ be conveyed to any code needing to consume or process the string.
 
 In \listingRef{rvddt_memdump.out}, the 5-byte long array starting 
 at address \hex{00002658} contains a string whose value can be
-expressed as either of:
+expressed as either: % \verb@76 61 6c 3d 00@ or \verb@"val="@.
 
-\begin{itemize}
-\item \verb@76 61 6c 3d 00@
-\item \verb@"val="@
-\end{itemize}
+\verb@76 61 6c 3d 00@
+
+or
+
+\verb@"val="@
+
+%\begin{itemize}
+%\item \verb@76 61 6c 3d 00@
+%\item \verb@"val="@
+%\end{itemize}
 
 \index{ASCII}
 \index{ASCIIZ}
 When the double-quoted text form is used, the GNU assembler used in 
 this text differentiates between {\em ascii} and {\em asciiz} strings
-such that an {\em ascii} string is {\em not} null terminated and an
-{\em asciiz} string {\em is} null terminated.  
+such that an {\em ascii} string is {\bf not} null terminated and an
+{\em asciiz} string {\bf is} null terminated.  
 
-The value of providing a method to create a string that is {\em not} 
+The value of providing a method to create a string that is not
 null terminated is that a program may define a large string by 
 concatenating a number of {\em ascii} strings together and following the 
-last with a byte of zero to null-terminate the lot.
+last with a byte of zero to null-terminate it.
 
 It is a common mistake to create a string with a missing
-null terminator.  The result of printing such a ``string'' is that
-the string is printed and as well as whatever random data bytes in 
-memory that follows it until a byte whose value is zero is found 
+null terminator.  The result of printing such a string is that
+the string will be printed as well as whatever random data bytes in 
+memory follow it until a byte whose value is zero is encountered 
 by chance.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
