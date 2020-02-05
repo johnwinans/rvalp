@@ -644,6 +644,11 @@ to 244.}
 
 To calculate $-4-8 = -12$
 
+\enote{This example is unclear. That the adding of one to the subtrahend
+has to be done as part of the same operation as the sum of the two values.
+otherwise adding 1000 to 0001 will {\em not} result in a proper overflow 
+staus as discussed below.}
+
 \begin{verbatim}
    -128 64 32 16  8  4  2  1
       1  1  1  1  1  1  0  0 <== -4  (minuend)
@@ -712,10 +717,18 @@ difference is negative (because there are no negative unsigned numbers.)
 \label{sum:240+17}
 \end{figure}
 
+\enote{Need to add an example of an unsigned overflow after a subtraction.
+When subtracting by adding the two's complement of the subtrahend, the unsigned
+overflow status is represented by a 0 carry out of the most significant bit!} 
 Some times an overflow like this is referred to as a {\em wrap around}
 because of the way that successive additions will result in a value that
 increases until it {\em wraps} back {\em around} to zero and then 
 returns to increasing in value until it, again, wraps around again.
+
+\begin{tcolorbox}
+An {\em unsigned overflow} occurs when ever there is a carry
+{\em out of} the most significant bit.
+\end{tcolorbox}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Signed Overflow}
@@ -831,8 +844,8 @@ the most negative value as shown in \autoref{sum:127+1}.
 
 \begin{tcolorbox}
 Formally, a {\em signed overflow} occurs when ever the carry
-{\em into} the MSB is not the same as the carry {\em out of} 
-the MSB.  
+{\em into} the most significant bit is not the same as the 
+carry {\em out of} the most significant bit.  
 \end{tcolorbox}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
