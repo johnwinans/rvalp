@@ -59,7 +59,7 @@ sll   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:sll]{Sh
 \hline
 slli  & rd, rs1, shamt & \hyperref[insnformat:itype]{I} & \hyperref[insn:slli]{Shift Left Logical Immediate} & {\tt rd $\leftarrow$ rs1 << shamt, pc $\leftarrow$ pc+4}\\
 \hline
-slt   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:slt]{Set Less Than}             & {\tt rd $\leftarrow$ rs1 < rs2) ? 1 : 0, pc $\leftarrow$ pc+4}\\
+slt   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:slt]{Set Less Than}             & {\tt rd $\leftarrow$ (rs1 < rs2) ? 1 : 0, pc $\leftarrow$ pc+4}\\
 \hline
 slti  & rd, rs1, imm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:slti]{Set Less Than Immediate}   & {\tt rd $\leftarrow$ (rs1 < sx(imm)) ? 1 : 0, pc $\leftarrow$ pc+4}\\
 \hline
