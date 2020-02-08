@@ -15,6 +15,7 @@
 % Print the characters within a string evenly spaced at integral node positions
 %
 % #1 The number of characters in the string
+% #2 The string to print
 \newcommand\DrawBitstring[2]{
 \foreach \x in {1,...,#1}%
    	\draw(\x,0) node{\substring{#2}{\x}{\x}};%
@@ -206,9 +207,10 @@
 }
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % Draw hex markers
 % #1 The number of bits in the box
@@ -219,6 +221,7 @@
 }
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Print the characters within a string evenly spaced at integral node positions
 %
 % #1 The number of characters in the string
@@ -585,6 +588,370 @@
 	\DrawInsnTypeRShiftTikz{#5}
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Draw hex markers with a baseline at zero
+% #1 The number of bits in the box
+\newcommand\DrawHexMarkersRel[1]{
+	\pgfmathsetmacro\num{int(#1-1)}
+	\foreach \x in {4,8,...,\num}
+		\draw [line width=.5mm] (\x+.5,0) -- (\x+.5, .4);
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Draw an instruction box with a baseline at zero
+% #1 MSB position
+% #2 LSB position
+% #3 the segment label
+\newcommand\DrawInsnBoxRel[3]{
+	\pgfmathsetmacro\leftpos{int(32-#1)}
+	\pgfmathsetmacro\rightpos{int(32-#2)}
+
+	\draw (\leftpos-.5,0) -- (\rightpos+.5,0);	% box bottom
+	\draw (\leftpos-.5,1.5) -- (\rightpos+.5,1.5);	% box top
+	\draw (\leftpos-.5,0) -- (\leftpos-.5, 1.5);		% left end
+	\draw (\rightpos+.5,0) -- (\rightpos+.5, 1.5);	% right end
+%	\node at (\leftpos,1.5) {\tiny#1};
+%	\draw(\rightpos,1.5) node{\tiny#2};
+
+    \pgfmathsetmacro\posn{32-#1+(#1-#2)/2}
+    \node at (\posn,.75) {\small#3};            % the field label
+}
+
+% #1 MSB position
+% #2 LSB position
+\newcommand\DrawInsnBoxCastle[2]{
+	\pgfmathsetmacro\leftpos{int(32-#1)}
+	\pgfmathsetmacro\rightpos{int(32-#2)}
+	\draw (\leftpos-.5,0) -- (\leftpos-.5, .5);		% left end
+	\draw (\rightpos+.5,0) -- (\rightpos+.5, .5);	% right end
+	\node at (\leftpos,.5) {\tiny#1};
+	\draw(\rightpos,.5) node{\tiny#2};
+}
+\newcommand\DrawInsnBoxCastleRtype{
+	\DrawInsnBoxCastle{31}{25}
+	\DrawInsnBoxCastle{24}{20}
+	\DrawInsnBoxCastle{19}{15}
+	\DrawInsnBoxCastle{14}{12}
+	\DrawInsnBoxCastle{11}{7}
+	\DrawInsnBoxCastle{6}{0}
+}
+
+
+\newcommand\DrawInsnBoxLabelsBtype{
+	\DrawInsnBoxRel{31}{25}{imm[12\textbar10:5]}
+	\DrawInsnBoxRel{24}{20}{rs2}
+	\DrawInsnBoxRel{19}{15}{rs1}
+	\DrawInsnBoxRel{14}{12}{funct3}
+	\DrawInsnBoxRel{11}{7}{imm[4:1\textbar11]}
+	\DrawInsnBoxRel{6}{0}{opcode}
+	\draw(33,.75) node[right]{\hyperref[insnformat:btype]{B-type}};
+}
+\newcommand\DrawInsnBoxLabelsRtype{
+	\DrawInsnBoxRel{31}{25}{funct7}
+	\DrawInsnBoxRel{24}{20}{rs2}
+	\DrawInsnBoxRel{19}{15}{rs1}
+	\DrawInsnBoxRel{14}{12}{funct3}
+	\DrawInsnBoxRel{11}{7}{rd}
+	\DrawInsnBoxRel{6}{0}{opcode}
+	\draw(33,.75) node[right]{\hyperref[insnformat:rtype]{R-type}};
+}
+\newcommand\DrawInsnBoxLabelsItype{
+	\DrawInsnBoxRel{31}{20}{imm[11:0]}
+	\DrawInsnBoxRel{19}{15}{rs1}
+	\DrawInsnBoxRel{14}{12}{funct3}
+	\DrawInsnBoxRel{11}{7}{rd}
+	\DrawInsnBoxRel{6}{0}{opcode}
+	\draw(33,.75) node[right]{\hyperref[insnformat:itype]{I-type}};
+}
+\newcommand\DrawInsnBoxLabelsStype{
+    \DrawInsnBoxRel{31}{25}{imm[11:5]}
+    \DrawInsnBoxRel{24}{20}{rs2}
+    \DrawInsnBoxRel{19}{15}{rs1}
+    \DrawInsnBoxRel{14}{12}{funct3}
+    \DrawInsnBoxRel{11}{7}{imm[4:0]}
+    \DrawInsnBoxRel{6}{0}{opcode}
+	\draw(33,.75) node[right]{\hyperref[insnformat:stype]{S-type}};
+}
+\newcommand\DrawInsnBoxLabelsUtype{
+	\DrawInsnBoxRel{31}{12}{imm[31:12]}
+	\DrawInsnBoxRel{11}{7}{rd}
+	\DrawInsnBoxRel{6}{0}{opcode}
+	\draw(33,.75) node[right]{\hyperref[insnformat:utype]{U-type}};
+}
+\newcommand\DrawInsnBoxLabelsJtype{
+	\DrawInsnBoxRel{31}{12}{imm[20\textbar10:1\textbar11\textbar19:12]}
+	\DrawInsnBoxRel{11}{7}{rd}
+	\DrawInsnBoxRel{6}{0}{opcode}
+	\draw(33,.75) node[right]{\hyperref[insnformat:jtype]{J-type}};
+}
+
+\newcommand\DrawAllInsnTypes{
+	\BeginTikzPicture
+	\DrawInsnBoxLabelsRtype
+	\begin{scope}[shift={(0,-1.5)}]\DrawInsnBoxLabelsItype\end{scope}
+	\begin{scope}[shift={(0,-3)}]\DrawInsnBoxLabelsStype\end{scope}
+	\begin{scope}[shift={(0,-4.5)}]\DrawInsnBoxLabelsBtype\end{scope}
+	\begin{scope}[shift={(0,-6)}]\DrawInsnBoxLabelsUtype\end{scope}
+	\begin{scope}[shift={(0,-7.5)}]\DrawInsnBoxLabelsJtype\end{scope}
+
+	\begin{scope}[shift={(0,1.5)}]
+		\DrawInsnBoxCastleRtype
+	\end{scope}
+
+	\EndTikzPicture
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Print the characters within a string evenly spaced at integral node positions
+% #1 The string of characters to plot
+\newcommand\DrawBitstringX[1]{
+	\StrLen{#1}[\numchars]
+	\pgfmathsetmacro\num{int(\numchars-1)}
+	\foreach \x in {1,2,...,\numchars}
+    	\draw(\x,0) node{\substring{#1}{\x}{\x}};
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 opcode
+% #2 func3
+% #3 mneumonic
+\newcommand\DrawInsnOpBType[3]{
+	\DrawInsnBoxRel{31}{25}{imm[12\textbar10:5]}
+	\DrawInsnBoxRel{24}{20}{rs2}
+	\DrawInsnBoxRel{19}{15}{rs1}
+	\DrawInsnBoxRel{14}{12}{}
+	\DrawInsnBoxRel{11}{7}{imm[4:1\textbar11]}
+	\DrawInsnBoxRel{6}{0}{}
+	\draw(33,.75) node[right]{#3};
+
+	\begin{scope}[shift={(31-6,.75)}]\DrawBitstringX{#1}\end{scope}
+	\begin{scope}[shift={(31-14,.75)}]\DrawBitstringX{#2}\end{scope}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 opcode
+% #2 func3
+% #3 mneumonic
+\newcommand\DrawInsnOpIType[3]{
+	\DrawInsnBoxRel{31}{20}{imm[11:0]}
+	\DrawInsnBoxRel{19}{15}{rs1}
+	\DrawInsnBoxRel{14}{12}{}
+	\DrawInsnBoxRel{11}{7}{rd}
+	\DrawInsnBoxRel{6}{0}{}
+	\draw(33,.75) node[right]{#3};
+
+	\begin{scope}[shift={(31-6,.75)}]\DrawBitstringX{#1}\end{scope}
+	\begin{scope}[shift={(31-14,.75)}]\DrawBitstringX{#2}\end{scope}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 opcode
+% #2 func3
+% #3 mneumonic
+% #4 func7
+\newcommand\DrawInsnOpITypeShift[4]{
+    \DrawInsnBoxRel{31}{25}{}
+    \DrawInsnBoxRel{24}{20}{shamt}
+    \DrawInsnBoxRel{19}{15}{rs1}
+    \DrawInsnBoxRel{14}{12}{}
+    \DrawInsnBoxRel{11}{7}{rd}
+    \DrawInsnBoxRel{6}{0}{}
+	\draw(33,.75) node[right]{#3};
+
+	\begin{scope}[shift={(31-6,.75)}]\DrawBitstringX{#1}\end{scope}
+	\begin{scope}[shift={(31-14,.75)}]\DrawBitstringX{#2}\end{scope}
+	\begin{scope}[shift={(31-31,.75)}]\DrawBitstringX{#4}\end{scope}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 opcode
+% #2 func3
+% #3 mneumonic
+\newcommand\DrawInsnOpSType[3]{
+    \DrawInsnBoxRel{31}{25}{imm[11:5]}
+    \DrawInsnBoxRel{24}{20}{rs2}
+    \DrawInsnBoxRel{19}{15}{rs1}
+    \DrawInsnBoxRel{14}{12}{}
+    \DrawInsnBoxRel{11}{7}{imm[4:0]}
+    \DrawInsnBoxRel{6}{0}{}
+	\draw(33,.75) node[right]{#3};
+
+	\begin{scope}[shift={(31-6,.75)}]\DrawBitstringX{#1}\end{scope}
+	\begin{scope}[shift={(31-14,.75)}]\DrawBitstringX{#2}\end{scope}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 opcode
+% #2 func3
+% #3 mneumonic
+% #4 func7
+\newcommand\DrawInsnOpRType[4]{
+	\DrawInsnBoxRel{31}{25}{}
+	\DrawInsnBoxRel{24}{20}{rs2}
+	\DrawInsnBoxRel{19}{15}{rs1}
+	\DrawInsnBoxRel{14}{12}{}
+	\DrawInsnBoxRel{11}{7}{rd}
+	\DrawInsnBoxRel{6}{0}{}
+	\draw(33,.75) node[right]{#3};
+
+	\begin{scope}[shift={(31-6,.75)}]\DrawBitstringX{#1}\end{scope}
+	\begin{scope}[shift={(31-14,.75)}]\DrawBitstringX{#2}\end{scope}
+	\begin{scope}[shift={(31-31,.75)}]\DrawBitstringX{#4}\end{scope}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 opcode
+% #2 func3
+% #3 mneumonic
+\newcommand\DrawInsnOpFenceType[3]{
+	\DrawInsnBoxRel{31}{28}{fm}
+	\DrawInsnBoxRel{27}{24}{pred}
+	\DrawInsnBoxRel{23}{20}{succ}
+	\DrawInsnBoxRel{19}{15}{rs1}
+	\DrawInsnBoxRel{14}{12}{}
+	\DrawInsnBoxRel{11}{7}{rd}
+	\DrawInsnBoxRel{6}{0}{}
+	\draw(33,.75) node[right]{#3};
+
+	\begin{scope}[shift={(31-6,.75)}]\DrawBitstringX{#1}\end{scope}
+	\begin{scope}[shift={(31-14,.75)}]\DrawBitstringX{#2}\end{scope}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 opcode
+% #2 func12
+% #3 mneumonic
+\newcommand\DrawInsnOpSimType[3]{
+	\DrawInsnBoxRel{31}{20}{}
+	\DrawInsnBoxRel{19}{15}{}
+	\DrawInsnBoxRel{14}{12}{}
+	\DrawInsnBoxRel{11}{7}{}
+	\DrawInsnBoxRel{6}{0}{}
+	\draw(33,.75) node[right]{#3};
+
+	\begin{scope}[shift={(31-6,.75)}]\DrawBitstringX{#1}\end{scope}
+	\begin{scope}[shift={(31-11,.75)}]\DrawBitstringX{00000}\end{scope}
+	\begin{scope}[shift={(31-14,.75)}]\DrawBitstringX{000}\end{scope}
+	\begin{scope}[shift={(31-19,.75)}]\DrawBitstringX{00000}\end{scope}
+	\begin{scope}[shift={(31-31,.75)}]\DrawBitstringX{#2}\end{scope}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 opcode
+% #2 mneumonic
+\newcommand\DrawInsnOpUType[2]{
+	\DrawInsnBoxRel{31}{12}{imm[31:12]}
+	\DrawInsnBoxRel{11}{7}{rd}
+	\DrawInsnBoxRel{6}{0}{}
+	\draw(33,.75) node[right]{#2};
+
+	\begin{scope}[shift={(31-6,.75)}]\DrawBitstringX{#1}\end{scope}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 opcode
+% #2 mneumonic
+\newcommand\DrawInsnOpJType[2]{
+	\DrawInsnBoxRel{31}{12}{imm[20\textbar10:1\textbar11\textbar19:12]}
+	\DrawInsnBoxRel{11}{7}{rd}
+	\DrawInsnBoxRel{6}{0}{}
+	\draw(33,.75) node[right]{#2};
+
+	\begin{scope}[shift={(31-6,.75)}]\DrawBitstringX{#1}\end{scope}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand\DrawAllInsnOpsU{
+	\begin{scope}[shift={(0,0)}]\DrawInsnOpUType{0110111}{\hyperref[insn:lui]{lui}}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpUType{0010111}{\hyperref[insn:auipc]{auipc}}\end{scope}
+%	\begin{scope}[shift={(0,-1.5)}]\DrawHexMarkersRel{32}\end{scope}
+}
+\newcommand\DrawAllInsnOpsJAL{
+	\begin{scope}[shift={(0,0)}]\DrawInsnOpJType{1101111}{\hyperref[insn:jal]{jal}}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpIType{1100111}{000}{\hyperref[insn:jalr]{jalr}}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawHexMarkersRel{32}\end{scope}
+}
+\newcommand\DrawAllInsnOpsBranch{
+	\begin{scope}[shift={(0,0)}]\DrawInsnOpBType{1100011}{000}{\hyperref[insn:beq]{beq}}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpBType{1100011}{001}{\hyperref[insn:bne]{bne}}\end{scope}
+	\begin{scope}[shift={(0,-3)}]\DrawInsnOpBType{1100011}{100}{\hyperref[insn:blt]{blt}}\end{scope}
+	\begin{scope}[shift={(0,-4.5)}]\DrawInsnOpBType{1100011}{101}{\hyperref[insn:bge]{bge}}\end{scope}
+	\begin{scope}[shift={(0,-6)}]\DrawInsnOpBType{1100011}{110}{\hyperref[insn:bltu]{bltu}}\end{scope}
+	\begin{scope}[shift={(0,-7.5)}]\DrawInsnOpBType{1100011}{111}{\hyperref[insn:bgeu]{bgeu}}\end{scope}
+
+	\begin{scope}[shift={(0,-7.5)}]\DrawHexMarkersRel{32}\end{scope}
+}
+\newcommand\DrawAllInsnOpsLoad{
+	\begin{scope}[shift={(0,0)}]\DrawInsnOpIType{0000011}{000}{\hyperref[insn:lb]{lb}}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpIType{0000011}{001}{\hyperref[insn:lh]{lh}}\end{scope}
+	\begin{scope}[shift={(0,-3.0)}]\DrawInsnOpIType{0000011}{010}{\hyperref[insn:lw]{lw}}\end{scope}
+	\begin{scope}[shift={(0,-4.5)}]\DrawInsnOpIType{0000011}{100}{\hyperref[insn:lbu]{lbu}}\end{scope}
+	\begin{scope}[shift={(0,-6.0)}]\DrawInsnOpIType{0000011}{101}{\hyperref[insn:lhu]{lhu}}\end{scope}
+
+	\begin{scope}[shift={(0,-6.0)}]\DrawHexMarkersRel{32}\end{scope}
+}
+\newcommand\DrawAllInsnOpsStore{
+	\begin{scope}[shift={(0,0)}]\DrawInsnOpSType{0100011}{000}{\hyperref[insn:sb]{sb}}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpSType{0100011}{001}{\hyperref[insn:sh]{sh}}\end{scope}
+	\begin{scope}[shift={(0,-3.0)}]\DrawInsnOpSType{0100011}{010}{\hyperref[insn:sw]{sw}}\end{scope}
+
+	\begin{scope}[shift={(0,-3.0)}]\DrawHexMarkersRel{32}\end{scope}
+}
+\newcommand\DrawAllInsnOpsALUImm{
+	\begin{scope}[shift={(0,0)}]\DrawInsnOpIType{0010011}{000}{\hyperref[insn:addi]{addi}}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpIType{0010011}{010}{\hyperref[insn:slti]{slti}}\end{scope}
+	\begin{scope}[shift={(0,-3.0)}]\DrawInsnOpIType{0010011}{011}{\hyperref[insn:sltiu]{sltiu}}\end{scope}
+	\begin{scope}[shift={(0,-4.5)}]\DrawInsnOpIType{0010011}{100}{\hyperref[insn:xori]{xori}}\end{scope}
+	\begin{scope}[shift={(0,-6.0)}]\DrawInsnOpIType{0010011}{110}{\hyperref[insn:ori]{ori}}\end{scope}
+	\begin{scope}[shift={(0,-7.5)}]\DrawInsnOpIType{0010011}{111}{\hyperref[insn:andi]{andi}}\end{scope}
+
+	\begin{scope}[shift={(0,-7.5)}]\DrawHexMarkersRel{32}\end{scope}
+}
+\newcommand\DrawAllInsnOpsShiftImm{
+	\begin{scope}[shift={(0,0)}]\DrawInsnOpITypeShift{0010011}{001}{\hyperref[insn:slli]{slli}}{0000000}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpITypeShift{0010011}{101}{\hyperref[insn:srli]{srli}}{0000000}\end{scope}
+	\begin{scope}[shift={(0,-3.0)}]\DrawInsnOpITypeShift{0010011}{101}{\hyperref[insn:srai]{srai}}{0100000}\end{scope}
+
+	\begin{scope}[shift={(0,-3.0)}]\DrawHexMarkersRel{32}\end{scope}
+}
+\newcommand\DrawAllInsnOpsALUR{
+	\begin{scope}[shift={(0,0)}]\DrawInsnOpRType{0110011}{000}{\hyperref[insn:add]{add}}{0000000}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpRType{0110011}{000}{\hyperref[insn:sub]{sub}}{0100000}\end{scope}
+	\begin{scope}[shift={(0,-3.0)}]\DrawInsnOpRType{0110011}{001}{\hyperref[insn:sll]{sll}}{0000000}\end{scope}
+	\begin{scope}[shift={(0,-4.5)}]\DrawInsnOpRType{0110011}{010}{\hyperref[insn:slt]{slt}}{0000000}\end{scope}
+	\begin{scope}[shift={(0,-6.0)}]\DrawInsnOpRType{0110011}{011}{\hyperref[insn:sltu]{sltu}}{0000000}\end{scope}
+	\begin{scope}[shift={(0,-7.5)}]\DrawInsnOpRType{0110011}{100}{\hyperref[insn:xor]{xor}}{0000000}\end{scope}
+	\begin{scope}[shift={(0,-9.0)}]\DrawInsnOpRType{0110011}{101}{\hyperref[insn:srl]{srl}}{0000000}\end{scope}
+	\begin{scope}[shift={(0,-10.5)}]\DrawInsnOpRType{0110011}{101}{\hyperref[insn:sra]{sra}}{0100000}\end{scope}
+	\begin{scope}[shift={(0,-12.0)}]\DrawInsnOpRType{0110011}{110}{\hyperref[insn:or]{or}}{0000000}\end{scope}
+	\begin{scope}[shift={(0,-13.5)}]\DrawInsnOpRType{0110011}{111}{\hyperref[insn:and]{and}}{0000000}\end{scope}
+
+	\begin{scope}[shift={(0,-13.5)}]\DrawHexMarkersRel{32}\end{scope}
+}
+\newcommand\DrawAllInsnOpsFence{
+	\begin{scope}[shift={(0,0)}]\DrawInsnOpFenceType{0001111}{000}{\hyperref[insn:fence]{fence}}\end{scope}
+	%\begin{scope}[shift={(0,0)}]\DrawHexMarkersRel{32}\end{scope}
+}
+\newcommand\DrawAllInsnOpsSim{
+	\begin{scope}[shift={(0,0)}]\DrawInsnOpSimType{1110011}{000000000000}{\hyperref[insn:ecall]{ecall}}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpSimType{1110011}{000000000001}{\hyperref[insn:ebreak]{ebreak}}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawHexMarkersRel{32}\end{scope}
+}
+
+\newcommand\DrawAllInsnOps{
+	\BeginTikzPicture
+	\begin{scope}[shift={(0,1.5)}]\DrawInsnBoxCastleRtype\end{scope}
+	\begin{scope}[shift={(0,0)}]\DrawAllInsnOpsU\end{scope}
+	\begin{scope}[shift={(0,-3.0)}]\DrawAllInsnOpsJAL\end{scope}
+	\begin{scope}[shift={(0,-6.2)}]\DrawAllInsnOpsBranch\end{scope}
+	\begin{scope}[shift={(0,-15.4)}]\DrawAllInsnOpsLoad\end{scope}
+	\begin{scope}[shift={(0,-23.1)}]\DrawAllInsnOpsStore\end{scope}
+	\begin{scope}[shift={(0,-27.8)}]\DrawAllInsnOpsALUImm\end{scope}
+	\begin{scope}[shift={(0,-37.0)}]\DrawAllInsnOpsShiftImm\end{scope}
+	\begin{scope}[shift={(0,-41.7)}]\DrawAllInsnOpsALUR\end{scope}
+
+	\begin{scope}[shift={(0,-56.9)}]\DrawAllInsnOpsFence\end{scope}
+	\begin{scope}[shift={(0,-58.4)}]\DrawAllInsnOpsSim\end{scope}
+
+	\EndTikzPicture
+}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
