@@ -18,7 +18,8 @@
 % #2 The string to print
 \newcommand\DrawBitstring[2]{
 \foreach \x in {1,...,#1}%
-   	\draw(\x,0) node{\substring{#2}{\x}{\x}};%
+	\draw(\x,0) node{\substring{#2}{\x}{\x}};%
+%	\draw(\x,.5) node[text width = 10, text height = 1]{\substring{#2}{\x}{\x}};%	Improve vertical text alignment
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -226,11 +227,11 @@
 %
 % #1 The number of characters in the string
 % #2 The string of characters to plot
+% #3 Right-side label
 \newcommand\DrawInsnBitstring[3]{
 	\pgfmathsetmacro\num{int(#1-1)}
 	\foreach \x in {1,2,...,#1}
-    	\draw(\x,0) node{\substring{#2}{\x}{\x}};
-
+    	\draw(\x+.25,-.3) node[text width = 10, text height = 1]{\substring{#2}{\x}{\x}};
 	\draw(#1+1,0) node[right]{#3};
 }
 
@@ -238,7 +239,7 @@
 % Draw a bit-separator line with labels at the given bit-offset (from the right)
 %
 % #1 Total box width
-% #2 The position that the sepatator will be drawn to the left.
+% #2 The position that the separator will be drawn to the left.
 \newcommand\DrawInsnBoxSep[2]{
 	\draw (#1-#2-.5,-.75) -- (#1-#2-.5, 1.5);
 	\node at (#1-#2,1.2) {\tiny#2};
@@ -328,23 +329,43 @@
 	\DrawInsnTypeUTikz{#2}
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 the binary encoding
+\newcommand\DrawInsnTypeJ[1]{
+	\StrLen{#1}[\numchars]
+	\begin{scope}[shift={(0,.75)}]	
+	\DrawInsnBitstring{\numchars}{#1}{\hyperref[insnformat:jtype]{J-type}}
+
+	\DrawInsnBoxSeg{\numchars}{31}{12}{imm[20\textbar10:1\textbar11\textbar19:12]}
+	\DrawInsnBoxSeg{\numchars}{11}{7}{rd}
+	\DrawInsnBoxSeg{\numchars}{6}{0}{opcode}
+%	\DrawHexMarkers{\numchars}
+	\end{scope}
+
+	% add some hint bits in for imm fields
+	\draw {[rounded corners=\SignBoxCornerRadius] (1.35, .15) -- (1.35, 1.35) -- (.65, 1.36) -- (.65, .15) -- cycle};	% sign bit
+	\draw (32-19-.5, 0) -- (32-19.5, .85);		% imm[19:12]
+	\draw (32-20-.5, 0) -- (32-20.5, .85);		% imm[11]
+	\DrawHexMarkersRel{\numchars}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % #1 the binary encoding
 \newcommand\DrawInsnTypeJTikz[1]{
 	\BeginTikzPicture
-	\StrLen{#1}[\numchars]
-	\DrawInsnBitstring{\numchars}{#1}{\hyperref[insnformat:jtype]{J-type}}
-	\DrawInsnBoxSeg{\numchars}{31}{12}{imm[20\textbar10:1\textbar11\textbar19:12]}
-	\DrawInsnBoxSeg{\numchars}{11}{7}{rd}
-	\DrawInsnBoxSeg{\numchars}{6}{0}{opcode}
+	\DrawInsnTypeJ{#1}
+%	\StrLen{#1}[\numchars]
+%	\DrawInsnBitstring{\numchars}{#1}{\hyperref[insnformat:jtype]{J-type}}
+%	\DrawInsnBoxSeg{\numchars}{31}{12}{imm[20\textbar10:1\textbar11\textbar19:12]}
+%	\DrawInsnBoxSeg{\numchars}{11}{7}{rd}
+%	\DrawInsnBoxSeg{\numchars}{6}{0}{opcode}
+%
+%	% add some hint bits in for imm fields
+%	\draw {[rounded corners=\SignBoxCornerRadius] (1.35, -.6) -- (1.35, .6) -- (.65, .6) -- (.65, -.6) -- cycle};	% sign bit
+%	\draw (32-19-.5, -.75) -- (32-19.5, .1);		% imm[19:12]
+%	\draw (32-20-.5, -.75) -- (32-20.5, .1);		% imm[11]
+%	\DrawHexMarkers{\numchars}
 
-	% add some hint bits in for imm fields
-	\draw {[rounded corners=\SignBoxCornerRadius] (1.35, -.6) -- (1.35, .6) -- (.65, .6) -- (.65, -.6) -- cycle};	% sign bit
-	\draw (32-19-.5, -.75) -- (32-19.5, .1);		% imm[19:12]
-	\draw (32-20-.5, -.75) -- (32-20.5, .1);		% imm[11]
-
-	\DrawHexMarkers{\numchars}
 	\EndTikzPicture
 }
 
@@ -605,36 +626,74 @@
 % #1 MSB position
 % #2 LSB position
 % #3 the segment label
-\newcommand\DrawInsnBoxRel[3]{
+\newcommand\DrawInsnBoxRelTop[3]{
 	\pgfmathsetmacro\leftpos{int(32-#1)}
 	\pgfmathsetmacro\rightpos{int(32-#2)}
-
-	\draw (\leftpos-.5,0) -- (\rightpos+.5,0);	% box bottom
 	\draw (\leftpos-.5,1.5) -- (\rightpos+.5,1.5);	% box top
-	\draw (\leftpos-.5,0) -- (\leftpos-.5, 1.5);		% left end
+	\draw (\leftpos-.5,0) -- (\leftpos-.5, 1.5);	% left end
 	\draw (\rightpos+.5,0) -- (\rightpos+.5, 1.5);	% right end
-%	\node at (\leftpos,1.5) {\tiny#1};
-%	\draw(\rightpos,1.5) node{\tiny#2};
-
-    \pgfmathsetmacro\posn{32-#1+(#1-#2)/2}
-    \node at (\posn,.75) {\small#3};            % the field label
+	\pgfmathsetmacro\posn{32-#1+(#1-#2)/2}
+	\node at (\posn,.75) {\small#3};				% the field label
 }
+
+% Draw only the bottom line of an instruction box with a baseline at zero
+% #1 MSB position
+% #2 LSB position
+\newcommand\DrawInsnBoxRelBottom[2]{
+	\pgfmathsetmacro\leftpos{int(32-#1)}
+	\pgfmathsetmacro\rightpos{int(32-#2)}
+	\draw (\leftpos-.5,0) -- (\rightpos+.5,0);		% box bottom
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Draw an instruction box with a baseline at zero
+% #1 MSB position
+% #2 LSB position
+% #3 the segment label
+\newcommand\DrawInsnBoxRel[3]{
+	\DrawInsnBoxRelTop{#1}{#2}{#3}
+	\DrawInsnBoxRelBottom{#1}{#2}
+}
+
+%\newcommand\DrawInsnBoxRel[3]{
+%	\pgfmathsetmacro\leftpos{int(32-#1)}
+%	\pgfmathsetmacro\rightpos{int(32-#2)}
+%
+%	\draw (\leftpos-.5,0) -- (\rightpos+.5,0);	% box bottom
+%	\draw (\leftpos-.5,1.5) -- (\rightpos+.5,1.5);	% box top
+%	\draw (\leftpos-.5,0) -- (\leftpos-.5, 1.5);		% left end
+%	\draw (\rightpos+.5,0) -- (\rightpos+.5, 1.5);	% right end
+%
+%    \pgfmathsetmacro\posn{32-#1+(#1-#2)/2}
+%    \node at (\posn,.75) {\small#3};            % the field label
+%}
 
 % #1 MSB position
 % #2 LSB position
 \newcommand\DrawInsnBoxCastle[2]{
 	\pgfmathsetmacro\leftpos{int(32-#1)}
 	\pgfmathsetmacro\rightpos{int(32-#2)}
-	\draw (\leftpos-.5,0) -- (\leftpos-.5, .5);		% left end
-	\draw (\rightpos+.5,0) -- (\rightpos+.5, .5);	% right end
+	\draw (\leftpos-.5,0) -- (\leftpos-.5, .75);		% left end
+	\draw (\rightpos+.5,0) -- (\rightpos+.5, .75);	% right end
 	\node at (\leftpos,.5) {\tiny#1};
-	\draw(\rightpos,.5) node{\tiny#2};
+	\ifthenelse{\equal{#1}{#2}}
+	{}
+	{ \draw(\rightpos,.5) node{\tiny#2}; }
 }
 \newcommand\DrawInsnBoxCastleRtype{
 	\DrawInsnBoxCastle{31}{25}
 	\DrawInsnBoxCastle{24}{20}
 	\DrawInsnBoxCastle{19}{15}
 	\DrawInsnBoxCastle{14}{12}
+	\DrawInsnBoxCastle{11}{7}
+	\DrawInsnBoxCastle{6}{0}
+}
+
+\newcommand\DrawInsnBoxCastleJtype{
+	\DrawInsnBoxCastle{31}{31}
+	\DrawInsnBoxCastle{30}{21}
+	\DrawInsnBoxCastle{20}{20}
+	\DrawInsnBoxCastle{19}{12}
 	\DrawInsnBoxCastle{11}{7}
 	\DrawInsnBoxCastle{6}{0}
 }
@@ -711,7 +770,8 @@
 	\StrLen{#1}[\numchars]
 	\pgfmathsetmacro\num{int(\numchars-1)}
 	\foreach \x in {1,2,...,\numchars}
-    	\draw(\x,0) node{\substring{#1}{\x}{\x}};
+%    	\draw(\x,0) node{\substring{\strut #1}{\x}{\x}};
+		\draw(\x+.25,.5) node[text width = 10, text height = 1]{\substring{#1}{\x}{\x}};
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -727,8 +787,8 @@
 	\DrawInsnBoxRel{6}{0}{}
 	\draw(33,.75) node[right]{#3};
 
-	\begin{scope}[shift={(31-6,.75)}]\DrawBitstringX{#1}\end{scope}
-	\begin{scope}[shift={(31-14,.75)}]\DrawBitstringX{#2}\end{scope}
+	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{#1}\end{scope}
+	\begin{scope}[shift={(31-14,0)}]\DrawBitstringX{#2}\end{scope}
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % #1 opcode
@@ -742,8 +802,8 @@
 	\DrawInsnBoxRel{6}{0}{}
 	\draw(33,.75) node[right]{#3};
 
-	\begin{scope}[shift={(31-6,.75)}]\DrawBitstringX{#1}\end{scope}
-	\begin{scope}[shift={(31-14,.75)}]\DrawBitstringX{#2}\end{scope}
+	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{#1}\end{scope}
+	\begin{scope}[shift={(31-14,0)}]\DrawBitstringX{#2}\end{scope}
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % #1 opcode
@@ -759,9 +819,9 @@
     \DrawInsnBoxRel{6}{0}{}
 	\draw(33,.75) node[right]{#3};
 
-	\begin{scope}[shift={(31-6,.75)}]\DrawBitstringX{#1}\end{scope}
-	\begin{scope}[shift={(31-14,.75)}]\DrawBitstringX{#2}\end{scope}
-	\begin{scope}[shift={(31-31,.75)}]\DrawBitstringX{#4}\end{scope}
+	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{#1}\end{scope}
+	\begin{scope}[shift={(31-14,0)}]\DrawBitstringX{#2}\end{scope}
+	\begin{scope}[shift={(31-31,0)}]\DrawBitstringX{#4}\end{scope}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -777,8 +837,8 @@
     \DrawInsnBoxRel{6}{0}{}
 	\draw(33,.75) node[right]{#3};
 
-	\begin{scope}[shift={(31-6,.75)}]\DrawBitstringX{#1}\end{scope}
-	\begin{scope}[shift={(31-14,.75)}]\DrawBitstringX{#2}\end{scope}
+	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{#1}\end{scope}
+	\begin{scope}[shift={(31-14,0)}]\DrawBitstringX{#2}\end{scope}
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % #1 opcode
@@ -794,16 +854,16 @@
 	\DrawInsnBoxRel{6}{0}{}
 	\draw(33,.75) node[right]{#3};
 
-	\begin{scope}[shift={(31-6,.75)}]\DrawBitstringX{#1}\end{scope}
-	\begin{scope}[shift={(31-14,.75)}]\DrawBitstringX{#2}\end{scope}
-	\begin{scope}[shift={(31-31,.75)}]\DrawBitstringX{#4}\end{scope}
+	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{#1}\end{scope}
+	\begin{scope}[shift={(31-14,0)}]\DrawBitstringX{#2}\end{scope}
+	\begin{scope}[shift={(31-31,0)}]\DrawBitstringX{#4}\end{scope}
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % #1 opcode
 % #2 func3
 % #3 mneumonic
 \newcommand\DrawInsnOpFenceType[3]{
-	\DrawInsnBoxRel{31}{28}{fm}
+	\DrawInsnBoxRel{31}{28}{}
 	\DrawInsnBoxRel{27}{24}{pred}
 	\DrawInsnBoxRel{23}{20}{succ}
 	\DrawInsnBoxRel{19}{15}{rs1}
@@ -812,8 +872,8 @@
 	\DrawInsnBoxRel{6}{0}{}
 	\draw(33,.75) node[right]{#3};
 
-	\begin{scope}[shift={(31-6,.75)}]\DrawBitstringX{#1}\end{scope}
-	\begin{scope}[shift={(31-14,.75)}]\DrawBitstringX{#2}\end{scope}
+	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{#1}\end{scope}
+	\begin{scope}[shift={(31-14,0)}]\DrawBitstringX{#2}\end{scope}
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % #1 opcode
@@ -827,11 +887,11 @@
 	\DrawInsnBoxRel{6}{0}{}
 	\draw(33,.75) node[right]{#3};
 
-	\begin{scope}[shift={(31-6,.75)}]\DrawBitstringX{#1}\end{scope}
-	\begin{scope}[shift={(31-11,.75)}]\DrawBitstringX{00000}\end{scope}
-	\begin{scope}[shift={(31-14,.75)}]\DrawBitstringX{000}\end{scope}
-	\begin{scope}[shift={(31-19,.75)}]\DrawBitstringX{00000}\end{scope}
-	\begin{scope}[shift={(31-31,.75)}]\DrawBitstringX{#2}\end{scope}
+	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{#1}\end{scope}
+	\begin{scope}[shift={(31-11,0)}]\DrawBitstringX{00000}\end{scope}
+	\begin{scope}[shift={(31-14,0)}]\DrawBitstringX{000}\end{scope}
+	\begin{scope}[shift={(31-19,0)}]\DrawBitstringX{00000}\end{scope}
+	\begin{scope}[shift={(31-31,0)}]\DrawBitstringX{#2}\end{scope}
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % #1 opcode
@@ -842,7 +902,7 @@
 	\DrawInsnBoxRel{6}{0}{}
 	\draw(33,.75) node[right]{#2};
 
-	\begin{scope}[shift={(31-6,.75)}]\DrawBitstringX{#1}\end{scope}
+	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{#1}\end{scope}
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % #1 opcode
@@ -853,7 +913,8 @@
 	\DrawInsnBoxRel{6}{0}{}
 	\draw(33,.75) node[right]{#2};
 
-	\begin{scope}[shift={(31-6,.75)}]\DrawBitstringX{#1}\end{scope}
+	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{#1}\end{scope}
+
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -953,6 +1014,120 @@
 	\EndTikzPicture
 }
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\BitBoxArrowInset{-.2}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 MSB position
+% #2 width
+\newcommand\InsnBoxFieldWidthArrow[2]{
+	\pgfmathsetmacro\result{int(31-#1)}			% Calculate the left end position
+	\begin{scope}[shift={(\result,-.5)}]		% Move to left end of arrow & below origin
+    	\pgfmathsetmacro\result{#2*.5+.5}		% the center position
+    	\node at (\result,0) {\tiny#2};			% size below the box
+
+		\ifthenelse{#2 > 9}
+		{ \pgfmathsetmacro\Inset{0.4} }
+		{ 
+			\ifthenelse{#2 > 1} 
+			{ \pgfmathsetmacro\Inset{0.25} }
+			{ \pgfmathsetmacro\Inset{0.15} }
+		}
+
+    	\draw[->] (\result+\Inset,0) -- (#2+.49,0);		% arrow to the right
+    	\draw[->] (\result-\Inset,0) -- (.51,0);		% arrow to the left
+	\end{scope}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\DrawInsnOpJTypeDecoding{
+	\BeginTikzPicture
+
+%	\begin{scope}[shift={(0,1.5)}]\DrawInsnBoxCastleJtype\end{scope}
+%	\begin{scope}[shift={(0,0)}]\DrawInsnOpJType{1101111}{\hyperref[insn:jal]{jal}}\end{scope}
+
+	\begin{scope}[shift={(0,-1.5)}]
+%	\DrawInsnBoxRel{31}{12}{}
+%	\DrawInsnBoxRel{11}{7}{rd}
+%	\DrawInsnBoxRel{6}{0}{}
+%	\draw(33,.75) node[right]{jal};
+%	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{1101111}\end{scope}
+
+%	\begin{scope}[shift={(31-31,0)}]\DrawBitstringX{abcdefghijklmnopqrst}\end{scope}
+
+	\DrawInsnTypeJ{abcdefghijklmnopqrst001111101111}
+
+	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowInset}
+	\pgfmathsetmacro\ArrowSouth{-16-\BitBoxArrowInset}
+
+	\draw[blue,->](1,\ArrowNorth)to[out=270,in=90](1,\ArrowSouth);	% 20
+	\draw[blue,->](1,\ArrowNorth)to[out=270,in=90](2,\ArrowSouth);	% sign extend
+	\draw[blue,->](1,\ArrowNorth)to[out=270,in=90](3,\ArrowSouth);	% sign extend
+	\draw[blue,->](1,\ArrowNorth)to[out=270,in=90](4,\ArrowSouth);	% sign extend
+	\draw[blue,->](1,\ArrowNorth)to[out=270,in=90](5,\ArrowSouth);	% sign extend
+	\draw[blue,->](1,\ArrowNorth)to[out=270,in=90](6,\ArrowSouth);	% sign extend
+	\draw[blue,->](1,\ArrowNorth)to[out=270,in=90](7,\ArrowSouth);	% sign extend
+	\draw[blue,->](1,\ArrowNorth)to[out=270,in=90](8,\ArrowSouth);	% sign extend
+	\draw[blue,->](1,\ArrowNorth)to[out=270,in=90](9,\ArrowSouth);	% sign extend
+	\draw[blue,->](1,\ArrowNorth)to[out=270,in=90](10,\ArrowSouth);	% sign extend
+	\draw[blue,->](1,\ArrowNorth)to[out=270,in=90](11,\ArrowSouth);	% sign extend
+	\draw[blue,->](1,\ArrowNorth)to[out=270,in=90](12,\ArrowSouth);	% sign extend
+
+	\draw[blue,->](13,\ArrowNorth)to[out=270,in=90](13,\ArrowSouth);	% 19
+	\draw[blue,->](14,\ArrowNorth)to[out=270,in=90](14,\ArrowSouth);	% 18
+	\draw[blue,->](15,\ArrowNorth)to[out=270,in=90](15,\ArrowSouth);	% 17
+	\draw[blue,->](16,\ArrowNorth)to[out=270,in=90](16,\ArrowSouth);	% 16
+	\draw[blue,->](17,\ArrowNorth)to[out=270,in=90](17,\ArrowSouth);	% 15
+	\draw[blue,->](18,\ArrowNorth)to[out=270,in=90](18,\ArrowSouth);	% 14
+	\draw[blue,->](19,\ArrowNorth)to[out=270,in=90](19,\ArrowSouth);	% 13
+	\draw[blue,->](20,\ArrowNorth)to[out=270,in=90](20,\ArrowSouth);	% 12
+
+	\draw[blue,->](12,\ArrowNorth)to[out=270,in=90](21,\ArrowSouth);	% 11
+
+	\draw[blue,->](2,\ArrowNorth)to[out=270,in=90](22,\ArrowSouth);		% 10
+	\draw[blue,->](3,\ArrowNorth)to[out=270,in=90](23,\ArrowSouth);		% 9
+	\draw[blue,->](4,\ArrowNorth)to[out=270,in=90](24,\ArrowSouth);		% 8
+	\draw[blue,->](5,\ArrowNorth)to[out=270,in=90](25,\ArrowSouth);		% 7
+	\draw[blue,->](6,\ArrowNorth)to[out=270,in=90](26,\ArrowSouth);		% 6
+	\draw[blue,->](7,\ArrowNorth)to[out=270,in=90](27,\ArrowSouth);		% 5
+	\draw[blue,->](8,\ArrowNorth)to[out=270,in=90](28,\ArrowSouth);		% 4
+	\draw[blue,->](9,\ArrowNorth)to[out=270,in=90](29,\ArrowSouth);		% 3
+	\draw[blue,->](10,\ArrowNorth)to[out=270,in=90](30,\ArrowSouth);	% 2
+	\draw[blue,->](11,\ArrowNorth)to[out=270,in=90](31,\ArrowSouth);	% 1
+
+	\draw[blue,->](32,\ArrowSouth+1)to[out=270,in=90](32,\ArrowSouth);	% 0 (special case)
+	\node at (32,\ArrowSouth+2) {0};
+
+	\begin{scope}[shift={(0,0)}]\DrawHexMarkersRel{32}\end{scope}
+	\end{scope}
+
+	\begin{scope}[shift={(0,-19.75)}]
+		\begin{scope}[shift={(0,1.5)}]
+			\DrawInsnBoxCastle{31}{20}
+			\DrawInsnBoxCastle{19}{12}
+			\DrawInsnBoxCastle{11}{11}
+			\DrawInsnBoxCastle{10}{1}
+			\DrawInsnBoxCastle{0}{0}
+		\end{scope}
+		\DrawInsnBoxRel{31}{0}{}
+
+		\begin{scope}[shift={(0,0)}]\DrawBitstringX{aaaaaaaaaaaamnopqrstlbcdefghijk0}\end{scope}
+		\begin{scope}[shift={(0,0)}]\DrawHexMarkersRel{32}\end{scope}
+
+		\InsnBoxFieldWidthArrow{31}{12}
+%		\InsnBoxFieldWidthArrow{20}{1}
+		\InsnBoxFieldWidthArrow{19}{8}
+		\InsnBoxFieldWidthArrow{11}{1}
+		\InsnBoxFieldWidthArrow{10}{10}
+		\InsnBoxFieldWidthArrow{0}{1}
+	\end{scope}
+
+
+
+
+	\EndTikzPicture
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

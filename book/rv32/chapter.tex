@@ -355,32 +355,22 @@ being constructed, a zero-bit will be added to the \acrshort{lsb}
 and the value in bit-position 20 will be replicated to sign-extend the 
 value to \Gls{xlen} bits as discussed in \autoref{extension:slzr}.
 
+
 If \Gls{xlen}=32 then the {\em imm} value in this example will be converted as 
 shown below.
 
-\DrawBitBoxSignLeftZeroRightExtendedPicture{32}{01000000110111001001}{1}
+\DrawInsnOpJTypeDecoding
 
-%$00111001001110000001_2$ (\verb@39381@$_16$) to
-%$00000000000010000001101110010010_2$ (\verb@00081b92@$_16$).
+%\DrawBitBoxSignLeftZeroRightExtendedPicture{32}{01000000110111001001}{1}
 %
-%If \Gls{xlen}=64 then the imm value in this example will be converted to\\
-%$0000000000000000000000000000000000000000000010000001101110010010_2$ 
-%(\verb@0000000000081b92@$_16$).
-
-A J-type example with a negative imm field:
-
-\DrawInsnTypeJTikz{10111001001110000001001111101111}
-
-If \Gls{xlen}=32 then the {\em imm} field in this example will be converted as 
-shown below.
-
-\DrawBitBoxSignLeftZeroRightExtendedPicture{32}{11000000110111001001}{1}
-
-%$10111001001110000001_2$ (\verb@b9381@$_16$) to
-%$1111111111111000 0001101110010010_2$ (\verb@fff81b92@$_16$).
+%A J-type example with a negative imm field:
 %
-%If \Gls{xlen}=32 then the imm value in this example will be converted to
-%\verb@fffffffffff81b92@$_16$.
+%\DrawInsnTypeJTikz{10111001001110000001001111101111}
+%
+%If \Gls{xlen}=32 then the {\em imm} field in this example will be converted as 
+%shown below.
+%
+%\DrawBitBoxSignLeftZeroRightExtendedPicture{32}{11000000110111001001}{1}
 
 The J-type format is used by the Jump And Link instruction that calculates 
 a target address by adding a signed immediate value to the current program 
