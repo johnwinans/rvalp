@@ -1395,36 +1395,37 @@
 
 	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowInset}
 	\pgfmathsetmacro\ArrowSouth{-16-\BitBoxArrowInset}
-	\pgfmathsetmacro\ZeroNodeY{\ArrowSouth+2}
+	\pgfmathsetmacro\ZeroNodeY{\ArrowSouth+4}
+	\pgfmathsetmacro\ZeroNodeX{1}
 
-	\node at (0,\ZeroNodeY) {0};
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=90](1,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=90](2,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=90](3,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](4,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](5,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](6,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](7,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](8,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](9,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](10,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](11,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](12,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](13,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](14,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](15,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](16,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](17,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](18,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](19,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](20,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](21,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](22,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](23,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](24,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](25,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](26,\ArrowSouth);	
-	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](27,\ArrowSouth);	
+	\node at (\ZeroNodeX,\ZeroNodeY) {0};
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=90](1,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=90](2,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=90](3,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](4,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](5,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](6,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](7,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](8,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](9,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](10,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](11,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](12,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](13,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](14,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](15,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](16,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](17,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](18,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](19,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](20,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](21,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](22,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](23,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](24,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](25,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](26,\ArrowSouth);	
+	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](27,\ArrowSouth);	
 
 	\draw[blue,->](8,\ArrowNorth)to[out=270,in=90](28,\ArrowSouth);		% 4
 	\draw[blue,->](9,\ArrowNorth)to[out=270,in=90](29,\ArrowSouth);		% 3
