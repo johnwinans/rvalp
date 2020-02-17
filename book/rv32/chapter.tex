@@ -298,10 +298,15 @@ using the {\em imm} operand for bits 31:12 and then sign-extending it
 to the left\footnote{When XLEN is larger than 32.} and zero-extending 
 the LSBs as discussed in \autoref{extension:zr}.
 
-If \Gls{xlen}=32 then the imm value in this example will be
-converted as shown below.
+If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
+and converted as shown below.
 
-\DrawBitBoxSignLeftZeroRightExtendedPicture{32}{11010110000000000011}{12}
+\DrawInsnOpUTypeDecoding
+
+%If \Gls{xlen}=32 then the imm value in this example will be
+%converted as shown below.
+%
+%\DrawBitBoxSignLeftZeroRightExtendedPicture{32}{11010110000000000011}{12}
 
 Notice that the 20-bits of the imm field are mapped in the same order and 
 in the same relative position that they appear in the instruction when 
@@ -356,8 +361,8 @@ and the value in bit-position 20 will be replicated to sign-extend the
 value to \Gls{xlen} bits as discussed in \autoref{extension:slzr}.
 
 
-If \Gls{xlen}=32 then the {\em imm} value in this example will be converted as 
-shown below.
+If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
+and converted as shown below.
 
 \DrawInsnOpJTypeDecoding
 
@@ -395,15 +400,31 @@ representing the number of bit positions to shift:
 \label{insnformat:itype}
 \DrawInsnTypeITikz{00000000010000011000001110000011}
 
+If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
+and converted as shown below.
+
+\DrawInsnOpITypeDecoding
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{S Type}
 \label{insnformat:stype}
 \DrawInsnTypeSTikz{00000000111100011000100110100011}
 
+If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
+and converted as shown below.
+
+\DrawInsnOpSTypeDecoding
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{B Type}
 \label{insnformat:btype}
 \DrawInsnTypeBTikz{00000000111100011000100011100011}
+
+If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
+and converted as shown below.
+
+\DrawInsnOpBTypeDecoding
+
 
 %insnTypeF
 %insnTypeCSRR
