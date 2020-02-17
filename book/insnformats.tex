@@ -457,10 +457,10 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % #1 the binary encoding
-\newcommand\DrawInsnTypeRShiftTikz[1]{
+\newcommand\DrawInsnTypeIShiftTikz[1]{
 	\BeginTikzPicture
 	\StrLen{#1}[\numchars]
-	\DrawInsnBitstring{\numchars}{#1}{\hyperref[insnformat:rtype]{R-type}}
+	\DrawInsnBitstring{\numchars}{#1}{\hyperref[insnformat:rtype]{I-type}}
 	\DrawInsnBoxSeg{\numchars}{31}{25}{funct7}
 	\DrawInsnBoxSeg{\numchars}{24}{20}{shamt}
 	\DrawInsnBoxSeg{\numchars}{19}{15}{rs1}
@@ -474,7 +474,7 @@
 
 \newcommand\DrawInsnTypeRShiftPicture[2]{
 	\InsnStatement{#1}\\
-	\DrawInsnTypeRShiftTikz{#2}
+	\DrawInsnTypeIShiftTikz{#2}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -635,7 +635,7 @@
 
 \newcommand\TDrawInsnTypeRShiftPicture[5]{
 	\TInsnStatement{#1}{#2}{#3}{#4}\\
-	\DrawInsnTypeRShiftTikz{#5}
+	\DrawInsnTypeIShiftTikz{#5}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -783,7 +783,7 @@
 	\begin{scope}[shift={(0,-3)}]\DrawInsnBoxLabelsStype\end{scope}
 	\begin{scope}[shift={(0,-4.5)}]\DrawInsnBoxLabelsBtype\end{scope}
 	\begin{scope}[shift={(0,-6)}]\DrawInsnBoxLabelsUtype\end{scope}
-	\begin{scope}[shift={(0,-7.5)}]\DrawInsnBoxLabelsJtype\end{scope}
+	\begin{scope}[shift={(0,-7.5)}]\DrawInsnBoxLabelsJtype\DrawHexMarkersRel{32}\end{scope}
 
 	\begin{scope}[shift={(0,1.5)}]
 		\DrawInsnBoxCastleRtype
@@ -804,6 +804,11 @@
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand\InsnBoxTypePosY{33}
+\newcommand\InsnBoxMneumonicPosY{37}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % #1 opcode
 % #2 func3
 % #3 mneumonic
@@ -814,7 +819,8 @@
 	\DrawInsnBoxRel{14}{12}{}
 	\DrawInsnBoxRel{11}{7}{imm[4:1\textbar11]}
 	\DrawInsnBoxRel{6}{0}{}
-	\draw(33,.75) node[right]{#3};
+	\draw(\InsnBoxTypePosY,.75) node[right]{\hyperref[insnformat:itype]{B-type}};
+	\draw(\InsnBoxMneumonicPosY,.75) node[right]{#3};
 
 	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{#1}\end{scope}
 	\begin{scope}[shift={(31-14,0)}]\DrawBitstringX{#2}\end{scope}
@@ -829,7 +835,8 @@
 	\DrawInsnBoxRel{14}{12}{}
 	\DrawInsnBoxRel{11}{7}{rd}
 	\DrawInsnBoxRel{6}{0}{}
-	\draw(33,.75) node[right]{#3};
+	\draw(\InsnBoxTypePosY,.75) node[right]{\hyperref[insnformat:itype]{I-type}};
+	\draw(\InsnBoxMneumonicPosY,.75) node[right]{#3};
 
 	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{#1}\end{scope}
 	\begin{scope}[shift={(31-14,0)}]\DrawBitstringX{#2}\end{scope}
@@ -846,7 +853,8 @@
     \DrawInsnBoxRel{14}{12}{}
     \DrawInsnBoxRel{11}{7}{rd}
     \DrawInsnBoxRel{6}{0}{}
-	\draw(33,.75) node[right]{#3};
+	\draw(\InsnBoxTypePosY,.75) node[right]{\hyperref[insnformat:itype]{I-type}};
+	\draw(\InsnBoxMneumonicPosY,.75) node[right]{#3};
 
 	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{#1}\end{scope}
 	\begin{scope}[shift={(31-14,0)}]\DrawBitstringX{#2}\end{scope}
@@ -864,7 +872,8 @@
     \DrawInsnBoxRel{14}{12}{}
     \DrawInsnBoxRel{11}{7}{imm[4:0]}
     \DrawInsnBoxRel{6}{0}{}
-	\draw(33,.75) node[right]{#3};
+	\draw(\InsnBoxTypePosY,.75) node[right]{\hyperref[insnformat:stype]{S-type}};
+	\draw(\InsnBoxMneumonicPosY,.75) node[right]{#3};
 
 	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{#1}\end{scope}
 	\begin{scope}[shift={(31-14,0)}]\DrawBitstringX{#2}\end{scope}
@@ -881,7 +890,8 @@
 	\DrawInsnBoxRel{14}{12}{}
 	\DrawInsnBoxRel{11}{7}{rd}
 	\DrawInsnBoxRel{6}{0}{}
-	\draw(33,.75) node[right]{#3};
+	\draw(\InsnBoxTypePosY,.75) node[right]{\hyperref[insnformat:rtype]{R-type}};
+	\draw(\InsnBoxMneumonicPosY,.75) node[right]{#3};
 
 	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{#1}\end{scope}
 	\begin{scope}[shift={(31-14,0)}]\DrawBitstringX{#2}\end{scope}
@@ -899,7 +909,8 @@
 	\DrawInsnBoxRel{14}{12}{}
 	\DrawInsnBoxRel{11}{7}{rd}
 	\DrawInsnBoxRel{6}{0}{}
-	\draw(33,.75) node[right]{#3};
+%	\draw(\InsnBoxTypePosY,.75) node[right]{\hyperref[insnformat:rtype]{R-type}};
+	\draw(\InsnBoxMneumonicPosY,.75) node[right]{#3};
 
 	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{#1}\end{scope}
 	\begin{scope}[shift={(31-14,0)}]\DrawBitstringX{#2}\end{scope}
@@ -914,7 +925,8 @@
 	\DrawInsnBoxRel{14}{12}{}
 	\DrawInsnBoxRel{11}{7}{}
 	\DrawInsnBoxRel{6}{0}{}
-	\draw(33,.75) node[right]{#3};
+%	\draw(\InsnBoxTypePosY,.75) node[right]{\hyperref[insnformat:rtype]{R-type}};
+	\draw(\InsnBoxMneumonicPosY,.75) node[right]{#3};
 
 	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{#1}\end{scope}
 	\begin{scope}[shift={(31-11,0)}]\DrawBitstringX{00000}\end{scope}
@@ -929,7 +941,8 @@
 	\DrawInsnBoxRel{31}{12}{imm[31:12]}
 	\DrawInsnBoxRel{11}{7}{rd}
 	\DrawInsnBoxRel{6}{0}{}
-	\draw(33,.75) node[right]{#2};
+	\draw(\InsnBoxTypePosY,.75) node[right]{\hyperref[insnformat:utype]{U-type}};
+	\draw(\InsnBoxMneumonicPosY,.75) node[right]{#2};
 
 	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{#1}\end{scope}
 }
@@ -940,7 +953,8 @@
 	\DrawInsnBoxRel{31}{12}{imm[20\textbar10:1\textbar11\textbar19:12]}
 	\DrawInsnBoxRel{11}{7}{rd}
 	\DrawInsnBoxRel{6}{0}{}
-	\draw(33,.75) node[right]{#2};
+	\draw(\InsnBoxTypePosY,.75) node[right]{\hyperref[insnformat:jtype]{J-type}};
+	\draw(\InsnBoxMneumonicPosY,.75) node[right]{#2};
 
 	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{#1}\end{scope}
 
@@ -1134,6 +1148,7 @@
 			\DrawInsnBoxCastle{0}{0}
 		\end{scope}
 		\DrawInsnBoxRel{31}{0}{}
+		\draw(33,.5) node[text width = 10, text height = 1, right]{imm\_j};
 
 		\begin{scope}[shift={(0,0)}]\DrawBitstringX{aaaaaaaaaaaapqrstuvwnbcdefghjkm0}\end{scope}
 		\begin{scope}[shift={(0,0)}]\DrawHexMarkersRel{32}\end{scope}
@@ -1214,6 +1229,7 @@
 			\DrawInsnBoxCastle{0}{0}
 		\end{scope}
 		\DrawInsnBoxRel{31}{0}{}
+		\draw(33,.5) node[text width = 10, text height = 1, right]{imm\_b};
 
 		\begin{scope}[shift={(0,0)}]\DrawBitstringX{aaaaaaaaaaaaaaaaaaaanbcdefghjkm0}\end{scope}
 
@@ -1286,6 +1302,7 @@
 			\DrawInsnBoxCastle{4}{0}
 		\end{scope}
 		\DrawInsnBoxRel{31}{0}{}
+		\draw(33,.5) node[text width = 10, text height = 1, right]{imm\_s};
 
 		\begin{scope}[shift={(0,0)}]\DrawBitstringX{aaaaaaaaaaaaaaaaaaaaabcdefghjkmn}\end{scope}
 
@@ -1354,6 +1371,7 @@
 			\DrawInsnBoxCastle{4}{0}
 		\end{scope}
 		\DrawInsnBoxRel{31}{0}{}
+		\draw(33,.5) node[text width = 10, text height = 1, right]{imm\_i};
 
 		\begin{scope}[shift={(0,0)}]\DrawBitstringX{aaaaaaaaaaaaaaaaaaaaabcdefghjkmn}\end{scope}
 
@@ -1361,6 +1379,75 @@
 
 		\InsnBoxFieldWidthArrow{31}{12}
 		\InsnBoxFieldWidthArrow{11}{5}
+		\InsnBoxFieldWidthArrow{4}{0}
+	\end{scope}
+
+	\EndTikzPicture
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\DrawInsnOpIShiftTypeDecoding{
+	\BeginTikzPicture
+
+	\begin{scope}[shift={(0,-1.5)}]
+
+	\DrawInsnTypeI{0000010abcde00011000001110000011}
+
+	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowInset}
+	\pgfmathsetmacro\ArrowSouth{-16-\BitBoxArrowInset}
+	\pgfmathsetmacro\ZeroNodeY{\ArrowSouth+2}
+
+	\node at (0,\ZeroNodeY) {0};
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=90](1,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=90](2,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=90](3,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](4,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](5,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](6,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](7,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](8,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](9,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](10,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](11,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](12,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](13,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](14,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](15,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](16,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](17,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](18,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](19,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](20,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](21,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](22,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](23,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](24,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](25,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](26,\ArrowSouth);	
+	\draw[red,->](.5,\ZeroNodeY)to[out=0,in=110](27,\ArrowSouth);	
+
+	\draw[blue,->](8,\ArrowNorth)to[out=270,in=90](28,\ArrowSouth);		% 4
+	\draw[blue,->](9,\ArrowNorth)to[out=270,in=90](29,\ArrowSouth);		% 3
+	\draw[blue,->](10,\ArrowNorth)to[out=270,in=90](30,\ArrowSouth);	% 2
+	\draw[blue,->](11,\ArrowNorth)to[out=270,in=90](31,\ArrowSouth);	% 1
+	\draw[blue,->](12,\ArrowNorth)to[out=270,in=90](32,\ArrowSouth);	% 0
+
+	\begin{scope}[shift={(0,0)}]\DrawHexMarkersRel{32}\end{scope}
+	\end{scope}
+
+	\begin{scope}[shift={(0,-19.75)}]
+		\begin{scope}[shift={(0,1.5)}]
+			\DrawInsnBoxCastle{31}{5}
+			\DrawInsnBoxCastle{4}{0}
+		\end{scope}
+		\DrawInsnBoxRel{31}{0}{}
+		\draw(33,.5) node[text width = 10, text height = 1, right]{shamt\_i};
+
+		\begin{scope}[shift={(0,0)}]\DrawBitstringX{000000000000000000000000000abcde}\end{scope}
+
+		\begin{scope}[shift={(0,0)}]\DrawHexMarkersRel{32}\end{scope}
+
+		\InsnBoxFieldWidthArrow{31}{5}
 		\InsnBoxFieldWidthArrow{4}{0}
 	\end{scope}
 
@@ -1422,6 +1509,7 @@
 			\DrawInsnBoxCastle{11}{0}
 		\end{scope}
 		\DrawInsnBoxRel{31}{0}{}
+		\draw(33,.5) node[text width = 10, text height = 1, right]{imm\_u};
 
 		\begin{scope}[shift={(0,0)}]\DrawBitstringX{abcdefghjkmnpqrstuvw000000000000}\end{scope}
 

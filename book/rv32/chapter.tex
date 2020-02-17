@@ -273,8 +273,8 @@ This simplification can also allow it operate faster.
 \DrawInsnTypeUTikz{00000000000000000000000000000000}\\
 \DrawInsnTypeJTikz{00000000000000000000000000000000}\\
 \DrawInsnTypeITikz{00000000000000000000000000000000}\\
+\DrawInsnTypeIShiftTikz{00000000000000000000000000000000}\\
 \DrawInsnTypeSTikz{00000000000000000000000000000000}\\
-\DrawInsnTypeRShiftTikz{00000000000000000000000000000000}\\
 \DrawInsnTypeRTikz{00000000000000000000000000000000}
 \captionof{figure}{RISC-V instruction formats.}
 \label{Figure:riscvFormats}
@@ -301,7 +301,7 @@ the LSBs as discussed in \autoref{extension:zr}.
 If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
 and converted as shown below.
 
-\DrawInsnOpUTypeDecoding
+\label{imm.u:decode}\DrawInsnOpUTypeDecoding
 
 %If \Gls{xlen}=32 then the imm value in this example will be
 %converted as shown below.
@@ -364,7 +364,7 @@ value to \Gls{xlen} bits as discussed in \autoref{extension:slzr}.
 If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
 and converted as shown below.
 
-\DrawInsnOpJTypeDecoding
+\label{imm.j:decode}\DrawInsnOpJTypeDecoding
 
 %\DrawBitBoxSignLeftZeroRightExtendedPicture{32}{01000000110111001001}{1}
 %
@@ -383,17 +383,10 @@ counter.  Since no instruction can be placed at an odd address the 20-bit
 imm value is zero-extended to the right to represent a 21-bit signed offset 
 capable of representing numbers twice the magnitude of the 20-bit imm value.
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{R Type}
 \label{insnformat:rtype}
 \DrawInsnTypeRTikz{01000001111100011000001110110011}
-
-A special case of the R-type used for shift-immediate instructions where 
-the {\em rs2} field is used as an immediate value named {\em shamt} 
-representing the number of bit positions to shift:
-
-\DrawInsnTypeRShiftTikz{00000000001000011001001110100011}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{I Type}
@@ -403,7 +396,14 @@ representing the number of bit positions to shift:
 If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
 and converted as shown below.
 
-\DrawInsnOpITypeDecoding
+\label{imm.i:decode}\DrawInsnOpITypeDecoding
+
+A special case of the I-type used for shift-immediate instructions where 
+the {\em imm} field is used as an immediate value named {\em shamt} 
+representing the number of bit positions to shift:
+
+\label{shamt.i:decode}\DrawInsnOpIShiftTypeDecoding
+%\DrawInsnTypeIShiftTikz{00000000001000011001001110100011}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{S Type}
@@ -413,7 +413,7 @@ and converted as shown below.
 If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
 and converted as shown below.
 
-\DrawInsnOpSTypeDecoding
+\label{imm.s:decode}\DrawInsnOpSTypeDecoding
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{B Type}
@@ -423,7 +423,7 @@ and converted as shown below.
 If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
 and converted as shown below.
 
-\DrawInsnOpBTypeDecoding
+\label{imm.b:decode}\DrawInsnOpBTypeDecoding
 
 
 %insnTypeF
