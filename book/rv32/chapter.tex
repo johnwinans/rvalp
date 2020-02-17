@@ -388,6 +388,9 @@ capable of representing numbers twice the magnitude of the 20-bit imm value.
 \label{insnformat:rtype}
 \DrawInsnTypeRTikz{01000001111100011000001110110011}
 
+Note that bit 30 is used to select between the \verb@add@ and \verb@sub@ instructions
+as well as to select between arithmetic and logical shifting.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{I Type}
 \label{insnformat:itype}
@@ -403,6 +406,9 @@ the {\em imm} field is used as an immediate value named {\em shamt}
 representing the number of bit positions to shift:
 
 \label{shamt.i:decode}\DrawInsnOpIShiftTypeDecoding
+
+Note that bit 30 is used to select between arithmetic and logical shifting.
+
 %\DrawInsnTypeIShiftTikz{00000000001000011001001110100011}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
