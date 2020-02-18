@@ -301,6 +301,7 @@ the LSBs as discussed in \autoref{extension:zr}.
 If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
 and converted as shown below.
 
+%\index{imm\_u}
 \label{imm.u:decode}\DrawInsnOpUTypeDecoding
 
 %If \Gls{xlen}=32 then the imm value in this example will be
@@ -364,6 +365,7 @@ value to \Gls{xlen} bits as discussed in \autoref{extension:slzr}.
 If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
 and converted as shown below.
 
+%\index{imm\string_j}
 \label{imm.j:decode}\DrawInsnOpJTypeDecoding
 
 %\DrawBitBoxSignLeftZeroRightExtendedPicture{32}{01000000110111001001}{1}
@@ -399,12 +401,14 @@ as well as to select between arithmetic and logical shifting.
 If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
 and converted as shown below.
 
+%\index{imm\_i}
 \label{imm.i:decode}\DrawInsnOpITypeDecoding
 
 A special case of the I-type used for shift-immediate instructions where 
 the {\em imm} field is used as an immediate value named {\em shamt} 
 representing the number of bit positions to shift:
 
+%\index{shamt\_i}
 \label{shamt.i:decode}\DrawInsnOpIShiftTypeDecoding
 
 Note that bit 30 is used to select between arithmetic and logical shifting.
@@ -419,6 +423,7 @@ Note that bit 30 is used to select between arithmetic and logical shifting.
 If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
 and converted as shown below.
 
+%\index{imm\_s}
 \label{imm.s:decode}\DrawInsnOpSTypeDecoding
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -429,6 +434,7 @@ and converted as shown below.
 If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
 and converted as shown below.
 
+%\index{imm\_b}
 \label{imm.b:decode}\DrawInsnOpBTypeDecoding
 
 
