@@ -1090,7 +1090,7 @@
 
 	\begin{scope}[shift={(0,-1.5)}]
 
-	\DrawInsnTypeJ{abcdefghjkmnpqrstuvw001111101111}
+	\DrawInsnTypeJ{abcdefghijklmnopqrst001111101111}
 
 	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowInset}
 	\pgfmathsetmacro\ArrowSouth{-16-\BitBoxArrowInset}
@@ -1150,7 +1150,7 @@
 		\DrawInsnBoxRel{31}{0}{}
 		\draw(33,.5) node[text width = 10, text height = 1, right]{imm\_j};
 
-		\begin{scope}[shift={(0,0)}]\DrawBitstringX{aaaaaaaaaaaapqrstuvwnbcdefghjkm0}\end{scope}
+		\begin{scope}[shift={(0,0)}]\DrawBitstringX{aaaaaaaaaaaamnopqrstlbcdefghijk0}\end{scope}
 		\begin{scope}[shift={(0,0)}]\DrawHexMarkersRel{32}\end{scope}
 
 		\InsnBoxFieldWidthArrow{31}{21}
@@ -1170,7 +1170,7 @@
 
 	\begin{scope}[shift={(0,-1.5)}]
 
-	\DrawInsnTypeB{abcdefg0111100011000hjkmn1100011}
+	\DrawInsnTypeB{abcdefg0111100011000uvwxy1100011}
 
 	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowInset}
 	\pgfmathsetmacro\ArrowSouth{-16-\BitBoxArrowInset}
@@ -1231,7 +1231,7 @@
 		\DrawInsnBoxRel{31}{0}{}
 		\draw(33,.5) node[text width = 10, text height = 1, right]{imm\_b};
 
-		\begin{scope}[shift={(0,0)}]\DrawBitstringX{aaaaaaaaaaaaaaaaaaaanbcdefghjkm0}\end{scope}
+		\begin{scope}[shift={(0,0)}]\DrawBitstringX{aaaaaaaaaaaaaaaaaaaaybcdefguvwx0}\end{scope}
 
 		\begin{scope}[shift={(0,0)}]\DrawHexMarkersRel{32}\end{scope}
 
@@ -1252,7 +1252,7 @@
 
 	\begin{scope}[shift={(0,-1.5)}]
 
-	\DrawInsnTypeS{abcdefg0111100011000hjkmn0100011}
+	\DrawInsnTypeS{abcdefg0111100011000uvwxy0100011}
 
 	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowInset}
 	\pgfmathsetmacro\ArrowSouth{-16-\BitBoxArrowInset}
@@ -1304,7 +1304,7 @@
 		\DrawInsnBoxRel{31}{0}{}
 		\draw(33,.5) node[text width = 10, text height = 1, right]{imm\_s};
 
-		\begin{scope}[shift={(0,0)}]\DrawBitstringX{aaaaaaaaaaaaaaaaaaaaabcdefghjkmn}\end{scope}
+		\begin{scope}[shift={(0,0)}]\DrawBitstringX{aaaaaaaaaaaaaaaaaaaaabcdefguvwxy}\end{scope}
 
 		\begin{scope}[shift={(0,0)}]\DrawHexMarkersRel{32}\end{scope}
 
@@ -1322,7 +1322,7 @@
 
 	\begin{scope}[shift={(0,-1.5)}]
 
-	\DrawInsnTypeI{abcdefghjkmn00011000001110000011}
+	\DrawInsnTypeI{abcdefghijkl00011000001110000011}
 
 	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowInset}
 	\pgfmathsetmacro\ArrowSouth{-16-\BitBoxArrowInset}
@@ -1367,19 +1367,17 @@
 	\begin{scope}[shift={(0,-19.75)}]
 		\begin{scope}[shift={(0,1.5)}]
 			\DrawInsnBoxCastle{31}{12}
-			\DrawInsnBoxCastle{11}{5}
-			\DrawInsnBoxCastle{4}{0}
+			\DrawInsnBoxCastle{11}{0}
 		\end{scope}
 		\DrawInsnBoxRel{31}{0}{}
 		\draw(33,.5) node[text width = 10, text height = 1, right]{imm\_i};
 
-		\begin{scope}[shift={(0,0)}]\DrawBitstringX{aaaaaaaaaaaaaaaaaaaaabcdefghjkmn}\end{scope}
+		\begin{scope}[shift={(0,0)}]\DrawBitstringX{aaaaaaaaaaaaaaaaaaaaabcdefghijkl}\end{scope}
 
 		\begin{scope}[shift={(0,0)}]\DrawHexMarkersRel{32}\end{scope}
 
 		\InsnBoxFieldWidthArrow{31}{12}
-		\InsnBoxFieldWidthArrow{11}{5}
-		\InsnBoxFieldWidthArrow{4}{0}
+		\InsnBoxFieldWidthArrow{11}{0}
 	\end{scope}
 
 	\EndTikzPicture
@@ -1391,7 +1389,7 @@
 
 	\begin{scope}[shift={(0,-1.5)}]
 
-	\DrawInsnTypeI{0100000abcde00011000001110000011}
+	\DrawInsnTypeI{0100000hijkl00011000001110000011}
 
 	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowInset}
 	\pgfmathsetmacro\ArrowSouth{-16-\BitBoxArrowInset}
@@ -1444,7 +1442,7 @@
 		\DrawInsnBoxRel{31}{0}{}
 		\draw(33,.5) node[text width = 10, text height = 1, right]{shamt\_i};
 
-		\begin{scope}[shift={(0,0)}]\DrawBitstringX{000000000000000000000000000abcde}\end{scope}
+		\begin{scope}[shift={(0,0)}]\DrawBitstringX{000000000000000000000000000hijkl}\end{scope}
 
 		\begin{scope}[shift={(0,0)}]\DrawHexMarkersRel{32}\end{scope}
 
@@ -1461,7 +1459,7 @@
 
 	\begin{scope}[shift={(0,-1.5)}]
 
-	\DrawInsnTypeU{abcdefghjkmnpqrstuvw001010110111}
+	\DrawInsnTypeU{abcdefghijklmnopqrst001010110111}
 
 	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowInset}
 	\pgfmathsetmacro\ArrowSouth{-16-\BitBoxArrowInset}
@@ -1512,7 +1510,7 @@
 		\DrawInsnBoxRel{31}{0}{}
 		\draw(33,.5) node[text width = 10, text height = 1, right]{imm\_u};
 
-		\begin{scope}[shift={(0,0)}]\DrawBitstringX{abcdefghjkmnpqrstuvw000000000000}\end{scope}
+		\begin{scope}[shift={(0,0)}]\DrawBitstringX{abcdefghijklmnopqrst000000000000}\end{scope}
 
 		\begin{scope}[shift={(0,0)}]\DrawHexMarkersRel{32}\end{scope}
 
