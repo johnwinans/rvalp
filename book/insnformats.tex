@@ -1099,7 +1099,8 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand\BitBoxArrowInset{-.2}
+\newcommand\BitBoxArrowTailInset{-.9}
+\newcommand\BitBoxArrowHeadInset{-16.7-\BitBoxArrowTailInset}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand\DrawInsnOpJTypeDecoding{
@@ -1109,8 +1110,8 @@
 
 	\DrawInsnTypeJ{abcdefghijklmnopqrst001111101111}
 
-	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowInset}
-	\pgfmathsetmacro\ArrowSouth{-16-\BitBoxArrowInset}
+	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowTailInset}
+	\pgfmathsetmacro\ArrowSouth{\BitBoxArrowHeadInset}
 
 	\draw[red,->](1,\ArrowNorth)to[out=270,in=90](1,\ArrowSouth);	% 20
 	\draw[red,->](1,\ArrowNorth)to[out=270,in=90](2,\ArrowSouth);	% sign extend
@@ -1189,8 +1190,8 @@
 
 	\DrawInsnTypeB{abcdefg0111100011000uvwxy1100011}
 
-	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowInset}
-	\pgfmathsetmacro\ArrowSouth{-16-\BitBoxArrowInset}
+	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowTailInset}
+	\pgfmathsetmacro\ArrowSouth{\BitBoxArrowHeadInset}
 
 	\draw[red,->](1,\ArrowNorth)to[out=270,in=90](1,\ArrowSouth);	% sign extend
 	\draw[red,->](1,\ArrowNorth)to[out=270,in=90](2,\ArrowSouth);	% sign extend
@@ -1271,8 +1272,8 @@
 
 	\DrawInsnTypeS{abcdefg0111100011000uvwxy0100011}
 
-	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowInset}
-	\pgfmathsetmacro\ArrowSouth{-16-\BitBoxArrowInset}
+	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowTailInset}
+	\pgfmathsetmacro\ArrowSouth{\BitBoxArrowHeadInset}
 
 	\draw[red,->](1,\ArrowNorth)to[out=270,in=90](1,\ArrowSouth);	% sign extend
 	\draw[red,->](1,\ArrowNorth)to[out=270,in=90](2,\ArrowSouth);	% sign extend
@@ -1341,8 +1342,8 @@
 
 	\DrawInsnTypeI{abcdefghijkl00011000001110000011}
 
-	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowInset}
-	\pgfmathsetmacro\ArrowSouth{-16-\BitBoxArrowInset}
+	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowTailInset}
+	\pgfmathsetmacro\ArrowSouth{\BitBoxArrowHeadInset}
 
 	\draw[red,->](1,\ArrowNorth)to[out=270,in=90](1,\ArrowSouth);	% sign extend
 	\draw[red,->](1,\ArrowNorth)to[out=270,in=90](2,\ArrowSouth);	% sign extend
@@ -1408,8 +1409,8 @@
 
 	\DrawInsnTypeI{0100000hijkl00011000001110000011}
 
-	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowInset}
-	\pgfmathsetmacro\ArrowSouth{-16-\BitBoxArrowInset}
+	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowTailInset}
+	\pgfmathsetmacro\ArrowSouth{\BitBoxArrowHeadInset}
 	\pgfmathsetmacro\ZeroNodeY{\ArrowSouth+4}
 	\pgfmathsetmacro\ZeroNodeX{1}
 
@@ -1478,8 +1479,8 @@
 
 	\DrawInsnTypeU{abcdefghijklmnopqrst001010110111}
 
-	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowInset}
-	\pgfmathsetmacro\ArrowSouth{-16-\BitBoxArrowInset}
+	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowTailInset}
+	\pgfmathsetmacro\ArrowSouth{\BitBoxArrowHeadInset}
 
 	\draw[blue,->](1,\ArrowNorth)to[out=270,in=90](1,\ArrowSouth);		% 
 	\draw[blue,->](2,\ArrowNorth)to[out=270,in=90](2,\ArrowSouth);		% 
