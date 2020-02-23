@@ -265,8 +265,10 @@
 
 	\pgfmathsetmacro\posn{#1-#2+(#2-#3)/2}
 	\pgfmathsetmacro\range{int(#2-#3+1)}
-	\node at (\posn,-1.4) {\small\range};		% the field width
 	\node at (\posn,1.2) {\small#4};			% the field label
+
+%	\node at (\posn,-1.4) {\small\range};		% the field width
+	\begin{scope}[shift={(0,-.7)}]\InsnBoxFieldWidthArrow{#2}{#3}\end{scope}
 
 %	% arrows showing the span of the bits... meh
 %    \draw[->] (\posn+.5,-1.4) -- (\rightpos+.2,-1.4);
@@ -1059,30 +1061,45 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand\BitBoxArrowInset{-.2}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\InsnBoxFieldWidthArrowVskip{.5}
+\newcommand\InsnBoxFieldWidthArrowHskip{.05}
+
 % #1 MSB position
 % #2 LSB position
 \newcommand\InsnBoxFieldWidthArrow[2]{
 	\pgfmathsetmacro\leftpos{int(31-#1)}		% Calculate the left end position
 	\pgfmathsetmacro\wid{int(#1-#2+1)}			% calculate the width
-	\begin{scope}[shift={(\leftpos,-.5)}]		% Move to left end of arrow & below origin
+	\begin{scope}[shift={(\leftpos,-\InsnBoxFieldWidthArrowVskip)}]	% Move to left end of arrow & below origin
     	\pgfmathsetmacro\result{\wid*.5+.5}		% the center position
-    	\node at (\result,0) {\tiny\wid};		% size below the box
+    	\node at (\result,0) {\tiny\wid};		% draw the size number below the box
 
-		\ifthenelse{\wid > 9}
+		\ifthenelse{\wid > 9}					% make 1-9 narrower than 10-99
 		{ \pgfmathsetmacro\Inset{0.4} }
 		{ 
-			\ifthenelse{\wid > 1} 
+			\ifthenelse{\wid > 1} 				% make 1 narrower than 2-9
 			{ \pgfmathsetmacro\Inset{0.25} }
 			{ \pgfmathsetmacro\Inset{0.15} }
 		}
 
-    	\draw[->] (\result+\Inset,0) -- (\wid+.49,0);	% arrow to the right
-    	\draw[->] (\result-\Inset,0) -- (.51,0);		% arrow to the left
+		% arrowsInsnBoxFieldWidthArrowHskip
+    	\draw[->] (\result+\Inset,0) -- (\wid+.5-\InsnBoxFieldWidthArrowHskip,0);	% arrow to the right
+    	\draw[->] (\result-\Inset,0) -- (.5+\InsnBoxFieldWidthArrowHskip,0);		% arrow to the left
+
+		\pgfmathsetmacro\x{.5}
+		\pgfmathsetmacro\y{\InsnBoxFieldWidthArrowVskip}
+		% vertical bars at the ends of the arrows
+    	\draw[-] (\x,\y) -- (\x,-\y*.5);	
+		\pgfmathsetmacro\x{(\wid+.5}
+    	\draw[-] (\x,\y) -- (\x,-\y*.5);	
+
 	\end{scope}
 }
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand\BitBoxArrowInset{-.2}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand\DrawInsnOpJTypeDecoding{
