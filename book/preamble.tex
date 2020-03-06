@@ -38,7 +38,7 @@
 
 % load makeidx BEFORE hyperref to make the index clickable
 % load makeidx AFTER hyperref if want to use showidx
-%\usepackage{makeidx}
+\usepackage{makeidx}
 \usepackage[pagebackref]{hyperref}
 \hypersetup{
     colorlinks=true,	%set true if you want colored links
@@ -49,7 +49,7 @@
 \let\subsectionautorefname\sectionautorefname
 \let\subsubsectionautorefname\sectionautorefname
 
-\usepackage{makeidx,showidx}	% showidx breaks hyperref when loaded before hyperref
+%\usepackage{makeidx,showidx}	% showidx breaks hyperref when loaded before hyperref
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -260,8 +260,8 @@
 
 % How many section-levels to show in the TOC.
 % 4=all of them
-\setcounter{tocdepth}{4}
-%\setcounter{tocdepth}{1}
+%\setcounter{tocdepth}{4}
+\setcounter{tocdepth}{1}
 
 
 
