@@ -1,0 +1,187 @@
+\chapter{Privileged Instructions}
+\label{chapter:privileged}
+
+\section{Introduction}
+
+{\em XXX NOTE: This is a first draft of what is being detailed in the previous chapter}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{CSRRW rd, csr, rs1}
+\index{Instruction!CSRRW}
+
+The CSRRW (Atomic Read/Write CSR) instruction atomically swaps values in 
+the CSRs and integer registers. CSRRW reads the old value of the CSR, 
+zero-extends the value to XLEN bits, then writes it to integer register rd. 
+The initial value in rs1 is written to the CSR. If rd=x0, then the 
+instruction shall not read the CSR and shall not cause any of the 
+side-effects that might occur on a CSR read.~\cite[p.~22]{rvismv1v22:2017}
+
+\DrawInsnTypeCSPicture{CSRRW x3, 2, x15}{00000000001001111001000111110011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{CSRRS rd, csr, rs1}
+\index{Instruction!CSRRS}
+
+The CSRRS (Atomic Read and Set Bits in CSR) instruction reads the value 
+of the CSR, zero-extends the value to XLEN bits, and writes it to integer 
+register rd. The initial value in integer register rs1 is treated as a bit 
+mask that specifies bit positions to be set in the CSR. Any bit that
+is high in rs1 will cause the corresponding bit to be set in the CSR, 
+if that CSR bit is writable.  Other bits in the CSR are unaffected (though 
+CSRs might have side effects when written).~\cite[p.~22]{rvismv1v22:2017}
+
+If rs1=x0, then the instruction will not write 
+to the CSR at all, and so shall not cause any of the side effects that 
+might otherwise occur on a CSR write, such as raising illegal instruction 
+exceptions on accesses to read-only CSRs. Note that if rs1 specifies a 
+register holding a zero value other than x0, the instruction will still 
+attempt to write the unmodified value back to the CSR and will cause any 
+attendant side effects.~\cite[p.~22]{rvismv1v22:2017}
+
+\DrawInsnTypeCSPicture{CSRRS x3, 2, x15}{00000000001001111010000111110011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{CSRRC rd, csr, rs1}
+\index{Instruction!CSRRC}
+
+The CSRRC (Atomic Read and Clear Bits in CSR) instruction reads the value 
+of the CSR, zero-extends the value to XLEN bits, and writes it to integer 
+register rd. The initial value in integer register rs1 is treated as a 
+bit mask that specifies bit positions to be cleared in the CSR. Any bit
+that is high in rs1 will cause the corresponding bit to be cleared in 
+the CSR, if that CSR bit is writable. Other bits in the CSR are 
+unaffected.~\cite[p.~22]{rvismv1v22:2017}
+
+If rs1=x0, then the instruction will not write 
+to the CSR at all, and so shall not cause any of the side effects that 
+might otherwise occur on a CSR write, such as raising illegal instruction 
+exceptions on accesses to read-only CSRs. Note that if rs1 specifies a 
+register holding a zero value other than x0, the instruction will still 
+attempt to write the unmodified value back to the CSR and will cause any 
+attendant side effects.~\cite[p.~22]{rvismv1v22:2017}
+
+\DrawInsnTypeCSPicture{CSRRC x3, 2, x15}{00000000001001111011000111110011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{CSRRWI rd, csr, imm}
+\index{Instruction!CSRRWI}
+
+This instruction is the same as CSRRW except a 5-bit unsigned (zero-extended)
+immediate value is used rather than the value from a register.
+
+\DrawInsnTypeCSIPicture{CSRRWI x3, 2, 7}{00000000001000111101000111110011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{CSRRSI rd, csr, rs1}
+\index{Instruction!CSRRSI}
+
+This instruction is the same as CSRRS except a 5-bit unsigned (zero-extended)
+immediate value is used rather than the value from a register.
+
+If the uimm[4:0] field is zero, then this instruction will not
+write to the CSR, and shall not cause any of the side effects that 
+might otherwise occur on a CSR write. For CSRRWI, if rd=x0, then 
+the instruction shall not read the CSR and shall not cause any
+of the side-effects that might occur on a CSR 
+read.~\cite[p.~22]{rvismv1v22:2017}
+
+\DrawInsnTypeCSIPicture{CSRRSI x3, 2, 7}{00000000001000111110000111110011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{CSRRCI rd, csr, rs1}
+\index{Instruction!CSRRCI}
+
+This instruction is the same as CSRRC except a 5-bit unsigned (zero-extended)
+immediate value is used rather than the value from a register.
+
+If the uimm[4:0] field is zero, then this instruction will not
+write to the CSR, and shall not cause any of the side effects that 
+might otherwise occur on a CSR write. For CSRRWI, if rd=x0, then 
+the instruction shall not read the CSR and shall not cause any
+of the side-effects that might occur on a CSR 
+read.~\cite[p.~22]{rvismv1v22:2017}
+
+\DrawInsnTypeCSIPicture{CSRRCI x3, 2, 7}{00000000001000111111000111110011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{RV32M Standard Extension}
+\index{RV32M}
+
+32-bit integer multiply and divide instructions.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{MUL rd, rs1, rs2}
+\index{Instruction!MUL}
+
+Multiply \reg{rs1} by \reg{rs2} and store the least significant 32-bits
+of the result in \reg{rd}.
+
+\DrawInsnTypeRPicture{MUL x7, x3, x31}{00000011111100111000001110110011}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{MULH rd, rs1, rs2}
+\index{Instruction!MULH}
+
+\DrawInsnTypeRPicture{MULH x7, x3, x31}{00000011111100111001001110110011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{MULHS rd, rs1, rs2}
+\index{Instruction!MULHS}
+
+\DrawInsnTypeRPicture{MULHS x7, x3, x31}{00000011111100111010001110110011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{MULHU rd, rs1, rs2}
+\index{Instruction!MULHU}
+
+\DrawInsnTypeRPicture{MULHU x7, x3, x31}{00000011111100111011001110110011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{DIV rd, rs1, rs2}
+\index{Instruction!DIV}
+
+\DrawInsnTypeRPicture{DIV x7, x3, x31}{00000011111100111100001110110011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{DIVU rd, rs1, rs2}
+\index{Instruction!DIVU}
+
+\DrawInsnTypeRPicture{DIVU x7, x3, x31}{00000011111100111101001110110011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{REM rd, rs1, rs2}
+\index{Instruction!REM}
+
+\DrawInsnTypeRPicture{REM x7, x3, x31}{00000011111100111110001110110011}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{REMU rd, rs1, rs2}
+\index{Instruction!REMU}
+
+\DrawInsnTypeRPicture{REMU x7, x3, x31}{00000011111100111111001110110011}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{RV32A Standard Extension}
+\index{RV32A}
+
+32-bit atomic operations.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{RV32F Standard Extension}
+\index{RV32F}
+
+32-bit IEEE floating point instructions.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{RV32D Standard Extension}
+\index{RV32D}
+
+64-bit IEEE floating point instructions.
