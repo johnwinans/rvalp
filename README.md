@@ -4,6 +4,8 @@ RISC-V Assemly Language Programming
 
 This is an attempt to create a book on RISC-V programming in assembly language.
 
+See the Releases page for pre-made PDF versions: https://github.com/johnwinans/rvalp/releases
+
 Pull requests are welcome.
 
 I will release PDFs after useful improvements from time to time into the releases area for those 
