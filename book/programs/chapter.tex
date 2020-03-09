@@ -9,7 +9,7 @@ that demonstrate their usefulness.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Use {\tt ebreak} to Stop \rvddt{} Execution}
 \index{Instruction!ebreak}
-\label{insn:ebreak}
+\label{uguide:ebreak}
 
 It is a good idea to learn how to stop before learning how to go!
 
@@ -42,7 +42,7 @@ I needed for myself \tt:-)}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Using the \insn{addi} Instruction}
 \index{Instruction!addi}
-\label{insn:addi}
+\label{uguide:addi}
 
 \enote{Define what constant and immediate values are somewhere.}%
 The detailed description of how the \insn{addi} instruction is executed
@@ -195,14 +195,14 @@ Ideas for the order of introducing instructions.
 
 \section{Other Instructions With Immediate Operands}
 
-\label{insn:andi}
-\label{insn:ori}
-\label{insn:xori}
-\label{insn:slti}
-\label{insn:sltiu}
-\label{insn:srai}
-\label{insn:slli}
-\label{insn:srli}
+\label{uguide:andi}
+\label{uguide:ori}
+\label{uguide:xori}
+\label{uguide:slti}
+\label{uguide:sltiu}
+\label{uguide:srai}
+\label{uguide:slli}
+\label{uguide:srli}
 \begin{verbatim}
     addi
     andi
@@ -225,11 +225,11 @@ instructions.  All other data manipulation must be performed on register
 values.
 
 Copying values from memory to a register (first examples using regs set with addi):
-\label{insn:lb}
-\label{insn:lh}
-\label{insn:lw}
-\label{insn:lbu}
-\label{insn:lhu}
+\label{uguide:lb}
+\label{uguide:lh}
+\label{uguide:lw}
+\label{uguide:lbu}
+\label{uguide:lhu}
 \begin{verbatim}
     lb
     lh
@@ -239,9 +239,9 @@ Copying values from memory to a register (first examples using regs set with add
 \end{verbatim}
 
 Copying values from a register to memory:
-\label{insn:sb}
-\label{insn:sh}
-\label{insn:sw}
+\label{uguide:sb}
+\label{uguide:sh}
+\label{uguide:sw}
 \begin{verbatim}
     sb
     sh
@@ -251,16 +251,16 @@ Copying values from a register to memory:
 \enote{Mention the rvddt UART I/O address for writing to the console here?}
 
 \section{RR operations}
-\label{insn:add}
-\label{insn:sub}
-\label{insn:and}
-\label{insn:or}
-\label{insn:sra}
-\label{insn:srl}
-\label{insn:sll}
-\label{insn:xor}
-\label{insn:sltu}
-\label{insn:slt}
+\label{uguide:add}
+\label{uguide:sub}
+\label{uguide:and}
+\label{uguide:or}
+\label{uguide:sra}
+\label{uguide:srl}
+\label{uguide:sll}
+\label{uguide:xor}
+\label{uguide:sltu}
+\label{uguide:slt}
 \begin{verbatim}
     add
     sub
@@ -277,8 +277,8 @@ Copying values from a register to memory:
 
 \section{Setting registers to large values using lui with addi}
 
-\label{insn:lui}
-\label{insn:auipc}
+\label{uguide:lui}
+\label{uguide:auipc}
 \begin{verbatim}
     addi        // useful for values from -2048 to 2047
     lui         // useful for loading any multiple of 0x1000
@@ -299,21 +299,21 @@ Copying values from a register to memory:
 
 Start to introduce addressing here?
 
-\label{insn:beq}
-\label{insn:bne}
-\label{insn:blt}
-\label{insn:bge}
-\label{insn:bltu}
-\label{insn:bgeu}
-\label{insn:bgt}
-\label{insn:ble}
-\label{insn:bgtu}
-\label{insn:beqz}
-\label{insn:bnez}
-\label{insn:blez}
-\label{insn:bgez}
-\label{insn:bltz}
-\label{insn:bgtz}
+\label{uguide:beq}
+\label{uguide:bne}
+\label{uguide:blt}
+\label{uguide:bge}
+\label{uguide:bltu}
+\label{uguide:bgeu}
+\label{uguide:bgt}
+\label{uguide:ble}
+\label{uguide:bgtu}
+\label{uguide:beqz}
+\label{uguide:bnez}
+\label{uguide:blez}
+\label{uguide:bgez}
+\label{uguide:bltz}
+\label{uguide:bgtz}
 \begin{verbatim}
     beq
     bne
@@ -367,8 +367,8 @@ see:  https://github.com/riscv/riscv-elf-psabi-doc/blob/master/riscv-elf.md
 
 Introduce and present subroutines but not nesting until introduce stack operations.
 
-\label{insn:jal}
-\label{insn:jalr}
+\label{uguide:jal}
+\label{uguide:jalr}
 \begin{verbatim}
     jal
     jalr
