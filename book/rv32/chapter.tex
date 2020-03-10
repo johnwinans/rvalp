@@ -5,11 +5,6 @@
 \label{chapter:RV32}
 \index{RV32}
 
-\section{Introduction}
-
-{\em XXX NOTE: This is a first draft of what is being detailed in the previous chapter}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conventions and Terminology}
 
@@ -205,6 +200,19 @@ The address of the current instruction plus a numeric offset.
 \subsection{.-offset}
 
 The address of the current instruction minus a numeric offset.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{pcrel\_13}
+
+An address that is within $[-4096..4095]$ of the current instruction location.
+These addresses are typically expressed in assembly source code by using labels.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{pcrel\_21}
+
+An address that is within $[-1048576..1048575]$ of the current instruction 
+location.  
+These addresses are typically expressed in assembly source code by using labels.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{pc}
@@ -454,7 +462,7 @@ capable of expressing a wider range of target addresses than the 20-bit
 imm value alone.
 
 \begin{itemize}
-\item\instructionHeader{jal\ \ \ rd,imm}
+\item\instructionHeader{jal\ \ \ rd,pcrel\_21}
 \label{insn:jal}
 
 Set register \verb@rd@ to the address of the next instruction that would 
