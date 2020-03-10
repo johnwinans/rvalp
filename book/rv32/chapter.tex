@@ -262,13 +262,7 @@ immediate, register, base-displacement, pc-relative
 %in the same position.  Also note that imm[19:12] and imm[10:5] can only be 
 %found in one place.  imm[4:0] can only be found in one of two places\ldots
 
-The method/format of an instruction is designed with an eye on the ease
-of future manufacture of the machine that will execute them.  It is 
-easier to build a machine if it does not have to accommodate many different 
-ways to perform the same task.  The result is that a machine can be 
-built with fewer gates, consumes less power, and can run faster than
-if it were built when a priority is on how a user might prefer to decode
-the same instructions from a hex dump.
+
 
 This document concerns itself with the RISC-V instruction formats shown 
 in \autoref{Figure:riscvFormats}.
@@ -276,16 +270,47 @@ in \autoref{Figure:riscvFormats}.
 %\autoref{Figure:riscvFormats} Shows the RISC-V instruction formats.
 
 \begin{figure}[ht]
-\DrawInsnTypeBTikz{00000000000000000000000000000000}\\
 \DrawInsnTypeUTikz{00000000000000000000000000000000}\\
 \DrawInsnTypeJTikz{00000000000000000000000000000000}\\
+\DrawInsnTypeRTikz{00000000000000000000000000000000}
 \DrawInsnTypeITikz{00000000000000000000000000000000}\\
 \DrawInsnTypeIShiftTikz{00000000000000000000000000000000}\\
 \DrawInsnTypeSTikz{00000000000000000000000000000000}\\
-\DrawInsnTypeRTikz{00000000000000000000000000000000}
+\DrawInsnTypeBTikz{00000000000000000000000000000000}\\
 \captionof{figure}{RISC-V instruction formats.}
 \label{Figure:riscvFormats}
 \end{figure}
+
+The method/format of the instructions has been designed with an eye on 
+the ease of future manufacture of the machine that will execute them.  It is 
+easier to build a machine if it does not have to accommodate many different 
+ways to perform the same task.  The result is that a machine can be 
+built with fewer gates, consumes less power, and can run faster than
+if it were built when a priority is on how a user might prefer to decode
+the same instructions from a hex dump.
+
+Observe that all instructions have their opcode in bits 0-6 and when they
+include an \verb@rd@ register it will be specified in bits 7-11, 
+an \verb@rs1@ register in bits 15-19, an \verb@rs2@ register in bits 20-24,
+and so on.  This has a seemingly strange impact on the placement of any 
+immediate operands.
+
+When immediate operands are present in an instruction, they are placed in
+the remaining unused bits.  However, they are organized such that
+the sign bit is ALWAYS in bit 31 and the remaining bits placed so
+as to minimize the number of places any given bit is located in different
+instructions. 
+
+For example, consider immediate operand bits 12-19.  In the U-type format
+it is in bit positions 12-19.  In the J-type format it is also in positions
+12-19.  In the J-type format immediate operand bits 1-10 are in the same 
+instruction bit positions as they are in the I-type format and immediate
+operand bits 5-10 are in the same positions as they are in the B-type format.
+
+While this is inconvenient for anyone looking at a memory hexdump, it does
+make sense when considering the impact of this choice on the number of
+gates needed to implement circuitry to extract the immediate operands. 
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -295,21 +320,22 @@ in \autoref{Figure:riscvFormats}.
 \label{insnformat:utype}
 
 The U-Type format is used for instructions that use a 20-bit immediate operand 
-and a destination register.
+and an \verb@rd@ destination register.
  
-\DrawInsnTypeUTikz{11010110000000000011001010110111}
+%\DrawInsnTypeUTikz{11010110000000000011001010110111}
 
 The \reg{rd} field contains an \reg{x} register number to be set to a value that
 depends on the instruction.
 
-The imm field 
-contains a 20-bit value that will be converted into \Gls{xlen} bits by 
-using the {\em imm} operand for bits 31:12 and then sign-extending it 
-to the left\footnote{When XLEN is larger than 32.} and zero-extending 
-the LSBs as discussed in \autoref{extension:zr}.
+%The imm field 
+%contains a 20-bit value that will be converted into \Gls{xlen} bits by 
+%using the {\em imm} operand for bits 31:12 and then sign-extending it 
+%to the left\footnote{When XLEN is larger than 32.} and zero-extending 
+%the LSBs as discussed in \autoref{extension:zr}.
 
-If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
-and converted as shown in \autoref{Figure:u_type_decode}.
+If \Gls{xlen}=32 then the {\em imm} value will extracted from the instruction
+and converted as shown in \autoref{Figure:u_type_decode} to form the
+\verb@imm_u@ value.
 
 \begin{figure}[ht]
 \centering
@@ -323,12 +349,8 @@ and converted as shown in \autoref{Figure:u_type_decode}.
 Notice that the 20-bits of the imm field are mapped in the same order and 
 in the same relative position that they appear in the instruction when 
 they are used to create the value of the immediate operand.  
-Shifting the imm value to the left, into the ``upper bits'' of the immediate 
+Leaving the imm bits on the left, in the ``upper bits'' of the \verb@imm_u@ 
 value suggests a rationale for the name of this format.
-
-%from $01010110000000000011_2$ (\verb@d6003@$_{16}$) to 
-%$11010110000000000011000000000000_2$ (\verb@d6003000@$_{16}$).
-
 
 \begin{itemize}
 \item\instructionHeader{lui\ \ \ rd,imm}
@@ -351,10 +373,9 @@ memory address \verb@0x800012f4@ then register \verb@x22@ will be set to
 \end{itemize}
 
 
-
-If \Gls{xlen}=64 then the \verb@imm_u@ value in this example will be converted to the
-same two's complement integer value by extending the sign-bit (indicated by \verb@a@ 
-in \autoref{Figure:u_type_decode}) to the left.
+If \Gls{xlen}=64 then the \verb@imm_u@ value in this example will be converted 
+to the same two's complement integer value by extending the sign-bit 
+(indicated by \verb@a@ in \autoref{Figure:u_type_decode}) further to the left.
 
 
 
@@ -366,41 +387,43 @@ in \autoref{Figure:u_type_decode}) to the left.
 \subsection{J Type}
 \label{insnformat:jtype}
 
-The J-type format is used for instructions that use a 20-bit immediate operand
-and a destination register.  It is similar to the U-type.  However, the immediate
-operand is constructed by arranging the {\em imm} bits in a different manner.
+The J-type instruction format is used to encode the \verb@jal@ instruction 
+with an immediate value that determines the jump target address.
+It is similar to the U-type, but the bits in the immediate operand are 
+arranged in a different order.
 
-\DrawInsnTypeJTikz{00111001001110000001001111101111}
+%\DrawInsnTypeJTikz{00111001001110000001001111101111}
 
-The \reg{rd} field contains an \reg{x} register number to be set to a value that
-depends on the instruction.
+Note that the \verb@imm_j@ value is expressed in the instruction as a target 
+address that is converted to a 21-bit value in the range of 
+$[-1048576..1048575]$ representing a \verb@pc@-relative offset to the 
+target address. 
 
+%In the J-type format the 20 {\em imm} bits are arranged such 
+%that they represent the ``lower'' portion of the immediate value.  Unlike 
+%the U-type instructions, the J-type requires the bits to be re-ordered 
+%and shifted to the right before they are used.
+%\footnote{The reason that the J-type 
+%bits are reordered like this is because it simplifies the implementation of 
+%hardware as discussed in \autoref{section:EncodingFormats}.}
 
-In the J-type format the 20 {\em imm} bits are arranged such 
-that they represent the ``lower'' portion of the immediate value.  Unlike 
-the U-type 
-instructions, the J-type requires the bits to be re-ordered and shifted 
-to the right before they are used.\footnote{The reason that the J-type 
-bits are reordered like this is because it simplifies the implementation of 
-hardware as discussed in \autoref{section:EncodingFormats}.}
+%The example above shows that the bit positions in the {\em imm} field 
+%description.  We see that the 20 {\em imm} bits are re-ordered according to: 
+%[20\textbar10:1\textbar11\textbar19:12].  
+%This means that the \acrshort{msb} of the {\em imm} field is to be placed 
+%into bit 20 of the immediate integer value ultimately used by the instruction 
+%when it is converted into \Gls{xlen} bits.  
+%The next bit to the right in the {\em imm} field is to be placed into bit 10 of 
+%the immediate value and so on.
 
-The example above shows that the bit positions in the {\em imm} field 
-description.  We see that the 20 {\em imm} bits are re-ordered according to: 
-[20\textbar10:1\textbar11\textbar19:12].  
-This means that the \acrshort{msb} of the {\em imm} field is to be placed 
-into bit 20 of the immediate integer value ultimately used by the instruction 
-when it is converted into \Gls{xlen} bits.  
-The next bit to the right in the {\em imm} field is to be placed into bit 10 of 
-the immediate value and so on.
+%After the {\em imm} bits are re-positioned into bits 20:1 of the immediate value
+%being constructed, a zero-bit will be added to the \acrshort{lsb} 
+%and the value in bit-position 20 will be replicated to sign-extend the 
+%value to \Gls{xlen} bits as discussed in \autoref{extension:slzr}.
 
-After the {\em imm} bits are re-positioned into bits 20:1 of the immediate value
-being constructed, a zero-bit will be added to the \acrshort{lsb} 
-and the value in bit-position 20 will be replicated to sign-extend the 
-value to \Gls{xlen} bits as discussed in \autoref{extension:slzr}.
-
-
-If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
-and converted as shown in \autoref{Figure:j_type_decode}.
+If \Gls{xlen}=32 then the {\em imm} value will extracted from the 
+instruction and converted as shown in \autoref{Figure:j_type_decode} to
+form the \verb@imm_j@ value.
 
 \begin{figure}[ht]
 \centering
@@ -424,10 +447,11 @@ and converted as shown in \autoref{Figure:j_type_decode}.
 %\DrawBitBoxSignLeftZeroRightExtendedPicture{32}{11000000110111001001}{1}
 
 The J-type format is used by the Jump And Link instruction that calculates 
-a target address by adding a signed immediate value to the current program 
+the target address by adding \verb@imm_b@ to the current program 
 counter.  Since no instruction can be placed at an odd address the 20-bit 
 imm value is zero-extended to the right to represent a 21-bit signed offset 
-capable of representing numbers twice the magnitude of the 20-bit imm value.
+capable of expressing a wider range of target addresses than the 20-bit 
+imm value alone.
 
 \begin{itemize}
 \item\instructionHeader{jal\ \ \ rd,imm}
@@ -435,10 +459,30 @@ capable of representing numbers twice the magnitude of the 20-bit imm value.
 
 Set register \verb@rd@ to the address of the next instruction that would 
 otherwise be executed (the address of the \verb@jal@ instruction + 4) and then
-jump to an address given by the sum of the \verb@pc@ register and the 
-\verb@imm_j@ value as decoded from the instruction shown in \autoref{imm.j:decode}.
+jump to the address given by the sum of the \verb@pc@ register and the 
+\verb@imm_j@ value as decoded from the instruction shown in 
+\autoref{imm.j:decode}.
 
+Note that \verb@imm_j@ is expressed in the instruction as a target address 
+that is converted to a 21-bit value representing a \verb@pc@-relative offset 
+to the target address. For example, consider the \verb@jal@ instructions in the 
+following code:
 
+\begin{verbatim}
+00000010: 000002ef  jal    x5,0x10      # jump to self (address 0x10)
+00000014: 008002ef  jal    x5,0x1c      # jump to address 0x1c
+00000018: 00100073  ebreak    
+0000001c: 00100073  ebreak    
+\end{verbatim}
+
+The instruction at address \verb@0x10@ has a target address of \verb@0x10@
+and the \verb@imm_j@ is zero because offset from the ``current instruction''
+to the target is zero.
+
+The instruction at address \verb@0x14@ has a target address of \verb@0x1c@
+and the \verb@imm_j@ is \verb@0x08@ because \verb@0x1c - 0x14 = 0x08@.
+
+See also \autoref{insnformat:btype}.
 
 \end{itemize}
 
@@ -455,7 +499,8 @@ The R-type instructions are used for operations that set a destination
 register \verb@rd@ to the result of an arithmetic, logical or shift operation
 applied to source registers \verb@rs1@ and \verb@rs2@.
 
-Note that bit 30 is used to select between the \verb@add@ and \verb@sub@ instructions
+Note that instruction bit 30 (part of the the \verb@funct7@ field) 
+is used to select between the \verb@add@ and \verb@sub@ instructions 
 as well as to select between arithmetic and logical shifting.
 
 \begin{itemize}
@@ -547,10 +592,15 @@ value \verb@0xaa55ee11@.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{I Type}
 \label{insnformat:itype}
-\DrawInsnTypeITikz{00000000010000011000001110000011}
+%\DrawInsnTypeITikz{00000000010000011000001110000011}
 
-If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
-and converted as shown in \autoref{Figure:i_type_decode}.
+The I-type instruction format is used to encode instructions with a
+signed 12-bit immediate operand with a range of $[-2048..2047]$,
+an \verb@rd@ register, and an \verb@rs1@ register.
+
+If \Gls{xlen}=32 then the 12-bit {\em imm} value example will extracted from 
+the instruction and converted as shown in \autoref{Figure:i_type_decode}
+to form the \verb@imm_i@ value.
 
 \begin{figure}[ht]
 \centering
@@ -561,10 +611,11 @@ and converted as shown in \autoref{Figure:i_type_decode}.
 \index{imm\protect\_i}
 \end{figure}
 
-A special case of the I-type used for shift-immediate instructions where 
-the {\em imm} field is used as an immediate value named {\em shamt\_i} 
-representing the number of bit positions to shift as shown in 
-\autoref{Figure:shamt_i_type_decode}.
+A special case of the I-type is used for shift-immediate instructions 
+where only five bits of the imm field are used to represent the number 
+of bit positions to shift as shown in \autoref{Figure:shamt_i_type_decode}. 
+In this variation, the least significant five bits of the imm field are 
+zero-extended to form the \verb@shamt_i@ value.
 
 \begin{figure}[ht]
 \centering
@@ -759,10 +810,15 @@ Therefore if \verb@x17@ = \verb@0x55551111@ then the instruction
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{S Type}
 \label{insnformat:stype}
-\DrawInsnTypeSTikz{00000000111100011000100110100011}
+%\DrawInsnTypeSTikz{00000000111100011000100110100011}
 
-If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
-and converted as shown \autoref{Figure:imm_s_type_decode}.
+The S-type instruction format is used to encode instructions with a
+signed 12-bit immediate operand with a range of $[-2048..2047]$,
+an \verb@rs1@ register, and an \verb@rs2@ register.
+
+If \Gls{xlen}=32 then the 12-bit {\em imm} value example will extracted 
+from the instruction and converted as shown \autoref{Figure:imm_s_type_decode}
+to form the \verb@imm_s@ value.
 
 \begin{figure}[ht]
 \centering
@@ -836,10 +892,16 @@ then the instruction \verb@sw x12,0(x13)@ will change the memory word at address
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{B Type}
 \label{insnformat:btype}
-\DrawInsnTypeBTikz{00000000111100011000100011100011}
+%\DrawInsnTypeBTikz{00000000111100011000100011100011}
 
-If \Gls{xlen}=32 then the {\em imm} value example will extracted from the instruction
-and converted as shown in \autoref{Figure:imm_b_type_decode}.
+The B-type instruction format is used for branch instructions that 
+require an even immediate value that is used to determine the
+branch target address as an offset from the current instruction's
+address. 
+
+If \Gls{xlen}=32 then the 12-bit {\em imm} value example will extracted from 
+the instruction and converted as shown in \autoref{Figure:imm_b_type_decode}
+to form the \verb@imm_b@ value.
 
 \begin{figure}[ht]
 \centering
@@ -850,42 +912,67 @@ and converted as shown in \autoref{Figure:imm_b_type_decode}.
 \index{imm\protect\_b}
 \end{figure}
 
+Note that \verb@imm_b@ is expressed in the instruction as a target 
+address that is converted to a 13-bit value in the range of 
+$[-4096..4095]$ representing a \verb@pc@-relative offset to the
+target address. For example, consider the branch instructions in
+the following code:
+
+\begin{verbatim}
+00000000: 00520063  beq    x4,x5,0x0    # branches to self (address 0x0)
+00000004: 00520463  beq    x4,x5,0xc    # branches to address 0xc
+00000008: fe520ce3  beq    x4,x5,0x0    # branches to address 0x0
+0000000c: 00100073  ebreak    
+\end{verbatim}
+
+The instruction at address \verb@0x0@ has a target address of zero and
+\verb@imm_b@ is zero because the offset from the ``current instruction''
+to the target is zero.\footnote{This is in contrast to many other
+instruction sets with {\tt pc}-relative addressing modes that express
+a branch target offset from the ``next instruction.''}
+
+The instruction at address \verb@0x4@ has a target address of \verb@0xc@
+and it has an \verb@imm_b@ of \verb@0x08@ because \verb@0x4 + 0x08 = 0x0c@.
+
+The instruction at address \verb@0x8@ has a target address of zero and
+\verb@imm_b@ is \verb@0xfffffff8@ (-8) because \verb@0x8 + 0xfffffff8 = 0x0@.
+
 \begin{itemize}
-\item\instructionHeader{beq\ \ \ rs1,rs2,imm}
+\item\instructionHeader{beq\ \ \ rs1,rs2,pcrel\_13}
 \label{insn:beq}
 
 If \verb@rs1@ is equal to \verb@rs2@ then add \verb@imm_b@ to the 
 \verb@pc@ register.
 
-\item\instructionHeader{bge\ \ \ rs1,rs2,imm}
+\item\instructionHeader{bge\ \ \ rs1,rs2,pcrel\_13}
 \label{insn:bge}
 
 If the signed value in \verb@rs1@ is greater than or equal to the 
 signed value in \verb@rs2@ then add \verb@imm_b@ to the 
 \verb@pc@ register.
 
-\item\instructionHeader{bgeu\ \ \ rs1,rs2,imm}
+\item\instructionHeader{bgeu\ \ rs1,rs2,pcrel\_13}
 \label{insn:bgeu}
 
 If the unsigned value in \verb@rs1@ is greater than or equal to the 
 unsigned value in \verb@rs2@ then add \verb@imm_b@ to the 
 \verb@pc@ register.
 
-\item\instructionHeader{blt\ \ \ rs1,rs2,imm}
+\item\instructionHeader{blt\ \ \ rs1,rs2,pcrel\_13}
 \label{insn:blt}
 
 If the signed value in \verb@rs1@ is less than the 
 signed value in \verb@rs2@ then add \verb@imm_b@ to the 
 \verb@pc@ register.
 
-\item\instructionHeader{bltu\ \ \ rs1,rs2,imm}
+\item\instructionHeader{bltu\ \ rs1,rs2,pcrel\_13}
 \label{insn:bltu}
 
 If the unsigned value in \verb@rs1@ is less than the 
 unsigned value in \verb@rs2@ then add \verb@imm_b@ to the 
 \verb@pc@ register.
 
-\item\instructionHeader{bne\ \ \ rs1,rs2,imm}
+\item\instructionHeader{bne\ \ \ rs1,rs2,pcrel\_13}
 \label{insn:bne}
 
 If \verb@rs1@ is not equal to \verb@rs2@ then add \verb@imm_b@ to the 
