@@ -305,15 +305,16 @@ immediate operands.
 
 When immediate operands are present in an instruction, they are placed in
 the remaining unused bits.  However, they are organized such that
-the sign bit is ALWAYS in bit 31 and the remaining bits placed so
+the sign bit is {\em always} in bit 31 and the remaining bits placed so
 as to minimize the number of places any given bit is located in different
 instructions. 
 
 For example, consider immediate operand bits 12-19.  In the U-type format
-it is in bit positions 12-19.  In the J-type format it is also in positions
+they are in bit positions 12-19.  In the J-type format they are also in positions
 12-19.  In the J-type format immediate operand bits 1-10 are in the same 
 instruction bit positions as they are in the I-type format and immediate
-operand bits 5-10 are in the same positions as they are in the B-type format.
+operand bits 5-10 are in the same positions as they are in the B-type and
+S-type formats.
 
 While this is inconvenient for anyone looking at a memory hexdump, it does
 make sense when considering the impact of this choice on the number of
@@ -383,7 +384,7 @@ memory address \verb@0x800012f4@ then register \verb@x22@ will be set to
 
 If \Gls{xlen}=64 then the \verb@imm_u@ value in this example will be converted 
 to the same two's complement integer value by extending the sign-bit 
-(indicated by \verb@a@ in \autoref{Figure:u_type_decode}) further to the left.
+further to the left.
 
 
 
@@ -402,8 +403,9 @@ arranged in a different order.
 
 %\DrawInsnTypeJTikz{00111001001110000001001111101111}
 
-Note that the \verb@imm_j@ value is expressed in the instruction as a target 
-address that is converted to a 21-bit value in the range of 
+Note that the \verb@imm_j@ value is 
+%expressed in the instruction as a target address that is converted to 
+a 21-bit value in the range of 
 $[-1048576..1048575]$ representing a \verb@pc@-relative offset to the 
 target address. 
 
@@ -455,7 +457,7 @@ form the \verb@imm_j@ value.
 %\DrawBitBoxSignLeftZeroRightExtendedPicture{32}{11000000110111001001}{1}
 
 The J-type format is used by the Jump And Link instruction that calculates 
-the target address by adding \verb@imm_b@ to the current program 
+the target address by adding \verb@imm_j@ to the current program 
 counter.  Since no instruction can be placed at an odd address the 20-bit 
 imm value is zero-extended to the right to represent a 21-bit signed offset 
 capable of expressing a wider range of target addresses than the 20-bit 
@@ -471,10 +473,10 @@ jump to the address given by the sum of the \verb@pc@ register and the
 \verb@imm_j@ value as decoded from the instruction shown in 
 \autoref{imm.j:decode}.
 
-Note that \verb@imm_j@ is expressed in the instruction as a target address 
-that is converted to a 21-bit value representing a \verb@pc@-relative offset 
-to the target address. For example, consider the \verb@jal@ instructions in the 
-following code:
+Note that \verb@pcrel_21@ is expressed in the instruction as a target address 
+or label that is converted to a 21-bit value representing a \verb@pc@-relative 
+offset to the target address. 
+For example, consider the \verb@jal@ instructions in the following code:
 
 \begin{verbatim}
 00000010: 000002ef  jal    x5,0x10      # jump to self (address 0x10)
@@ -523,7 +525,7 @@ Set register \verb@rd@ to \verb@rs1 + rs2@.
 Set register \verb@rd@ to the bitwise \verb@and@ of \verb@rs1@ and  \verb@rs2@.
 
 For example, if \verb@x17@ = \verb@0x55551111@ and \verb@x18@ = \verb@0xff00ff00@
-then the instruction \verb@xor x12,x17,x18@ will set \verb@x12@ to the
+then the instruction \verb@and x12,x17,x18@ will set \verb@x12@ to the
 value \verb@0x55001100@.
 
 \item\instructionHeader{or\ \ \ \ rd,rs1,rs2}
@@ -532,14 +534,14 @@ value \verb@0x55001100@.
 Set register \verb@rd@ to the bitwise \verb@or@ of \verb@rs1@ and  \verb@rs2@.
 
 For example, if \verb@x17@ = \verb@0x55551111@ and \verb@x18@ = \verb@0xff00ff00@
-then the instruction \verb@xor x12,x17,x18@ will set \verb@x12@ to the
+then the instruction \verb@or x12,x17,x18@ will set \verb@x12@ to the
 value \verb@0xff55ff11@.
 
 \item\instructionHeader{sll\ \ \ rd,rs1,rs2}
 \label{insn:sll}
 
-Shift \verb@rs1@ left by the number of bits given in \verb@rs2@ and
-store the result in \verb@rd@.
+Shift \verb@rs1@ left by the number of bits specified in the least significant
+five bits of \verb@rs2@ and store the result in \verb@rd@.
 
 For example, if \verb@x17@ = \verb@0x12345678@ and \verb@x18@ = \verb@0x08@
 then the instruction \verb@sll x12,x17,x18@ will set \verb@x12@ to the
@@ -562,11 +564,11 @@ Otherwise, set \verb@rd@ to \verb@0@.
 \item\instructionHeader{sra\ \ \ rd,rs1,rs2}
 \label{insn:sra}
 
-Logic-shift \verb@rs1@ right by the number of bits given in \verb@rs2@ and
+Arithmetic-shift \verb@rs1@ right by the number of bits given in \verb@rs2@ and
 store the result in \verb@rd@.
 
 For example, if \verb@x17@ = \verb@0x87654321@ and \verb@x18@ = \verb@0x08@
-then the instruction \verb@sll x12,x17,x18@ will set \verb@x12@ to the
+then the instruction \verb@sra x12,x17,x18@ will set \verb@x12@ to the
 value \verb@0xff876543@.
 
 \item\instructionHeader{srl\ \ \ rd,rs1,rs2}
@@ -576,7 +578,7 @@ Logic-shift \verb@rs1@ right by the number of bits given in \verb@rs2@ and
 store the result in \verb@rd@.
 
 For example, if \verb@x17@ = \verb@0x87654321@ and \verb@x18@ = \verb@0x08@
-then the instruction \verb@sll x12,x17,x18@ will set \verb@x12@ to the
+then the instruction \verb@srl x12,x17,x18@ will set \verb@x12@ to the
 value \verb@0x00876543@.
 
 \item\instructionHeader{sub\ \ \ rd,rs1,rs2}
@@ -668,17 +670,17 @@ Recall that \verb@imm@ is sign-extended.
 Therefore if \verb@x17@ = \verb@0x55551111@ then the instruction 
 \verb@andi x12,x17,0x800@ will set \verb@x12@ to the value \verb@0x55551000@.
 
-\item\instructionHeader{jalr\ \ rd,rs1,imm}
+\item\instructionHeader{jalr\ \ rd,imm(rs1)}
 \label{insn:jalr}
 
 Set register \verb@rd@ to the address of the next instruction that would 
 otherwise be executed (the address of the \verb@jalr@ instruction + 4) and then 
-jump to an address given by the sum of the \verb@pc@ register and the 
+jump to an address given by the sum of the \verb@rs1@ register and the 
 \verb@imm_i@ value as decoded from the instruction shown in \autoref{imm.i:decode}.
 
 Note that the \verb@pc@ register can never refer to an odd address.  
 This instruction will explicitly set the \acrshort{lsb} to zero regardless
-of the value of \verb@rs1@.
+of the value of the value of the calculated target address.
 
 \item\instructionHeader{lb\ \ \ \ rd,imm(rs1)}
 \label{insn:lb}
@@ -809,7 +811,7 @@ For example, if \verb@x17@ = \verb@0x55551111@ then the instruction
 \verb@xori x12,x17,0x0ff@ will set \verb@x12@ to the value \verb@0x555511ee@.
 
 Recall that \verb@imm@ is sign-extended.
-Therefore if \verb@x17@ = \verb@0x55551111@ then the instruction 
+Therefore if \verb@x17@ = \verb@0x55551111@ then 
 \verb@xori x12,x17,0x800@ will set \verb@x12@ to the value \verb@0xaaaae911@.
 
 \end{itemize}
@@ -879,8 +881,8 @@ address \verb@0x00002652@ from \verb@0x0000@ to \verb@0x5678@ resulting in:
 \item\instructionHeader{sw\ \ \ \ rs2,imm(rs1)}
 \label{insn:sw}
 
-Set the 32-bit word of memory at the address given by the sum of \verb@rs1@ and 
-\verb@imm_s@ to the 16 \acrshort{lsb}s of \verb@rs2@.
+Store the 32-bit value in \verb@rs2@ into the memory at the address given 
+by the sum of \verb@rs1@ and \verb@imm_s@.
 
 For example, given the memory contents shown in \autoref{Figure:imm:memory:dump},
 if registers \verb@x13@ = \verb@0x00002650@ and \verb@x12@ = \verb@0x12345678@
