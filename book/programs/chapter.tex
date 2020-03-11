@@ -94,14 +94,18 @@ can never store a value into the x0 register.)
 The RISC-V assembler provides a pseudoinstruction specifically for this 
 purpose that you can use to improve the readability of your code.  Note 
 that the \insn{addi} and \insn{nop} instructions in \listingRef{nop/nop.S}
-are assembled into the exact same binary machine instruction (The
-\hex{00000013} you can see are stored at addresses \hex{0} and \hex{4})
-as seen by looking at the objdump listing in \listingRef{nop/nop.lst}.
-In fact, you can see that objdump shows both instructions as a \insn{nop}
-while \listingRef{nop/nop.out} shows that \rvddt{} displays both as 
-\verb@addi x0, x0, 0@.  
+are assembled into the exact same binary machine instructions
+as can be seen by comparing it to 
+\verb@objdump@ \listingRef{nop/nop.lst}, 
+and \verb@rvddt@ \listingRef{nop/nop.out} output.
 
-\listing{nop/nop.S}{Demonstrate that an \insn{addi} can be the same as \insn{nop}.}
+%(The \hex{00000013} you can see are stored at addresses \hex{0} and \hex{4})
+%as seen by looking at the \verb@objdump@ listing in \listingRef{nop/nop.lst}.
+%In fact, you can see that objdump shows both instructions as a \insn{nop}
+%while \listingRef{nop/nop.out} shows that \rvddt{} displays both as 
+%\verb@addi x0, x0, 0@.  
+
+\listing{nop/nop.S}{Demonstrate that \insn{addi} can be used as a \insn{nop}.}
 
 \index{objdump}
 \listing{nop/nop.lst}{Using \insn{addi} to perform a \insn{nop}}
@@ -183,7 +187,6 @@ For example, to set \reg{t3} to zero:
 	addi rd, rs, 0				# copy reg rs to rd (pseudo: mv rd, rs)
 \end{verbatim}
 
-Demonstrate various addi instructions. 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -204,7 +207,6 @@ Ideas for the order of introducing instructions.
 \label{uguide:slli}
 \label{uguide:srli}
 \begin{verbatim}
-    addi
     andi
     ori
     xori
@@ -247,8 +249,6 @@ Copying values from a register to memory:
     sh
     sw
 \end{verbatim}
-
-\enote{Mention the rvddt UART I/O address for writing to the console here?}
 
 \section{RR operations}
 \label{uguide:add}
@@ -338,29 +338,35 @@ Start to introduce addressing here?
 
 \section{Relocation}
 
-\begin{verbatim}
 Absolute:
+\begin{verbatim}
     %hi(symbol)         
     %lo(symbol)         
+\end{verbatim}
 
 PC-relative:
+\begin{verbatim}
     %pcrel_hi(symbol)   
     %pcrel_lo(label)    
+\end{verbatim}
 
-Using the auipc & addi pair with label references:
-    The %pcrel_lo() uses the label to find the associated %pcrel_hi()
-    The label MUST be on a line that used a %pcrel_hi() or get an error.
-    This is needed to calculate the proper offset.
-    Things like this are legal (though not sure of the value):
-    label:  auipc   t1, %pcrel_hi(symbol)
+Using \verb@auipc@ \& \verb@addi@ together with label references:
+
+The \verb@%pcrel_lo()@ uses the label to find the associated \verb@%pcrel_hi()@.
+The label MUST be on a line that used a \verb@%pcrel_hi()@ or get an error.
+This is needed to calculate the proper offset.
+
+Things like this are legal:
+\begin{verbatim}
+label:  auipc   t1, %pcrel_hi(symbol)
         addi    t2, t1, %pcrel_lo(label)
         addi    t3, t1, %pcrel_lo(label)
         lw      t4, %pcrel_lo(label)(t1)
         sw      t5, %pcrel_lo(label)(t1)
+\end{verbatim}
 
 Discuss how relaxation works.
-see:  https://github.com/riscv/riscv-elf-psabi-doc/blob/master/riscv-elf.md
-\end{verbatim}
+see:  \url{https://github.com/riscv/riscv-elf-psabi-doc/blob/master/riscv-elf.md}
 
 
 \section{Jumps}
@@ -406,15 +412,3 @@ Introduce and present subroutines but not nesting until introduce stack operatio
                     jalr x0, x6, offset[11:0]
 \end{verbatim}
 
-
-\section{The Linker and Relaxation}
-
-\enote{Needs research.
-I'm not sure if/how the linker alone can relax the AUIPC+JALR pair since 
-the assembler could have used a pcrel branch across one of these pairs.}%
-I don't know where this should go just yet.
-
-\section{pic and nopic}
-
-pic is {\em needed} for shared libs.  Should discuss it but probably best 
-to leave the topic for a later chapter.
