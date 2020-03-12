@@ -622,10 +622,12 @@ to form the \verb@imm_i@ value.
 \end{figure}
 
 A special case of the I-type is used for shift-immediate instructions 
-where only five bits of the imm field are used to represent the number 
-of bit positions to shift as shown in \autoref{Figure:shamt_i_type_decode}. 
+where the imm field is used to represent the number of bit positions 
+to shift as shown in \autoref{Figure:shamt_i_type_decode}.
 In this variation, the least significant five bits of the imm field are 
-zero-extended to form the \verb@shamt_i@ value.
+zero-extended to form the \verb@shamt_i@ 
+value.\footnote{When XLEN is 64 or 128, the {\tt shamt\_i} field will 
+consist of 6 or 7 bits respectively.}
 
 \begin{figure}[ht]
 \centering

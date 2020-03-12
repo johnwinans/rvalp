@@ -54,7 +54,7 @@ sb    & rs2, imm(rs1) & \hyperref[insnformat:stype]{S} & \hyperref[insn:sb]{Stor
 \hline
 sh    & rs2, imm(rs1) & \hyperref[insnformat:stype]{S} & \hyperref[insn:sh]{Store Halfword}              & {\tt m16(rs1+\hyperref[imm.s:decode]{imm\_s}) $\leftarrow$ rs2[15:0], pc $\leftarrow$ pc+4}\\
 \hline
-sll   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:sll]{Shift Left Logical}        & {\tt rd $\leftarrow$ rs1 << (rs2\&0x1f), pc $\leftarrow$ pc+4}\\
+sll   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:sll]{Shift Left Logical}        & {\tt rd $\leftarrow$ rs1 << (rs2\%XLEN), pc $\leftarrow$ pc+4}\\
 \hline
 slli  & rd, rs1, shamt & \hyperref[insnformat:itype]{I} & \hyperref[insn:slli]{Shift Left Logical Immediate} & {\tt rd $\leftarrow$ rs1 << \hyperref[shamt.i:decode]{shamt\_i}, pc $\leftarrow$ pc+4}\\
 \hline
@@ -66,11 +66,11 @@ sltiu & rd, rs1, imm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:sltiu]{S
 \hline
 sltu  & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:sltu]{Set Less Than Unsigned}   & {\tt rd $\leftarrow$ (rs1 < rs2) ? 1 : 0, pc $\leftarrow$ pc+4}\\
 \hline
-sra   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:sra]{Shift Right Arithmetic}    & {\tt rd $\leftarrow$ rs1 >> (rs2\&0x1f), pc $\leftarrow$ pc+4}\\
+sra   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:sra]{Shift Right Arithmetic}    & {\tt rd $\leftarrow$ rs1 >> (rs2\%XLEN), pc $\leftarrow$ pc+4}\\
 \hline
 srai  & rd, rs1, shamt & \hyperref[insnformat:itype]{I} & \hyperref[insn:srai]{Shift Right Arithmetic Immediate} & {\tt rd $\leftarrow$ rs1 >> \hyperref[shamt.i:decode]{shamt\_i}, pc $\leftarrow$ pc+4}\\
 \hline
-srl   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:srl]{Shift Right Logical}       & {\tt rd $\leftarrow$ rs1 >> (rs2\&0x1f), pc $\leftarrow$ pc+4}\\
+srl   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:srl]{Shift Right Logical}       & {\tt rd $\leftarrow$ rs1 >> (rs2\%XLEN), pc $\leftarrow$ pc+4}\\
 \hline
 srli  & rd, rs1, shamt & \hyperref[insnformat:itype]{I} & \hyperref[insn:srli]{Shift Right Logical Immediate} & {\tt rd $\leftarrow$ rs1 >> \hyperref[shamt.i:decode]{shamt\_i}, pc $\leftarrow$ pc+4}\\
 \hline
