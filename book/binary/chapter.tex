@@ -495,7 +495,33 @@ no ``ten'' decimal) adding $1+1$ results in a zero with a carry as
 in: $1+1=10_2$ and in: $1+1+1=11_2$.  Using these five sums, any two
 binary integers can be added.
 
-For example:
+\index{Full Adder}%
+This truth table shows what is called a {\em Full Addr}.
+A full addr is a function that can add three input bits 
+(the two addends and a carry value from a ``prior column'')
+and produce the sum and carry output values.\footnote{
+Note that the sum could be expressed in Boolean Algebra as:
+$sum = ci \oplus{} a \oplus{} b$}
+
+\begin{center}
+\begin{tabular}{|ccc|cc|}
+\hline
+%\multicolumn{3}{c}{input} & \multicolumn{2}{c}{output}\\
+$ci$ & $a$ & $b$ & $co$ & $sum$\\
+\hline
+ 0 & 0 & 0 &   0 & 0 \\
+ 0 & 0 & 1 &   0 & 1 \\
+ 0 & 1 & 0 &   0 & 1 \\
+ 0 & 1 & 1 &   1 & 0 \\
+ 1 & 0 & 0 &   0 & 1 \\
+ 1 & 0 & 1 &   1 & 0 \\
+ 1 & 1 & 0 &   1 & 0 \\
+ 1 & 1 & 1 &   1 & 1 \\
+\hline
+\end{tabular}
+\end{center}
+
+Adding two unsigned binary numbers using 16 full adders:
 
 \begin{verbatim}
         111111  1111  <== carries
@@ -504,6 +530,10 @@ For example:
    ------------------
      0111001100110010 <== sum
 \end{verbatim}
+
+Note that the carry ``into'' the LSB is zero.
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
