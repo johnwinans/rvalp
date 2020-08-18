@@ -107,11 +107,11 @@ normalized values by adding 1 to the significand.
 %\item $-((1 + \frac{1}{4} + \frac{1}{16}) \times 2^{128-127}) = -(1 \frac{5}{16} \times 2^{1}) = -(1.3125 \times 2^{1}) = -2.625$
 \item $-((1 + \frac{1}{4} + \frac{1}{16}) \times 2^{128-127}) = -((1 + \frac{1}{4} + \frac{1}{16}) \times 2^1) = -(2 + \frac{1}{2} + \frac{1}{8}) = -(2 + .5 + .125) = -2.625$
 
-\item IEEE754 formats: 
+\item IEEE-754 formats: 
 
 \begin{tabular}{|l|l|l|}
 \hline
-				& IEEE754 32-bit	& IEEE754 64-bit	\\
+				& IEEE-754 32-bit	& IEEE-754 64-bit	\\
 \hline
 sign			& 1 bit				& 1 bit			\\
 exponent		& 8 bits (excess-127)			& 11 bits (excess-1023)		\\
@@ -127,7 +127,7 @@ the sign is zero, the number represents positive infinity.
 \item When the exponent is all ones, the mantissa is all zeros, and
 the sign is one, the number represents negative infinity.
 
-\item Note that the binary representation of an IEEE754 number in memory
+\item Note that the binary representation of an IEEE-754 number in memory
 can be compared for magnitude with another one using the same logic as for
 comparing two's complement signed integers because the magnitude of an 
 IEEE number grows upward and downward in the same fashion as signed integers.
