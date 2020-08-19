@@ -35,13 +35,13 @@ $1.significand \times 2^{exponent}$ where the {\em significand}
 is the portion of the {\em mantissa} that is to the right of the binary-point.
 
 \begin{itemize}
-\item The unnormalized binary value of $-2.625$ is $10.101$
-\item The normalized value of $-2.625$ is $1.0101 \times 2^1$
+\item The unnormalized binary value of $-2.625$ is $-10.101$
+\item The normalized value of $-2.625$ is $-1.0101 \times 2^1$
 \end{itemize}
 
-\item We need not store the `1.' because {\em all} normalized floating 
+\item We need not store the `1.' part because {\em all} normalized floating 
 point numbers will start that way.  Thus we can save memory when storing
-normalized values by adding 1 to the significand.
+normalized values by inserting a `1.' to the left of significand.
 
 {
 \small
