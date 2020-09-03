@@ -829,16 +829,16 @@ that can be represented with an unsigned binary number.)
 \begin{figure}[H]
 \centering
 \begin{BVerbatim}
-     0 0 0 0 0 1 1 <== 3 (minuend)
-   - 0 0 0 0 1 0 0 <== 4 (subtrahend)
-   ---------------
+     0 0 0 0 0 0 1 1 <== 3 (minuend)
+   - 0 0 0 0 0 1 0 0 <== 4 (subtrahend)
+   -----------------
 
 
-  0  0 0 0 0 1 1 1 <== carries
-     0 0 0 0 0 1 1 <== 3
-   + 1 1 1 1 0 1 1 <== one's complement of 4
-   ---------------
-     1 1 1 1 1 1 1 <== 255 (overflow)
+  0  0 0 0 0 0 1 1 1 <== carries
+     0 0 0 0 0 0 1 1 <== 3
+   + 1 1 1 1 1 0 1 1 <== one's complement of 4
+   -----------------
+     1 1 1 1 1 1 1 1 <== 255 (overflow)
 \end{BVerbatim}
 \caption{$3-4=255$ (overflow)}
 \label{sum:3-4}
