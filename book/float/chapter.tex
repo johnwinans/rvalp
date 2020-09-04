@@ -8,7 +8,7 @@
 \label{chapter::floatingpoint}
 
 This section provides an overview of the IEEE-754 32-bit binary floating 
-point format.
+point format.\cite{ieee:754}
 
 \begin{itemize}
 \item Recall that the place values for integer binary numbers are:
@@ -121,10 +121,10 @@ min exponent	& -126				& -1022			\\
 \hline
 \end{tabular}
 
-\item When the exponent is all ones, the mantissa is all zeros, and
+\item When the exponent is all ones, the significand is all zeros, and
 the sign is zero, the number represents positive infinity.
 
-\item When the exponent is all ones, the mantissa is all zeros, and
+\item When the exponent is all ones, the significand is all zeros, and
 the sign is one, the number represents negative infinity.
 
 \item Note that the binary representation of an IEEE-754 number in memory
@@ -151,6 +151,12 @@ largest exponent allowed are in the {\em \gls{overflow}} areas.
 
 \item Note that numbers have a higher resolution on the number line when the 
 exponent is smaller.
+
+\item The largest and smallest possible exponent values are reserved to represent
+things requiring special cases. For example, the infinities, values representing
+``not a number'' (such as the result of dividing by zero), and for a way to represent
+values that are not normalized. For more information on special cases see \cite{ieee:754}.
+
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
