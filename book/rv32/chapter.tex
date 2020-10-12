@@ -203,16 +203,21 @@ The address of the current instruction minus a numeric offset.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{pcrel\_13}
+\label{pcrel.13}
 
 An address that is within $[-4096..4095]$ of the current instruction location.
 These addresses are typically expressed in assembly source code by using labels.
+See \autoref{insnformat:btype} for examples.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{pcrel\_21}
+\label{pcrel.21}
 
 An address that is within $[-1048576..1048575]$ of the current instruction 
 location.  
 These addresses are typically expressed in assembly source code by using labels.
+See \autoref{insnformat:jtype} for an example.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{pc}

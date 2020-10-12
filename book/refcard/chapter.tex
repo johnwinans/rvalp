@@ -18,19 +18,19 @@ andi  & rd, rs1, imm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:andi]{An
 \hline
 auipc & rd, imm        & \hyperref[insnformat:utype]{U} & \hyperref[insn:auipc]{Add Upper Immediate to PC} & {\tt rd $\leftarrow$ pc + \hyperref[imm.u:decode]{imm\_u}, pc $\leftarrow$ pc+4}\\
 \hline
-beq   & rs1, rs2, pcrel\_13 & \hyperref[insnformat:btype]{B} & \hyperref[insn:beq]{Branch Equal}               & {\tt pc $\leftarrow$ pc + (\verb@(rs1==rs2) ? @\hyperref[imm.b:decode]{imm\_b}\verb@ : 4@)}\\
+beq   & rs1, rs2, \hyperref[pcrel.13]{pcrel\_13} & \hyperref[insnformat:btype]{B} & \hyperref[insn:beq]{Branch Equal}               & {\tt pc $\leftarrow$ pc + (\verb@(rs1==rs2) ? @\hyperref[imm.b:decode]{imm\_b}\verb@ : 4@)}\\
 \hline
-bge   & rs1, rs2, pcrel\_13 & \hyperref[insnformat:btype]{B} & \hyperref[insn:bge]{Branch Greater or Equal}    & {\tt pc $\leftarrow$ pc + (\verb@(rs1>=rs2) ? @\hyperref[imm.b:decode]{imm\_b}\verb@ : 4@)}\\
+bge   & rs1, rs2, \hyperref[pcrel.13]{pcrel\_13} & \hyperref[insnformat:btype]{B} & \hyperref[insn:bge]{Branch Greater or Equal}    & {\tt pc $\leftarrow$ pc + (\verb@(rs1>=rs2) ? @\hyperref[imm.b:decode]{imm\_b}\verb@ : 4@)}\\
 \hline
-bgeu  & rs1, rs2, pcrel\_13 & \hyperref[insnformat:btype]{B} & \hyperref[insn:bgeu]{Branch Greater or Equal Unsigned} & {\tt pc $\leftarrow$ pc + (\verb@(rs1>=rs2) ? @\hyperref[imm.b:decode]{imm\_b}\verb@ : 4@)}\\
+bgeu  & rs1, rs2, \hyperref[pcrel.13]{pcrel\_13} & \hyperref[insnformat:btype]{B} & \hyperref[insn:bgeu]{Branch Greater or Equal Unsigned} & {\tt pc $\leftarrow$ pc + (\verb@(rs1>=rs2) ? @\hyperref[imm.b:decode]{imm\_b}\verb@ : 4@)}\\
 \hline
-blt   & rs1, rs2, pcrel\_13 & \hyperref[insnformat:btype]{B} & \hyperref[insn:blt]{Branch Less Than}           & {\tt pc $\leftarrow$ pc + (\verb@(rs1<rs2) ? @\hyperref[imm.b:decode]{imm\_b}\verb@ : 4@)}\\
+blt   & rs1, rs2, \hyperref[pcrel.13]{pcrel\_13} & \hyperref[insnformat:btype]{B} & \hyperref[insn:blt]{Branch Less Than}           & {\tt pc $\leftarrow$ pc + (\verb@(rs1<rs2) ? @\hyperref[imm.b:decode]{imm\_b}\verb@ : 4@)}\\
 \hline
-bltu  & rs1, rs2, pcrel\_13 & \hyperref[insnformat:btype]{B} & \hyperref[insn:bltu]{Branch Less Than Unsigned} & {\tt pc $\leftarrow$ pc + (\verb@(rs1<rs2) ? @\hyperref[imm.b:decode]{imm\_b}\verb@ : 4@)}\\
+bltu  & rs1, rs2, \hyperref[pcrel.13]{pcrel\_13} & \hyperref[insnformat:btype]{B} & \hyperref[insn:bltu]{Branch Less Than Unsigned} & {\tt pc $\leftarrow$ pc + (\verb@(rs1<rs2) ? @\hyperref[imm.b:decode]{imm\_b}\verb@ : 4@)}\\
 \hline
-bne   & rs1, rs2, pcrel\_13 & \hyperref[insnformat:btype]{B} & \hyperref[insn:bne]{Branch Not Equal}           & {\tt pc $\leftarrow$ pc + (\verb@(rs1!=rs2) ? @\hyperref[imm.b:decode]{imm\_b}\verb@ : 4@)}\\
+bne   & rs1, rs2, \hyperref[pcrel.13]{pcrel\_13} & \hyperref[insnformat:btype]{B} & \hyperref[insn:bne]{Branch Not Equal}           & {\tt pc $\leftarrow$ pc + (\verb@(rs1!=rs2) ? @\hyperref[imm.b:decode]{imm\_b}\verb@ : 4@)}\\
 \hline
-jal   & rd, pcrel\_21     & \hyperref[insnformat:jtype]{J} & \hyperref[insn:jal]{Jump And Link}               & {\tt rd $\leftarrow$ pc+4, pc $\leftarrow$ pc+\hyperref[imm.j:decode]{imm\_j}}\\
+jal   & rd, \hyperref[pcrel.21]{pcrel\_21}     & \hyperref[insnformat:jtype]{J} & \hyperref[insn:jal]{Jump And Link}               & {\tt rd $\leftarrow$ pc+4, pc $\leftarrow$ pc+\hyperref[imm.j:decode]{imm\_j}}\\
 \hline
 jalr  & rd, imm(rs1) & \hyperref[insnformat:itype]{I} & \hyperref[insn:jalr]{Jump And Link Register}     & {\tt rd $\leftarrow$ pc+4, pc $\leftarrow$ (rs1+\hyperref[imm.i:decode]{imm\_i})\&\textasciitilde{}1}\\
 \hline

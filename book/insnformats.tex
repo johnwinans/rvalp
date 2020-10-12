@@ -991,17 +991,17 @@
 %	\begin{scope}[shift={(0,-1.5)}]\DrawHexMarkersRel{32}\end{scope}
 }
 \newcommand\DrawAllInsnOpsJAL{
-	\begin{scope}[shift={(0,0)}]\DrawInsnOpJType{1101111}{\hyperref[insn:jal]{jal}}{rd,pcrel\_21}\end{scope}
+	\begin{scope}[shift={(0,0)}]\DrawInsnOpJType{1101111}{\hyperref[insn:jal]{jal}}{\hyperref[pcrel.21]{rd,pcrel\_21}}\end{scope}
 	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpIType{1100111}{000}{\hyperref[insn:jalr]{jalr}}{rd,\hyperref[imm.i:decode]{imm\_i}(rs1)}\end{scope}
 	\begin{scope}[shift={(0,-1.5)}]\DrawHexMarkersRel{32}\end{scope}
 }
 \newcommand\DrawAllInsnOpsBranch{
-	\begin{scope}[shift={(0,0)}]\DrawInsnOpBType{1100011}{000}{\hyperref[insn:beq]{beq}}{rs1,rs2,pcrel\_13}\end{scope}
-	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpBType{1100011}{001}{\hyperref[insn:bne]{bne}}{rs1,rs2,pcrel\_13}\end{scope}
-	\begin{scope}[shift={(0,-3)}]\DrawInsnOpBType{1100011}{100}{\hyperref[insn:blt]{blt}}{rs1,rs2,pcrel\_13}\end{scope}
-	\begin{scope}[shift={(0,-4.5)}]\DrawInsnOpBType{1100011}{101}{\hyperref[insn:bge]{bge}}{rs1,rs2,pcrel\_13}\end{scope}
-	\begin{scope}[shift={(0,-6)}]\DrawInsnOpBType{1100011}{110}{\hyperref[insn:bltu]{bltu}}{rs1,rs2,pcrel\_13}\end{scope}
-	\begin{scope}[shift={(0,-7.5)}]\DrawInsnOpBType{1100011}{111}{\hyperref[insn:bgeu]{bgeu}}{rs1,rs2,pcrel\_13}\end{scope}
+	\begin{scope}[shift={(0,0)}]\DrawInsnOpBType{1100011}{000}{\hyperref[insn:beq]{beq}}{rs1,rs2,\hyperref[pcrel.13]{pcrel\_13}}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpBType{1100011}{001}{\hyperref[insn:bne]{bne}}{rs1,rs2,\hyperref[pcrel.13]{pcrel\_13}}\end{scope}
+	\begin{scope}[shift={(0,-3)}]\DrawInsnOpBType{1100011}{100}{\hyperref[insn:blt]{blt}}{rs1,rs2,\hyperref[pcrel.13]{pcrel\_13}}\end{scope}
+	\begin{scope}[shift={(0,-4.5)}]\DrawInsnOpBType{1100011}{101}{\hyperref[insn:bge]{bge}}{rs1,rs2,\hyperref[pcrel.13]{pcrel\_13}}\end{scope}
+	\begin{scope}[shift={(0,-6)}]\DrawInsnOpBType{1100011}{110}{\hyperref[insn:bltu]{bltu}}{rs1,rs2,\hyperref[pcrel.13]{pcrel\_13}}\end{scope}
+	\begin{scope}[shift={(0,-7.5)}]\DrawInsnOpBType{1100011}{111}{\hyperref[insn:bgeu]{bgeu}}{rs1,rs2,\hyperref[pcrel.13]{pcrel\_13}}\end{scope}
 
 	\begin{scope}[shift={(0,-7.5)}]\DrawHexMarkersRel{32}\end{scope}
 }
