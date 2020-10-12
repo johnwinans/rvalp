@@ -986,13 +986,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand\DrawAllInsnOpsU{
-	\begin{scope}[shift={(0,0)}]\DrawInsnOpUType{0110111}{\hyperref[insn:lui]{lui}}{rd,\hyperref[imm.u:decode]{imm\_u}}\end{scope}
-	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpUType{0010111}{\hyperref[insn:auipc]{auipc}}{rd,\hyperref[imm.u:decode]{imm\_u}}\end{scope}
+	\begin{scope}[shift={(0,0)}]\DrawInsnOpUType{0110111}{\hyperref[insn:lui]{lui}}{rd,\hyperref[imm.u:decode]{imm}}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpUType{0010111}{\hyperref[insn:auipc]{auipc}}{rd,\hyperref[imm.u:decode]{imm}}\end{scope}
 %	\begin{scope}[shift={(0,-1.5)}]\DrawHexMarkersRel{32}\end{scope}
 }
 \newcommand\DrawAllInsnOpsJAL{
 	\begin{scope}[shift={(0,0)}]\DrawInsnOpJType{1101111}{\hyperref[insn:jal]{jal}}{rd,\hyperref[pcrel.21]{pcrel\_21}}\end{scope}
-	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpIType{1100111}{000}{\hyperref[insn:jalr]{jalr}}{rd,\hyperref[imm.i:decode]{imm\_i}(rs1)}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpIType{1100111}{000}{\hyperref[insn:jalr]{jalr}}{rd,\hyperref[imm.i:decode]{imm}(rs1)}\end{scope}
 	\begin{scope}[shift={(0,-1.5)}]\DrawHexMarkersRel{32}\end{scope}
 }
 \newcommand\DrawAllInsnOpsBranch{
@@ -1006,35 +1006,35 @@
 	\begin{scope}[shift={(0,-7.5)}]\DrawHexMarkersRel{32}\end{scope}
 }
 \newcommand\DrawAllInsnOpsLoad{
-	\begin{scope}[shift={(0,0)}]\DrawInsnOpIType{0000011}{000}{\hyperref[insn:lb]{lb}}{rd,\hyperref[imm.i:decode]{imm\_i}(rs1)}\end{scope}
-	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpIType{0000011}{001}{\hyperref[insn:lh]{lh}}{rd,\hyperref[imm.i:decode]{imm\_i}(rs1)}\end{scope}
-	\begin{scope}[shift={(0,-3.0)}]\DrawInsnOpIType{0000011}{010}{\hyperref[insn:lw]{lw}}{rd,\hyperref[imm.i:decode]{imm\_i}(rs1)}\end{scope}
-	\begin{scope}[shift={(0,-4.5)}]\DrawInsnOpIType{0000011}{100}{\hyperref[insn:lbu]{lbu}}{rd,\hyperref[imm.i:decode]{imm\_i}(rs1)}\end{scope}
-	\begin{scope}[shift={(0,-6.0)}]\DrawInsnOpIType{0000011}{101}{\hyperref[insn:lhu]{lhu}}{rd,\hyperref[imm.i:decode]{imm\_i}(rs1)}\end{scope}
+	\begin{scope}[shift={(0,0)}]\DrawInsnOpIType{0000011}{000}{\hyperref[insn:lb]{lb}}{rd,\hyperref[imm.i:decode]{imm}(rs1)}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpIType{0000011}{001}{\hyperref[insn:lh]{lh}}{rd,\hyperref[imm.i:decode]{imm}(rs1)}\end{scope}
+	\begin{scope}[shift={(0,-3.0)}]\DrawInsnOpIType{0000011}{010}{\hyperref[insn:lw]{lw}}{rd,\hyperref[imm.i:decode]{imm}(rs1)}\end{scope}
+	\begin{scope}[shift={(0,-4.5)}]\DrawInsnOpIType{0000011}{100}{\hyperref[insn:lbu]{lbu}}{rd,\hyperref[imm.i:decode]{imm}(rs1)}\end{scope}
+	\begin{scope}[shift={(0,-6.0)}]\DrawInsnOpIType{0000011}{101}{\hyperref[insn:lhu]{lhu}}{rd,\hyperref[imm.i:decode]{imm}(rs1)}\end{scope}
 
 	\begin{scope}[shift={(0,-6.0)}]\DrawHexMarkersRel{32}\end{scope}
 }
 \newcommand\DrawAllInsnOpsStore{
-	\begin{scope}[shift={(0,0)}]\DrawInsnOpSType{0100011}{000}{\hyperref[insn:sb]{sb}}{rs2,\hyperref[imm.s:decode]{imm\_s}(rs1)}\end{scope}
-	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpSType{0100011}{001}{\hyperref[insn:sh]{sh}}{rs2,\hyperref[imm.s:decode]{imm\_s}(rs1)}\end{scope}
-	\begin{scope}[shift={(0,-3.0)}]\DrawInsnOpSType{0100011}{010}{\hyperref[insn:sw]{sw}}{rs2,\hyperref[imm.s:decode]{imm\_s}(rs1)}\end{scope}
+	\begin{scope}[shift={(0,0)}]\DrawInsnOpSType{0100011}{000}{\hyperref[insn:sb]{sb}}{rs2,\hyperref[imm.s:decode]{imm}(rs1)}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpSType{0100011}{001}{\hyperref[insn:sh]{sh}}{rs2,\hyperref[imm.s:decode]{imm}(rs1)}\end{scope}
+	\begin{scope}[shift={(0,-3.0)}]\DrawInsnOpSType{0100011}{010}{\hyperref[insn:sw]{sw}}{rs2,\hyperref[imm.s:decode]{imm}(rs1)}\end{scope}
 
 	\begin{scope}[shift={(0,-3.0)}]\DrawHexMarkersRel{32}\end{scope}
 }
 \newcommand\DrawAllInsnOpsALUImm{
-	\begin{scope}[shift={(0,0)}]\DrawInsnOpIType{0010011}{000}{\hyperref[insn:addi]{addi}}{rd,rs1,\hyperref[imm.i:decode]{imm\_i}}\end{scope}
-	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpIType{0010011}{010}{\hyperref[insn:slti]{slti}}{rd,rs1,\hyperref[imm.i:decode]{imm\_i}}\end{scope}
-	\begin{scope}[shift={(0,-3.0)}]\DrawInsnOpIType{0010011}{011}{\hyperref[insn:sltiu]{sltiu}}{rd,rs1,\hyperref[imm.i:decode]{imm\_i}}\end{scope}
-	\begin{scope}[shift={(0,-4.5)}]\DrawInsnOpIType{0010011}{100}{\hyperref[insn:xori]{xori}}{rd,rs1,\hyperref[imm.i:decode]{imm\_i}}\end{scope}
-	\begin{scope}[shift={(0,-6.0)}]\DrawInsnOpIType{0010011}{110}{\hyperref[insn:ori]{ori}}{rd,rs1,\hyperref[imm.i:decode]{imm\_i}}\end{scope}
-	\begin{scope}[shift={(0,-7.5)}]\DrawInsnOpIType{0010011}{111}{\hyperref[insn:andi]{andi}}{rd,rs1,\hyperref[imm.i:decode]{imm\_i}}\end{scope}
+	\begin{scope}[shift={(0,0)}]\DrawInsnOpIType{0010011}{000}{\hyperref[insn:addi]{addi}}{rd,rs1,\hyperref[imm.i:decode]{imm}}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpIType{0010011}{010}{\hyperref[insn:slti]{slti}}{rd,rs1,\hyperref[imm.i:decode]{imm}}\end{scope}
+	\begin{scope}[shift={(0,-3.0)}]\DrawInsnOpIType{0010011}{011}{\hyperref[insn:sltiu]{sltiu}}{rd,rs1,\hyperref[imm.i:decode]{imm}}\end{scope}
+	\begin{scope}[shift={(0,-4.5)}]\DrawInsnOpIType{0010011}{100}{\hyperref[insn:xori]{xori}}{rd,rs1,\hyperref[imm.i:decode]{imm}}\end{scope}
+	\begin{scope}[shift={(0,-6.0)}]\DrawInsnOpIType{0010011}{110}{\hyperref[insn:ori]{ori}}{rd,rs1,\hyperref[imm.i:decode]{imm}}\end{scope}
+	\begin{scope}[shift={(0,-7.5)}]\DrawInsnOpIType{0010011}{111}{\hyperref[insn:andi]{andi}}{rd,rs1,\hyperref[imm.i:decode]{imm}}\end{scope}
 
 	\begin{scope}[shift={(0,-7.5)}]\DrawHexMarkersRel{32}\end{scope}
 }
 \newcommand\DrawAllInsnOpsShiftImm{
-	\begin{scope}[shift={(0,0)}]\DrawInsnOpITypeShift{0010011}{001}{0000000}{\hyperref[insn:slli]{slli}}{rd,rs1,\hyperref[shamt.i:decode]{shamt\_i}}\end{scope}
-	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpITypeShift{0010011}{101}{0000000}{\hyperref[insn:srli]{srli}}{rd,rs1,\hyperref[shamt.i:decode]{shamt\_i}}\end{scope}
-	\begin{scope}[shift={(0,-3.0)}]\DrawInsnOpITypeShift{0010011}{101}{0100000}{\hyperref[insn:srai]{srai}}{rd,rs1,\hyperref[shamt.i:decode]{shamt\_i}}\end{scope}
+	\begin{scope}[shift={(0,0)}]\DrawInsnOpITypeShift{0010011}{001}{0000000}{\hyperref[insn:slli]{slli}}{rd,rs1,\hyperref[shamt.i:decode]{shamt}}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpITypeShift{0010011}{101}{0000000}{\hyperref[insn:srli]{srli}}{rd,rs1,\hyperref[shamt.i:decode]{shamt}}\end{scope}
+	\begin{scope}[shift={(0,-3.0)}]\DrawInsnOpITypeShift{0010011}{101}{0100000}{\hyperref[insn:srai]{srai}}{rd,rs1,\hyperref[shamt.i:decode]{shamt}}\end{scope}
 
 	\begin{scope}[shift={(0,-3.0)}]\DrawHexMarkersRel{32}\end{scope}
 }
