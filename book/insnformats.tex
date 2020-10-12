@@ -991,7 +991,7 @@
 %	\begin{scope}[shift={(0,-1.5)}]\DrawHexMarkersRel{32}\end{scope}
 }
 \newcommand\DrawAllInsnOpsJAL{
-	\begin{scope}[shift={(0,0)}]\DrawInsnOpJType{1101111}{\hyperref[insn:jal]{jal}}{\hyperref[pcrel.21]{rd,pcrel\_21}}\end{scope}
+	\begin{scope}[shift={(0,0)}]\DrawInsnOpJType{1101111}{\hyperref[insn:jal]{jal}}{rd,\hyperref[pcrel.21]{pcrel\_21}}\end{scope}
 	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpIType{1100111}{000}{\hyperref[insn:jalr]{jalr}}{rd,\hyperref[imm.i:decode]{imm\_i}(rs1)}\end{scope}
 	\begin{scope}[shift={(0,-1.5)}]\DrawHexMarkersRel{32}\end{scope}
 }
