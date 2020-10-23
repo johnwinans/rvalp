@@ -851,6 +851,25 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % #1 opcode
 % #2 func3
+% #3 mnemonic
+% #4 args
+% #5 rs1/zimm
+\newcommand\DrawInsnOpITypeSystem[5]{
+	\DrawInsnBoxRel{31}{20}{csr[11:0]}
+	\DrawInsnBoxRel{19}{15}{#5}
+	\DrawInsnBoxRel{14}{12}{}
+	\DrawInsnBoxRel{11}{7}{rd}
+	\DrawInsnBoxRel{6}{0}{}
+	\draw(\InsnBoxTypePosY,.75) node[right]{\hyperref[insnformat:itype]{I-type}};
+	\draw(\InsnBoxMnemonicPosY,.75) node[right]{\tt #3};
+	\draw(\InsnBoxMnemonicArgPosY,.75) node[right]{\tt #4};
+
+	\begin{scope}[shift={(31-6,0)}]\DrawBitstringX{#1}\end{scope}
+	\begin{scope}[shift={(31-14,0)}]\DrawBitstringX{#2}\end{scope}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 opcode
+% #2 func3
 % #3 func7
 % #4 mnemonic
 % #5 args
@@ -1059,7 +1078,17 @@
 \newcommand\DrawAllInsnOpsSim{
 	\begin{scope}[shift={(0,0)}]\DrawInsnOpSysType{1110011}{000000000000}{\hyperref[insn:ecall]{ecall}}\end{scope}
 	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpSysType{1110011}{000000000001}{\hyperref[insn:ebreak]{ebreak}}\end{scope}
-	\begin{scope}[shift={(0,-1.5)}]\DrawHexMarkersRel{32}\end{scope}
+%	\begin{scope}[shift={(0,-1.5)}]\DrawHexMarkersRel{32}\end{scope}
+}
+
+\newcommand\DrawAllInsnOpsSystem{
+	\begin{scope}[shift={(0,0)}]\DrawInsnOpITypeSystem{1110011}{001}{\hyperref[insn:csrrw]{csrrw}}{rd,\hyperref[csr.i:decode]{csr},rs1}{rs1}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpITypeSystem{1110011}{010}{\hyperref[insn:csrrs]{csrrs}}{rd,\hyperref[csr.i:decode]{csr},rs1}{rs1}\end{scope}
+	\begin{scope}[shift={(0,-3.0)}]\DrawInsnOpITypeSystem{1110011}{011}{\hyperref[insn:csrrc]{csrrc}}{rd,\hyperref[csr.i:decode]{csr},rs1}{rs1}\end{scope}
+	\begin{scope}[shift={(0,-4.5)}]\DrawInsnOpITypeSystem{1110011}{101}{\hyperref[insn:csrrwi]{csrrwi}}{rd,\hyperref[csr.i:decode]{csr},zimm}{zimm[4:0]}\end{scope}
+	\begin{scope}[shift={(0,-6.0)}]\DrawInsnOpITypeSystem{1110011}{110}{\hyperref[insn:csrrwi]{csrrwi}}{rd,\hyperref[csr.i:decode]{csr},zimm}{zimm[4:0]}\end{scope}
+	\begin{scope}[shift={(0,-7.5)}]\DrawInsnOpITypeSystem{1110011}{111}{\hyperref[insn:csrrwi]{csrrwi}}{rd,\hyperref[csr.i:decode]{csr},zimm}{zimm[4:0]}\end{scope}
+	\begin{scope}[shift={(0,-7.5)}]\DrawHexMarkersRel{32}\end{scope}
 }
 
 \newcommand\DrawAllInsnOps{
@@ -1076,6 +1105,7 @@
 
 	\begin{scope}[shift={(0,-56.9)}]\DrawAllInsnOpsFence\end{scope}
 	\begin{scope}[shift={(0,-58.4)}]\DrawAllInsnOpsSim\end{scope}
+	\begin{scope}[shift={(0,-61.4)}]\DrawAllInsnOpsSystem\end{scope}
 
 	\EndTikzPicture
 }
