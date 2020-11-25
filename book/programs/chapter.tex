@@ -384,7 +384,7 @@ Introduce and present subroutines but not nesting until introduce stack operatio
 
 \section{Pseudo Operations}
 
-\enote{Explain why we have pseudo ops.   These mappings are lifted from the ISM, Vol 1, V2.2}%
+\enote{Explain why we have pseudo ops.   Most of these mappings are lifted from the ISM, Vol 1, V2.2}%
 \begin{verbatim}
     la rd, symbol
                     auipc rd, symbol[31:12]
@@ -410,5 +410,52 @@ Introduce and present subroutines but not nesting until introduce stack operatio
 
     tail offset     auipc x6, offset[31:12]     # same as call but no x1
                     jalr x0, x6, offset[11:0]
+
+    mv rd,rs        addi  rd,rs,0
+
+    li rd,number    lui   rd,(number >>U 12)+(number&0x00000800 ? 1 : 0)
+                    addi  rd,rd,(number&0xfff)
 \end{verbatim}
 
+\subsection{The {\tt li} Pseudo Instruction}
+
+Note that the {\tt li} pseudo instruction includes a conditional addition of 1 to the operand
+in the {\tt lui} instruction.  This is because the immediate operand in the
+{\tt addi} instruction is sign-extended before it is added to rd.  
+If the immediate operand to the {\tt addi} has its most-significant-bit set to 1 then
+it will have the effect of subtracting 1 from the most significant 20-bits in {\tt rd}.
+
+Consider putting the value {\tt 0x12345800} into register {\tt x5} using the following
+naive example code:
+
+\begin{verbatim}
+    lui  x5,0x12345    // x5 = 0x12345000
+    addi x5,x5,0x800   // x5 = 0x12345000 + sx(0x800) = 0x12345000 + 0xfffff800 = 0x12344800
+\end{verbatim}
+
+Therefore, in order to put the value {\tt 0x12345800} into register {\tt x5}, the value
+used in the {\tt lui} instruction will altered to compensate for the sign-extention
+in the {\tt addi} instruction:
+
+\begin{verbatim}
+    lui  x5,0x12346    // x5 = 0x12346000
+    addi x5,x5,0x800   // x5 = 0x12346000 + sx(0x800) = 0x12346000 + 0xfffff800 = 0x12345800
+\end{verbatim}
+
+Keep in mind that the {\em only} time that this altering of the operand in the {\tt lui}
+instruction will take place is when the most-significant-bit of the operand in the
+{\tt addi} is set to one.
+
+Consider the case where we wish to put the value {\tt 0x12345700} into register {\tt x5}:
+
+\begin{verbatim}
+    lui  x5,0x12345    // x5 = 0x12345000
+    addi x5,x5,0x700   // x5 = 0x12345000 + sx(0x700) = 0x12345000 + 0x00000700 = 0x12345700
+\end{verbatim}
+
+This time, the sign-extension performed by the {\tt addi} instruction will sign-extend the
+{\tt 0x700} to {\tt 0x00000700} before the addition.
+
+Therefore, the {\tt li} pseudo-instruction will {\em only} increment the operand of the
+{\tt lui} instruction when it is known that the operand of the {\tt addi} instruction 
+will end up being treated as a negative number.
