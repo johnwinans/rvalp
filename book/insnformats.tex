@@ -1078,7 +1078,7 @@
 \newcommand\DrawAllInsnOpsSim{
 	\begin{scope}[shift={(0,0)}]\DrawInsnOpSysType{1110011}{000000000000}{\hyperref[insn:ecall]{ecall}}\end{scope}
 	\begin{scope}[shift={(0,-1.5)}]\DrawInsnOpSysType{1110011}{000000000001}{\hyperref[insn:ebreak]{ebreak}}\end{scope}
-%	\begin{scope}[shift={(0,-1.5)}]\DrawHexMarkersRel{32}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawHexMarkersRel{32}\end{scope}
 }
 
 \newcommand\DrawAllInsnOpsSystem{
@@ -1103,9 +1103,11 @@
 	\begin{scope}[shift={(0,-37.0)}]\DrawAllInsnOpsShiftImm\end{scope}
 	\begin{scope}[shift={(0,-41.7)}]\DrawAllInsnOpsALUR\end{scope}
 
-	\begin{scope}[shift={(0,-56.9)}]\DrawAllInsnOpsFence\end{scope}
-	\begin{scope}[shift={(0,-58.4)}]\DrawAllInsnOpsSim\end{scope}
-	\begin{scope}[shift={(0,-61.4)}]\DrawAllInsnOpsSystem\end{scope}
+% fence moved out of the I spec
+%	\begin{scope}[shift={(0,-56.9)}]\DrawAllInsnOpsFence\end{scope}
+
+	\begin{scope}[shift={(0,-57.4)}]\DrawAllInsnOpsSim\end{scope}
+	\begin{scope}[shift={(0,-60.6)}]\DrawAllInsnOpsSystem\end{scope}
 
 	\EndTikzPicture
 }
