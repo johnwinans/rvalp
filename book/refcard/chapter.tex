@@ -34,27 +34,27 @@ jal   & rd, \hyperref[pcrel.21]{pcrel\_21}     & \hyperref[insnformat:jtype]{J} 
 \hline
 jalr  & rd, imm(rs1) & \hyperref[insnformat:itype]{I} & \hyperref[insn:jalr]{Jump And Link Register}     & {\tt rd $\leftarrow$ pc+4, pc $\leftarrow$ (rs1+\hyperref[imm.i:decode]{imm\_i})\&\textasciitilde{}1}\\
 \hline
-lb    & rd, imm(rs1)  & \hyperref[insnformat:itype]{I} & \hyperref[insn:lb]{Load Byte}                   & {\tt rd $\leftarrow$ sx(m8(rs1+\hyperref[imm.i:decode]{imm\_i})), pc $\leftarrow$ pc+4}\\
+lb    & rd, imm(rs1)  & \hyperref[insnformat:itype]{I} & \hyperref[insn:lb]{Load Byte}                   & {\tt rd $\leftarrow$ \hyperref[extension:sx]{sx}(\hyperref[memory:m8]{m8}(rs1+\hyperref[imm.i:decode]{imm\_i})), pc $\leftarrow$ pc+4}\\
 \hline
-lbu   & rd, imm(rs1)  & \hyperref[insnformat:itype]{I} & \hyperref[insn:lbu]{Load Byte Unsigned}         & {\tt rd $\leftarrow$ zx(m8(rs1+\hyperref[imm.i:decode]{imm\_i})), pc $\leftarrow$ pc+4}\\
+lbu   & rd, imm(rs1)  & \hyperref[insnformat:itype]{I} & \hyperref[insn:lbu]{Load Byte Unsigned}         & {\tt rd $\leftarrow$ \hyperref[extension:zx]{zx}(\hyperref[memory:m8]{m8}(rs1+\hyperref[imm.i:decode]{imm\_i})), pc $\leftarrow$ pc+4}\\
 \hline
-lh    & rd, imm(rs1)  & \hyperref[insnformat:itype]{I} & \hyperref[insn:lh]{Load Halfword}               & {\tt rd $\leftarrow$ sx(m16(rs1+\hyperref[imm.i:decode]{imm\_i})), pc $\leftarrow$ pc+4}\\
+lh    & rd, imm(rs1)  & \hyperref[insnformat:itype]{I} & \hyperref[insn:lh]{Load Halfword}               & {\tt rd $\leftarrow$ \hyperref[extension:sx]{sx}(\hyperref[memory:m16]{m16}(rs1+\hyperref[imm.i:decode]{imm\_i})), pc $\leftarrow$ pc+4}\\
 \hline
-lhu   & rd, imm(rs1)  & \hyperref[insnformat:itype]{I} & \hyperref[insn:lhu]{Load Halfword Unsigned}     & {\tt rd $\leftarrow$ zx(m16(rs1+\hyperref[imm.i:decode]{imm\_i})), pc $\leftarrow$ pc+4}\\
+lhu   & rd, imm(rs1)  & \hyperref[insnformat:itype]{I} & \hyperref[insn:lhu]{Load Halfword Unsigned}     & {\tt rd $\leftarrow$ \hyperref[extension:zx]{zx}(\hyperref[memory:m16]{m16}(rs1+\hyperref[imm.i:decode]{imm\_i})), pc $\leftarrow$ pc+4}\\
 \hline
 lui   & rd, imm        & \hyperref[insnformat:utype]{U} & \hyperref[insn:lui]{Load Upper Immediate}        & {\tt rd $\leftarrow$ \hyperref[imm.u:decode]{imm\_u}, pc $\leftarrow$ pc+4}\\
 \hline
-lw    & rd, imm(rs1)  & \hyperref[insnformat:itype]{I} & \hyperref[insn:lw]{Load Word}                   & {\tt rd $\leftarrow$ sx(m32(rs1+\hyperref[imm.i:decode]{imm\_i})), pc $\leftarrow$ pc+4}\\
+lw    & rd, imm(rs1)  & \hyperref[insnformat:itype]{I} & \hyperref[insn:lw]{Load Word}                   & {\tt rd $\leftarrow$ \hyperref[extension:sx]{sx}(\hyperref[memory:m32]{m32}(rs1+\hyperref[imm.i:decode]{imm\_i})), pc $\leftarrow$ pc+4}\\
 \hline
 or    & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:or]{Or}                         & {\tt rd $\leftarrow$ rs1 | rs2, pc $\leftarrow$ pc+4}\\
 \hline
 ori   & rd, rs1, imm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:ori]{Or Immediate}               & {\tt rd $\leftarrow$ rs1 | \hyperref[imm.i:decode]{imm\_i}, pc $\leftarrow$ pc+4}\\
 \hline
-sb    & rs2, imm(rs1) & \hyperref[insnformat:stype]{S} & \hyperref[insn:sb]{Store Byte}                  & {\tt m8(rs1+\hyperref[imm.s:decode]{imm\_s}) $\leftarrow$ rs2[7:0], pc $\leftarrow$ pc+4}\\
+sb    & rs2, imm(rs1) & \hyperref[insnformat:stype]{S} & \hyperref[insn:sb]{Store Byte}                  & {\tt \hyperref[memory:m8]{m8}(rs1+\hyperref[imm.s:decode]{imm\_s}) $\leftarrow$ rs2[7:0], pc $\leftarrow$ pc+4}\\
 \hline
-sh    & rs2, imm(rs1) & \hyperref[insnformat:stype]{S} & \hyperref[insn:sh]{Store Halfword}              & {\tt m16(rs1+\hyperref[imm.s:decode]{imm\_s}) $\leftarrow$ rs2[15:0], pc $\leftarrow$ pc+4}\\
+sh    & rs2, imm(rs1) & \hyperref[insnformat:stype]{S} & \hyperref[insn:sh]{Store Halfword}              & {\tt \hyperref[memory:m16]{m16}(rs1+\hyperref[imm.s:decode]{imm\_s}) $\leftarrow$ rs2[15:0], pc $\leftarrow$ pc+4}\\
 \hline
-sll   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:sll]{Shift Left Logical}        & {\tt rd $\leftarrow$ rs1 << (rs2\%XLEN), pc $\leftarrow$ pc+4}\\
+sll   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:sll]{Shift Left Logical}        & {\tt rd $\leftarrow$ rs1 << (rs2\%\hyperref[XLEN]{XLEN}), pc $\leftarrow$ pc+4}\\
 \hline
 slli  & rd, rs1, shamt & \hyperref[insnformat:itype]{I} & \hyperref[insn:slli]{Shift Left Logical Immediate} & {\tt rd $\leftarrow$ rs1 << \hyperref[shamt.i:decode]{shamt\_i}, pc $\leftarrow$ pc+4}\\
 \hline
@@ -66,17 +66,17 @@ sltiu & rd, rs1, imm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:sltiu]{S
 \hline
 sltu  & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:sltu]{Set Less Than Unsigned}   & {\tt rd $\leftarrow$ (rs1 < rs2) ? 1 : 0, pc $\leftarrow$ pc+4}\\
 \hline
-sra   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:sra]{Shift Right Arithmetic}    & {\tt rd $\leftarrow$ rs1 >> (rs2\%XLEN), pc $\leftarrow$ pc+4}\\
+sra   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:sra]{Shift Right Arithmetic}    & {\tt rd $\leftarrow$ rs1 >> (rs2\%\hyperref[XLEN]{XLEN}), pc $\leftarrow$ pc+4}\\
 \hline
 srai  & rd, rs1, shamt & \hyperref[insnformat:itype]{I} & \hyperref[insn:srai]{Shift Right Arithmetic Immediate} & {\tt rd $\leftarrow$ rs1 >> \hyperref[shamt.i:decode]{shamt\_i}, pc $\leftarrow$ pc+4}\\
 \hline
-srl   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:srl]{Shift Right Logical}       & {\tt rd $\leftarrow$ rs1 >> (rs2\%XLEN), pc $\leftarrow$ pc+4}\\
+srl   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:srl]{Shift Right Logical}       & {\tt rd $\leftarrow$ rs1 >> (rs2\%\hyperref[XLEN]{XLEN}), pc $\leftarrow$ pc+4}\\
 \hline
 srli  & rd, rs1, shamt & \hyperref[insnformat:itype]{I} & \hyperref[insn:srli]{Shift Right Logical Immediate} & {\tt rd $\leftarrow$ rs1 >> \hyperref[shamt.i:decode]{shamt\_i}, pc $\leftarrow$ pc+4}\\
 \hline
 sub   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:sub]{Subtract}                  & {\tt rd $\leftarrow$ rs1 - rs2, pc $\leftarrow$ pc+4}\\
 \hline
-sw    & rs2, imm(rs1) & \hyperref[insnformat:stype]{S} & \hyperref[insn:sw]{Store Word}                  & {\tt m32(rs1+\hyperref[imm.s:decode]{imm\_s}) $\leftarrow$ rs2[31:0], pc $\leftarrow$ pc+4}\\
+sw    & rs2, imm(rs1) & \hyperref[insnformat:stype]{S} & \hyperref[insn:sw]{Store Word}                  & {\tt \hyperref[memory:m32]{m32}(rs1+\hyperref[imm.s:decode]{imm\_s}) $\leftarrow$ rs2[31:0], pc $\leftarrow$ pc+4}\\
 \hline
 xor   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:xor]{Exclusive Or}              & {\tt rd $\leftarrow$ rs1 \^{} rs2, pc $\leftarrow$ pc+4}\\
 \hline
