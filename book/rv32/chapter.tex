@@ -12,6 +12,8 @@ When discussing instructions, the following abbreviations/notations are used:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{XLEN}
+\label{XLEN}
+
 
 XLEN represents the bit-length of an \reg{x} register in the machine architecture.
 Possible values are 32, 64 and 128.
@@ -112,10 +114,10 @@ The contents of an 8-bit value in memory at address {\em addr}.
 
 Given the contents of the memory dump shown in 
 \autoref{Figure:SampleMemoryContents}, 
-\verb@m8(42)@ refers to the memory location at address \verb@42@$_{16}$ 
+\verb@m8(0x42)@ refers to the memory location at address \verb@42@$_{16}$ 
 that currently contains the 8-bit value \verb@fc@$_{16}$.
 
-The \verb@mn(addr)@ notation can be used to refer to memory that is being 
+The \verb@m@$_n$\verb@(addr)@ notation can be used to refer to memory that is being 
 read or written depending on the context.  
 
 When memory is being written, the following notation is used to indicate that 
@@ -148,23 +150,25 @@ Note that {\em source} and {\em dest} are typically registers.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{m16(addr)}
+\label{memory:m16}
 
 The contents of an 16-bit little-endian value in memory at address {\em addr}.
 
 Given the contents of the memory dump shown in 
 \autoref{Figure:SampleMemoryContents}, 
-\verb@m16(42)@ refers to the memory location at address \verb@42@$_{16}$
+\verb@m16(0x42)@ refers to the memory location at address \verb@42@$_{16}$
 that currently contains \verb@65fc@$_{16}$. See also~\autoref{memory:m8}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{m32(addr)}
+\label{memory:m32}
 
 The contents of an 32-bit little-endian value in memory at address {\em addr}.
 
 Given the contents of the memory dump shown in
 \autoref{Figure:SampleMemoryContents},
-\verb@m32(42)@ refers to the memory location at address \verb@42@$_{16}$
+\verb@m32(0x42)@ refers to the memory location at address \verb@42@$_{16}$
 that currently contains \verb@662065fc@$_{16}$.
 See also~\autoref{memory:m8}.
 
@@ -175,7 +179,7 @@ The contents of an 64-bit little-endian value in memory at address {\em addr}.
 
 Given the contents of the memory dump shown in 
 \autoref{Figure:SampleMemoryContents}, 
-\verb@m64(42)@ refers to the memory location at address \verb@42@$_{16}$
+\verb@m64(0x42)@ refers to the memory location at address \verb@42@$_{16}$
 that currently contains \verb@656c6c69662065fc@$_{16}$.
 See also~\autoref{memory:m8}.
 
@@ -187,7 +191,7 @@ address {\em addr}.
 
 Given the contents of the memory dump shown in 
 \autoref{Figure:SampleMemoryContents}, 
-\verb@m128(42)@ refers to the memory location at address \verb@42@$_{16}$
+\verb@m128(0x42)@ refers to the memory location at address \verb@42@$_{16}$
 that currently contains \verb@7220687469772064656c6c69662065fc@$_{16}$.
 See also~\autoref{memory:m8}.
 
