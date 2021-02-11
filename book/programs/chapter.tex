@@ -360,7 +360,7 @@ Introduce and present subroutines but not nesting until introduce stack operatio
 
 
 
-\section{Pseudo Operations}
+\section{Pseudoinstructions}
 
 {\small
 \begin{verbatim}
@@ -396,9 +396,9 @@ Introduce and present subroutines but not nesting until introduce stack operatio
 \end{verbatim}
 }
 
-\subsection{The {\tt li} Pseudo Instruction}
+\subsection{The {\tt li} Pseudoinstruction}
 
-Note that the {\tt li} pseudo instruction includes a conditional addition of 1 to the operand
+Note that the {\tt li} pseudoinstruction includes a conditional addition of 1 to the operand
 in the {\tt lui} instruction.  This is because the immediate operand in the
 {\tt addi} instruction is sign-extended before it is added to \verb@rd@.
 If the immediate operand to the {\tt addi} has its most-significant-bit set to 1 then
@@ -445,7 +445,7 @@ Consider the case where we wish to put the value {\tt 0x12345700} into register 
 The sign-extension in this example performed by the {\tt addi} instruction will convert the
 {\tt 0x700} to {\tt 0x00000700} before the addition.
 
-Therefore, the {\tt li} pseudo-instruction must {\em only} increment the operand of the
+Therefore, the {\tt li} pseudoinstruction must {\em only} increment the operand of the
 {\tt lui} instruction when it is known that the operand of the subsequent {\tt addi} 
 instruction will be a negative number.
 
@@ -457,10 +457,10 @@ instruction will be a negative number.
 
 
 
-\subsection{The {\tt la} Pseudo Instruction}
+\subsection{The {\tt la} Pseudoinstruction}
 
 The \verb@la@ (and others that use \verb@auipc@ such as 
-the \verb@l{b|h|w}@, \verb@s{b|h|w}@, \verb@call@, and \verb@tail@) pseudo instructions
+the \verb@l{b|h|w}@, \verb@s{b|h|w}@, \verb@call@, and \verb@tail@) pseudoinstructions
 also compensate for a sign-ended negative number when adding a 12-bit immediate
 operand. The only difference is that these use a \verb@pc@-relative addressing mode.
 
@@ -470,7 +470,7 @@ into register x10:
 {\small
 \begin{verbatim}
 00010040     la     x10,var1
-00010048 ...                 # note that the la pseudo instruction expands into 8 bytes
+00010048 ...                 # note that the la pseudoinstruction expands into 8 bytes
 ...
 
          var1:
@@ -493,7 +493,7 @@ represented by the label \verb@var1@ from the address of the current instruction
 (which is expressed as '.') resulting in the number of bytes from the current instruction
 to the target label\ldots{} which is \verb@0x000008c0@.
 
-Therefore the expanded pseudo instruction example will become:
+Therefore the expanded pseudoinstruction example will become:
  
 {\small
 \begin{verbatim}
@@ -536,7 +536,7 @@ bit set then the operand in the \verb@auipc@ has to be incremented by 1 to compe
 Because expressions that refer to constants and address labels are common in 
 assembly language programs, a shorthand notation is available for calculating 
 the pairs of values that are used in the implementation of things like the 
-\verb@li@ and \verb@la@ pseudo instructions (that have to be written to 
+\verb@li@ and \verb@la@ pseudoinstructions (that have to be written to 
 compensate for the sign-extension that will take place in the immediate operand 
 that appears in instructions like \verb@addi@ and \verb@jalr@.)
 
@@ -550,7 +550,7 @@ To refer to an absolute value, the following operators can be used:
 \end{verbatim}
 }
 
-Thus, the \verb@li@ pseudo operation can be expressed like this:
+Thus, the \verb@li@ pseudoinstruction can be expressed like this:
 
 {\small
 \begin{verbatim}
@@ -576,7 +576,7 @@ determine the address of the instruction that contains the corresponding \verb@%
 (The label \verb@lab@ MUST be on a line that used a \verb@%pcrel_hi()@ or get an 
 error from the assembler.)
 
-Thus, the \verb@la rd,label@ pseudo operation can be expressed like this:
+Thus, the \verb@la rd,label@ pseudoinstruction can be expressed like this:
 {\small
 \begin{verbatim}
 xxx:  auipc rd,%pcrel_hi(label)
