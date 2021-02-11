@@ -170,9 +170,7 @@ For example, to set \reg{t3} to zero:
 \DrawInsnTypeIPicture{addi x1, x7, 4}{00000000010000111000000010010011}
 
 
-
-
-
+{\small
 \begin{verbatim}
     addi    t0, zero, 4     # t0 = 4
     addi    t1, t1, 100     # t1 = 104
@@ -186,7 +184,7 @@ For example, to set \reg{t3} to zero:
 	addi x0, x0, 0				# no operation (pseudo: nop)
 	addi rd, rs, 0				# copy reg rs to rd (pseudo: mv rd, rs)
 \end{verbatim}
-
+}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -206,6 +204,7 @@ Ideas for the order of introducing instructions.
 \label{uguide:srai}
 \label{uguide:slli}
 \label{uguide:srli}
+{\small
 \begin{verbatim}
     andi
     ori
@@ -217,7 +216,7 @@ Ideas for the order of introducing instructions.
     slli
     srli
 \end{verbatim}
-
+}
 
 \section{Transferring Data Between Registers and Memory}
 
@@ -232,6 +231,7 @@ Copying values from memory to a register (first examples using regs set with add
 \label{uguide:lw}
 \label{uguide:lbu}
 \label{uguide:lhu}
+{\small
 \begin{verbatim}
     lb
     lh
@@ -239,16 +239,19 @@ Copying values from memory to a register (first examples using regs set with add
     lbu
     lhu
 \end{verbatim}
+}
 
 Copying values from a register to memory:
 \label{uguide:sb}
 \label{uguide:sh}
 \label{uguide:sw}
+{\small
 \begin{verbatim}
     sb
     sh
     sw
 \end{verbatim}
+}
 
 \section{RR operations}
 \label{uguide:add}
@@ -261,6 +264,7 @@ Copying values from a register to memory:
 \label{uguide:xor}
 \label{uguide:sltu}
 \label{uguide:slt}
+{\small
 \begin{verbatim}
     add
     sub
@@ -273,12 +277,14 @@ Copying values from a register to memory:
     sltu
     slt
 \end{verbatim}
+}
 
 
 \section{Setting registers to large values using lui with addi}
 
 \label{uguide:lui}
 \label{uguide:auipc}
+{\small
 \begin{verbatim}
     addi        // useful for values from -2048 to 2047
     lui         // useful for loading any multiple of 0x1000
@@ -288,11 +294,11 @@ Copying values from a register to memory:
     auipc       // Load an address relative the the current PC (see la pseudo)
     addi
 
-
     lui         // Load constant into into bits 31:12  (see li pseudo)
     addi        // add a constant to fill in bits 11:0
                     if bit 11 is set then need to +1 the lui value to compensate
 \end{verbatim}
+}
 
 
 \section{Labels and Branching}
@@ -314,6 +320,7 @@ Start to introduce addressing here?
 \label{uguide:bgez}
 \label{uguide:bltz}
 \label{uguide:bgtz}
+{\small
 \begin{verbatim}
     beq
     bne
@@ -334,39 +341,8 @@ Start to introduce addressing here?
     bltz rs, offset         # pseudo for: blt rs, x0, offset
     bgtz rs, offset         # pseudo for: blt x0, rs, offset
 \end{verbatim}
+}
 
-
-\section{Relocation}
-
-Absolute:
-\begin{verbatim}
-    %hi(symbol)         
-    %lo(symbol)         
-\end{verbatim}
-
-PC-relative:
-\begin{verbatim}
-    %pcrel_hi(symbol)   
-    %pcrel_lo(label)    
-\end{verbatim}
-
-Using \verb@auipc@ \& \verb@addi@ together with label references:
-
-The \verb@%pcrel_lo()@ uses the label to find the associated \verb@%pcrel_hi()@.
-The label MUST be on a line that used a \verb@%pcrel_hi()@ or get an error.
-This is needed to calculate the proper offset.
-
-Things like this are legal:
-\begin{verbatim}
-label:  auipc   t1, %pcrel_hi(symbol)
-        addi    t2, t1, %pcrel_lo(label)
-        addi    t3, t1, %pcrel_lo(label)
-        lw      t4, %pcrel_lo(label)(t1)
-        sw      t5, %pcrel_lo(label)(t1)
-\end{verbatim}
-
-Discuss how relaxation works.
-see:  \url{https://github.com/riscv/riscv-elf-psabi-doc/blob/master/riscv-elf.md}
 
 
 \section{Jumps}
@@ -375,87 +351,276 @@ Introduce and present subroutines but not nesting until introduce stack operatio
 
 \label{uguide:jal}
 \label{uguide:jalr}
+{\small
 \begin{verbatim}
     jal
     jalr
 \end{verbatim}
+}
 
 
 
 \section{Pseudo Operations}
 
-\enote{Explain why we have pseudo ops.   Most of these mappings are lifted from the ISM, Vol 1, V2.2}%
+{\small
 \begin{verbatim}
-    la rd, symbol
-                    auipc rd, symbol[31:12]
-                    addi rd, rd, symbol[11:0]
+    li   rd,constant lui      rd,(constant >>U 12)+(constant & 0x00000800 ? 1 : 0)
+                     addi     rd,rd,(constant & 0xfff)
 
-    l{b|h|w|d} rd, symbol
-                    auipc rd, symbol[31:12]
-                    l{b|h|w|d} rd, symbol[11:0](rd)
+    la   rd,label
+                     auipc    rd,((label-.) >>U 12) + ((label-.) & 0x00000800 ? 1 : 0)
+                     addi     rd,rd,((label-(.-4)) & 0xfff)
 
-    s{b|h|w|d} rd, symbol, rt                   # rt is the temp reg to use for the operation
-                    auipc rt, symbol[31:12]
-                    s{b|h|w|d} rd, symbol[11:0](rt)
+    l{b|h|w} rd,label
+                     auipc    rd,((label-.) >>U 12) + ((label-.) & 0x00000800 ? 1 : 0)
+                     l{b|h|w} rd,((label-(.-4)) & 0xfff)(rd)
 
+    s{b|h|w} rd,label,rt               # rt used as a temp reg for the operation (default=x6)
+                     auipc    rt,((label-.) >>U 12) + ((label-.) & 0x00000800 ? 1 : 0)
+                     s{b|h|w} rd,((label-(.-4)) & 0xfff)(rt)
 
-    j offset        jal x0, offset
-    jal offset      jal x1, offset
-    jr rs           jalr x0, rs, 0
-    jalr rs         jalr x1, rs, 0
-    ret             jalr x0, x1, 0
+    call label       auipc    x1,((label-.) >>U 12) + ((label-.) & 0x00000800 ? 1 : 0)
+                     jalr     x1,((label-(.-4)) & 0xfff)(x1)
 
-    call offset     auipc x6, offset[31:12]
-                    jalr x1, x6, offset[11:0]
+    tail label,rt                      # rt used as a temp reg for the operation (default=x6)
+                     auipc    rt,((label-.) >>U 12) + ((label-.) & 0x00000800 ? 1 : 0)
+                     jalr     x0,((label-(.-4)) & 0xfff)(rt)
 
-    tail offset     auipc x6, offset[31:12]     # same as call but no x1
-                    jalr x0, x6, offset[11:0]
-
-    mv rd,rs        addi  rd,rs,0
-
-    li rd,number    lui   rd,(number >>U 12)+(number&0x00000800 ? 1 : 0)
-                    addi  rd,rd,(number&0xfff)
+    mv   rd,rs       addi     rd,rs,0
+ 
+    j    label       jal      x0,label
+    jal  label       jal      x1,label
+    jr   rs          jalr     x0,0(rs)
+    jalr rs          jalr     x1,0(rs)
+    ret              jalr     x0,0(x1)
 \end{verbatim}
+}
 
 \subsection{The {\tt li} Pseudo Instruction}
 
 Note that the {\tt li} pseudo instruction includes a conditional addition of 1 to the operand
 in the {\tt lui} instruction.  This is because the immediate operand in the
-{\tt addi} instruction is sign-extended before it is added to rd.  
+{\tt addi} instruction is sign-extended before it is added to \verb@rd@.
 If the immediate operand to the {\tt addi} has its most-significant-bit set to 1 then
-it will have the effect of subtracting 1 from the most significant 20-bits in {\tt rd}.
+it will have the effect of subtracting 1 from the operand in the \verb@lui@ instruction.
 
-Consider putting the value {\tt 0x12345800} into register {\tt x5} using the following
-naive example code:
+Consider the case of putting the value {\tt 0x12345800} into register {\tt x5}:
 
+{\small
+\begin{verbatim}
+    li  x5,0x12345800
+\end{verbatim}
+}
+{\color{red}
+A naive (incorrect) solution might be:
+{\small
 \begin{verbatim}
     lui  x5,0x12345    // x5 = 0x12345000
     addi x5,x5,0x800   // x5 = 0x12345000 + sx(0x800) = 0x12345000 + 0xfffff800 = 0x12344800
 \end{verbatim}
+}
+The result of the above code is that an incorrect value has been placed into x5.  
+}
 
-Therefore, in order to put the value {\tt 0x12345800} into register {\tt x5}, the value
-used in the {\tt lui} instruction will altered to compensate for the sign-extention
-in the {\tt addi} instruction:
-
+To remedy this problem, the value used in the {\tt lui} instruction can altered 
+(by adding 1 to its operand) to compensate for the sign-extention in the {\tt addi} 
+instruction:
+{\small
 \begin{verbatim}
-    lui  x5,0x12346    // x5 = 0x12346000
+    lui  x5,0x12346    // x5 = 0x12346000  (note this is 0x12345 + 1)
     addi x5,x5,0x800   // x5 = 0x12346000 + sx(0x800) = 0x12346000 + 0xfffff800 = 0x12345800
 \end{verbatim}
-
+}
 Keep in mind that the {\em only} time that this altering of the operand in the {\tt lui}
-instruction will take place is when the most-significant-bit of the operand in the
+instruction should take place is when the most-significant-bit of the operand in the
 {\tt addi} is set to one.
 
 Consider the case where we wish to put the value {\tt 0x12345700} into register {\tt x5}:
-
+{\small
 \begin{verbatim}
-    lui  x5,0x12345    // x5 = 0x12345000
+    lui  x5,0x12345    // x5 = 0x12345000  (note this is 0x12345 + 0)
     addi x5,x5,0x700   // x5 = 0x12345000 + sx(0x700) = 0x12345000 + 0x00000700 = 0x12345700
 \end{verbatim}
-
-This time, the sign-extension performed by the {\tt addi} instruction will sign-extend the
+}
+The sign-extension in this example performed by the {\tt addi} instruction will convert the
 {\tt 0x700} to {\tt 0x00000700} before the addition.
 
-Therefore, the {\tt li} pseudo-instruction will {\em only} increment the operand of the
-{\tt lui} instruction when it is known that the operand of the {\tt addi} instruction 
-will end up being treated as a negative number.
+Therefore, the {\tt li} pseudo-instruction must {\em only} increment the operand of the
+{\tt lui} instruction when it is known that the operand of the subsequent {\tt addi} 
+instruction will be a negative number.
+
+
+
+
+
+
+
+
+
+\subsection{The {\tt la} Pseudo Instruction}
+
+The \verb@la@ (and others that use \verb@auipc@ such as 
+the \verb@l{b|h|w}@, \verb@s{b|h|w}@, \verb@call@, and \verb@tail@) pseudo instructions
+also compensate for a sign-ended negative number when adding a 12-bit immediate
+operand. The only difference is that these use a \verb@pc@-relative addressing mode.
+
+For example, consider the task of putting an address represented by the label \verb@var1@
+into register x10:
+
+{\small
+\begin{verbatim}
+00010040     la     x10,var1
+00010048 ...                 # note that the la pseudo instruction expands into 8 bytes
+...
+
+         var1:
+00010900     .word  999       # a 32-bit integer constant stored in memory at address var1
+\end{verbatim}
+}
+The \verb@la@ instruction here will expand into:
+{\small
+\begin{verbatim}
+00010040     auipc x10,((var1-.) >>U 12) + ((var1-.) & 0x00000800 ? 1 : 0)
+00010044     addi  x10,x10,((var1-(.-4)) & 0xfff)
+\end{verbatim}
+}
+
+Note that \verb@auipc@ will shift the immediate operand to the left 12 bits and then
+add that to the \verb@pc@ register (see \autoref{insn:auipc}.)
+
+The assembler will calculate the value of \verb@(var1-.)@ by subtracting the address
+represented by the label \verb@var1@ from the address of the current instruction 
+(which is expressed as '.') resulting in the number of bytes from the current instruction
+to the target label\ldots{} which is \verb@0x000008c0@.
+
+Therefore the expanded pseudo instruction example will become:
+ 
+{\small
+\begin{verbatim}
+00010040     auipc x10,((0x00010900-0x00010040) >>U 12) + ((0x00010900-0x00010040) & 0x00000800 ? 1 : 0)
+00010044     addi  x10,x10,((0x00010900-(0x00010044-4)) & 0xfff)      # note the extra -4 here!
+\end{verbatim}
+}
+After performing the subtractions, it will reduce to this:
+{\small
+\begin{verbatim}
+00010040     auipc x10,(0x000008c0 >>U 12) + ((0x000008c0) & 0x00000800 ? 1 : 0)
+00010044     addi  x10,x10,(0x000008c0 & 0xfff)
+\end{verbatim}
+}
+Continuing to reduce the math operations we get:
+{\small
+\begin{verbatim}
+00010040     auipc x10,0x00000 + 1    # add 1 here because 0x8c0 below has MSB = 1
+00010044     addi  x10,x10,0x8c0
+\end{verbatim}
+}
+
+\ldots and\ldots
+
+{\small
+\begin{verbatim}
+00010040     auipc x10,0x00001
+00010044     addi  x10,x10,0x8c0
+\end{verbatim}
+}
+
+Note that the the \verb@la@ exhibits the same sort of technique as the \verb@li@ in that
+if/when the immediate operand of the \verb@addi@ instruction has its most significant 
+bit set then the operand in the \verb@auipc@ has to be incremented by 1 to compensate.
+
+
+
+\section{Relocation}
+ 
+Because expressions that refer to constants and address labels are common in 
+assembly language programs, a shorthand notation is available for calculating 
+the pairs of values that are used in the implementation of things like the 
+\verb@li@ and \verb@la@ pseudo instructions (that have to be written to 
+compensate for the sign-extension that will take place in the immediate operand 
+that appears in instructions like \verb@addi@ and \verb@jalr@.)
+
+\subsection{Absolute Addresses}
+
+To refer to an absolute value, the following operators can be used:
+{\small
+\begin{verbatim}
+    %hi(constant)    // becomes: (constant >>U 12)+(constant & 0x00000800 ? 1 : 0)
+    %lo(constant)    // becomes: (constant & 0xfff)
+\end{verbatim}
+}
+
+Thus, the \verb@li@ pseudo operation can be expressed like this:
+
+{\small
+\begin{verbatim}
+    li   rd,constant  lui      rd,%hi(constant)
+                      addi     rd,rd,%lo(constant)
+\end{verbatim}
+}
+
+
+
+\subsection{PC-Relative Addresses}
+
+The following can be used for PC-relative addresses:
+{\small
+\begin{verbatim}
+    %pcrel_hi(symbol) // becomes: ((symbol-.) >>U 12) + ((symbol-.) & 0x00000800 ? 1 : 0)
+    %pcrel_lo(lab)    // becomes: ((symbol-lab) & 0xfff)
+\end{verbatim}
+}
+
+Note the subtlety involved with the \verb@lab@ on \verb@%pcrel_lo@. It is needed to 
+determine the address of the instruction that contains the corresponding \verb@%pcrel_hi@.
+(The label \verb@lab@ MUST be on a line that used a \verb@%pcrel_hi()@ or get an 
+error from the assembler.)
+
+Thus, the \verb@la rd,label@ pseudo operation can be expressed like this:
+{\small
+\begin{verbatim}
+xxx:  auipc rd,%pcrel_hi(label)
+      addi  rd,rd,%pcrel_lo(xxx)  // the xxx tells pcrel_lo where to find the matching pcrel_hi
+\end{verbatim}
+}
+
+Examples of using the \verb@auipc@ \& \verb@addi@ together with \verb@%pcrel_hi()@ and
+\verb@%pcrel_lo()@:
+
+{\small
+\begin{verbatim}
+xxx:    auipc   t1,%pcrel_hi(yyy)     // (yyy-xxx) >>U 12) + ((yyy-xxx) & 0x00000800 ? 1 : 0)
+        addi    t1,t1,%pcrel_lo(xxx)  // ((yyy-xxx) & 0xfff)
+...
+yyy:                                  // the address: yyy is saved into t1 above
+...
+\end{verbatim}
+}
+
+
+Things like this are legal:
+{\small
+\begin{verbatim}
+label:  auipc   t1,%pcrel_hi(symbol)     
+        addi    t2,t1,%pcrel_lo(label)
+        addi    t3,t1,%pcrel_lo(label)
+        lw      t4,%pcrel_lo(label)(t1)
+        sw      t5,%pcrel_lo(label)(t1)
+\end{verbatim}
+}
+
+\section{Relaxation}
+
+\enote{I'm not sure I want to get into the details of how this is done. Just assume it works.}%
+In the simplest of terms, {\em Relaxation} refers to the ability of the 
+linker (not the compiler!) to determine if/when the instructions that
+were generated with the \verb@xxx_hi@ and \verb@xxx_lo@ operators are
+unneeded (and thus waste execution time and memory) and can therefore
+be removed.
+
+However, doing so is not trivial as it will result in moving things around 
+in memory, possibly changing the values of address labels in the 
+already-assembled program!  Therefore, while the motivation for 
+rexation is obvious, the process of implementing it is non-trivial.
+
+See: \url{https://github.com/riscv/riscv-elf-psabi-doc/blob/master/riscv-elf.md}
