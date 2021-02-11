@@ -1040,7 +1040,7 @@ If \verb@rs1@ is not equal to \verb@rs2@ then add \verb@imm_b@ to the
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{CPU Registers}
+\section{CPU Registers}
 \label{cpuregs}
 
 The registers are names x0 through x31 and have aliases suited to their 
@@ -1065,41 +1065,22 @@ in the compressed format.
 \begin{center}
 \begin{tabular}{|l|l|l|l|}
 \hline
-Reg	&	Alias	& Description						& Saved		\\
+Reg		& ABI/Alias	& Description						& Saved		\\
 \hline
 \hline
-x0	&	zero	& Hard-wired zero					&			\\
-x1	&	ra		& Return address					& 			\\
-x2	&	sp		& Stack pointer						& yes		\\
-x3	&	gp		& Global pointer					&			\\
-x4	&	tp		& Thread pointer					&			\\
-x5	&	t0		& Temporary/alternate link register	&			\\
-x6	&	t1		& Temporary							&			\\
-x7	&	t2		& Temporary							&			\\
-x8	&	s0/fp	& Saved register/frame pointer		& yes		\\
-x9	&	s1		& Saved register					& yes		\\
-x10	&	a0		& Function argument/return value	& 			\\
-x11	&	a1		& Function argument/return value	& 			\\
-x12	&	a2		& Function argument					& 			\\
-x13	&	a3		& Function argument					& 			\\
-x14	&	a4		& Function argument					& 			\\
-x15	&	a5		& Function argument					& 			\\
-x16	&	a6		& Function argument					& 			\\
-x17	&	a7		& Function argument					& 			\\
-x18	&	s2		& Saved register					& yes		\\
-x19	&	s3		& Saved register					& yes		\\
-x20	&	s4		& Saved register					& yes		\\
-x21	&	s5		& Saved register					& yes		\\
-x22	&	s6		& Saved register					& yes		\\
-x23	&	s7		& Saved register					& yes		\\
-x24	&	s8		& Saved register					& yes		\\
-x25	&	s9		& Saved register					& yes		\\
-x26	&	s10		& Saved register					& yes		\\
-x27	&	s11		& Saved register					& yes		\\
-x28	&	t3		& Temporary							&			\\
-x29	&	t4		& Temporary							&			\\
-x30	&	t5		& Temporary							&			\\
-x31	&	t6		& Temporary							&			\\
+\verb@x0@		&	\verb@zero@		& Hard-wired zero					&			\\
+\verb@x1@		&	\verb@ra@		& Return address					& 			\\
+\verb@x2@		&	\verb@sp@		& Stack pointer						& yes		\\
+\verb@x3@		&	\verb@gp@		& Global pointer					&			\\
+\verb@x4@		&	\verb@tp@		& Thread pointer					&			\\
+\verb@x5@		&	\verb@t0@		& Temporary/alternate link register	&			\\
+\verb@x6-7@		&	\verb@t1-2@		& Temporaries						&			\\
+\verb@x8@		&	\verb@s0/fp@	& Saved register/frame pointer		& yes		\\
+\verb@x9@		&	\verb@s1@		& Saved register					& yes		\\
+\verb@x10-11@	&	\verb@a0-1@		& Function arguments/return value	& 			\\
+\verb@x12-17@	&	\verb@a2-7@		& Function arguments				& 			\\
+\verb@x18-27@	&	\verb@s2-11@	& Saved registers					& yes		\\
+\verb@x28-31@	&	\verb@t3-6@		& Temporaries						&			\\
 \hline
 \end{tabular}
 \end{center}
