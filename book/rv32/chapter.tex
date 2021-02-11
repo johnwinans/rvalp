@@ -550,7 +550,8 @@ value \verb@0xff55ff11@.
 \label{insn:sll}
 
 Shift \verb@rs1@ left by the number of bits specified in the least significant
-five bits of \verb@rs2@ and store the result in \verb@rd@.
+five bits of \verb@rs2@ and store the result in \verb@rd@.\footnote{For
+more information on how shifting works, see \autoref{shifting}.}
 
 For example, if \verb@x17@ = \verb@0x12345678@ and \verb@x18@ = \verb@0x08@
 then the instruction \verb@sll x12,x17,x18@ will set \verb@x12@ to the
@@ -563,6 +564,14 @@ If the signed integer value in \verb@rs1@ is less than the
 signed integer value in \verb@rs2@ then set \verb@rd@ to \verb@1@.
 Otherwise, set \verb@rd@ to \verb@0@.
 
+For example, if \verb@x17@ = \verb@0x12345678@ and \verb@x18@ = \verb@0x0000ffff@
+then the instruction \verb@slt x12,x17,x18@ will set \verb@x12@ to the
+value \verb@0x00000000@.
+
+If \verb@x17@ = \verb@0x82345678@ and \verb@x18@ = \verb@0x0000ffff@
+then the instruction \verb@slt x12,x17,x18@ will set \verb@x12@ to the
+value \verb@0x00000001@.
+
 \item\instructionHeader{sltu\ \ rd,rs1,rs2}
 \label{insn:sltu}
 
@@ -570,25 +579,43 @@ If the unsigned integer value in \verb@rs1@ is less than the
 unsigned integer value in \verb@rs2@ then set \verb@rd@ to \verb@1@.
 Otherwise, set \verb@rd@ to \verb@0@.
 
+For example, if \verb@x17@ = \verb@0x12345678@ and \verb@x18@ = \verb@0x0000ffff@
+then the instruction \verb@sltu x12,x17,x18@ will set \verb@x12@ to the
+value \verb@0x00000000@.
+
+If \verb@x17@ = \verb@0x12345678@ and \verb@x18@ = \verb@0x8000ffff@
+then the instruction \verb@sltu x12,x17,x18@ will set \verb@x12@ to the
+value \verb@0x00000001@.
+
 \item\instructionHeader{sra\ \ \ rd,rs1,rs2}
 \label{insn:sra}
 
 Arithmetic-shift \verb@rs1@ right by the number of bits given in \verb@rs2@ and
-store the result in \verb@rd@.
+store the result in \verb@rd@.\footnote{For
+more information on how shifting works, see \autoref{shifting}.}
 
 For example, if \verb@x17@ = \verb@0x87654321@ and \verb@x18@ = \verb@0x08@
 then the instruction \verb@sra x12,x17,x18@ will set \verb@x12@ to the
 value \verb@0xff876543@.
 
+If \verb@x17@ = \verb@0x76543210@ and \verb@x18@ = \verb@0x08@
+then the instruction \verb@sra x12,x17,x18@ will set \verb@x12@ to the
+value \verb@0x00765432@.
+
 \item\instructionHeader{srl\ \ \ rd,rs1,rs2}
 \label{insn:srl}
 
 Logic-shift \verb@rs1@ right by the number of bits given in \verb@rs2@ and
-store the result in \verb@rd@.
+store the result in \verb@rd@.\footnote{For
+more information on how shifting works, see \autoref{shifting}.}
 
 For example, if \verb@x17@ = \verb@0x87654321@ and \verb@x18@ = \verb@0x08@
 then the instruction \verb@srl x12,x17,x18@ will set \verb@x12@ to the
 value \verb@0x00876543@.
+
+If \verb@x17@ = \verb@0x76543210@ and \verb@x18@ = \verb@0x08@
+then the instruction \verb@srl x12,x17,x18@ will set \verb@x12@ to the
+value \verb@0x00765432@.
 
 \item\instructionHeader{sub\ \ \ rd,rs1,rs2}
 \label{insn:sub}
