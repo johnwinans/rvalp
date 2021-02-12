@@ -269,8 +269,9 @@ $10^2$	& $10^1$	& $10^0$	& $2^7$ & $2^6$ & $2^5$ & $2^4$ & $2^3$ & $2^2$ & $2^1$
 \label{Figure:integers}
 \end{figure}
 
-One way to look at this table is on a per-row basis where each place 
-value is represented by the base raised to the power of the place value
+One way to look at this table is on a per-row basis where each 
+\gls{place-value}
+is represented by the base raised to the power of the \gls{place-value}
 position (shown in the column headings.)  
 %This is useful when converting arbitrary numeric values between bases.  
 For example to interpret the decimal value on the fourth row: 
@@ -349,7 +350,7 @@ The decimal value in this example does not easily convey a sense
 of the binary value.
 
 \begin{tcolorbox}
-In programming languages like the C, its derivitives and RISC-V 
+In programming languages like the C, its derivatives and RISC-V 
 assembly, numeric values are interpreted as decimal {\bfseries unless} 
 they start with a zero (0).  
 Numbers that start with 0 are interpreted as octal (base-8), 
@@ -368,7 +369,7 @@ numbers that start with 0b are interpreted as binary.
 It is occasionally necessary to convert between decimal,
 binary and/or hex.
 
-To convert from binary to decimal, put the decimal value of the place values 
+To convert from binary to decimal, put the decimal value of the \gls{place-value}s 
 {\ldots8, 4, 2, 1} over the binary digits like this:
 
 \begin{verbatim}
@@ -1180,15 +1181,53 @@ The RISC-V system uses the little-endian byte order.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Big-Endian}
 \label{BigEndian}
+\index{big-endian}
 
-Using the contents of \listingRef{rvddt_memdump.out}, a {\em big-endian}
-CPU would recognize the contents as follows:
+Using the contents of \listingRef{rvddt_memdump.out}, a \gls{bigendian}
+CPU would interpret the contents as follows:
 
 \begin{itemize}
-\item The 8-bit value stored at address \hex{00002658} is \hex{76}.
-\item The 16-bit value stored at address \hex{00002658} is \hex{7661}.
-\item The 32-bit value stored at address \hex{00002658} is \hex{76616c3d}.
+\item The 8-bit value read from address \colorbox{c_lightblue}{\hex{00002658}} would be \verb@0x@{\color{red}\verb@76@}.
+\item The 8-bit value read from address \hex{00002659} would be \hex{61}.
+\item The 8-bit value read from address \hex{0000265a} would be \hex{6c}.
+\item The 8-bit value read from address \hex{0000265b} would be \hex{3d}.
+\item The 16-bit value read from address \colorbox{c_lightblue}{\hex{00002658}} would be \verb@0x@{\color{red}\verb@76@}\verb@61@.
+\item The 16-bit value read from address \hex{0000265a} would be \hex{6c3d}.
+\item The 32-bit value read from address \colorbox{c_lightblue}{\hex{00002658}} would be \verb@0x@{\color{red}\verb@76@}\verb@616c3d@.
 \end{itemize}
+
+Notice that in a big-endian system, the {\em\gls{place-value}s} of the bits 
+comprising the \verb@0x@{\color{red}\verb@76@}
+(located at memory address \colorbox{c_lightblue}{\hex{00002658}}) are 
+{\em different} depending on the number of bytes representing the value that is being read.
+
+For example, when a 16-bit value is read from \colorbox{c_lightblue}{\hex{00002658}}
+then the {\color{red}\verb@76@} represents 
+the binary place values: $2^{15}$ to $2^8$.
+When a 32-bit value is read then the {\color{red}\verb@76@} represents
+the binary place values: $2^{31}$ to $2^{24}$.  
+In other words the value read from the first memory location (with the 
+lowest address), of the plurality of addresses containing the complete 
+value being read, is always placed on the {\em left end}, into the 
+Most Significant Bits.  One might dare say that the {\color{red}\verb@76@} 
+is placed at the end with the {\em big} place values.
+
+More examples:
+
+\begin{itemize}
+\item An 8-bit value read from address \colorbox{c_lightgreen}{\hex{00002624}} would be \verb@0x@{\color{red}\verb@23@}.
+\item An 8-bit value read from address \hex{00002625} would be \hex{24}.
+\item An 8-bit value read from address \hex{00002626} would be \hex{81}.
+\item An 8-bit value read from address \hex{00002627} would be \hex{00}.
+\item A 16-bit value read from address \colorbox{c_lightgreen}{\hex{00002624}} would be \verb@0x@{\color{red}\verb@23@}\verb@24@.
+\item A 16-bit value read from address \hex{00002626} would be \hex{8100}.
+\item A 32-bit value read from address \colorbox{c_lightgreen}{\hex{00002624}} would be \verb@0x@{\color{red}\verb@23@}\verb@248100@.
+\end{itemize}
+
+Again, notice that the byte from memory address \colorbox{c_lightgreen}{\hex{00002624}}, 
+regardless of the {\em number} of bytes comprising the complete value being 
+fetched, will always appear on the left/{\em big} end of the final value.
+
 
 \begin{tcolorbox}
 On a big-endian system, the bytes in the dump are in the same order as 
@@ -1199,31 +1238,72 @@ value.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Little-Endian}
 \label{LittleEndian}
+\index{little-endian}
 
-Using the contents of \listingRef{rvddt_memdump.out}, a {\em little-endian} 
-CPU would recognize the contents as follows:
+Using the contents of \listingRef{rvddt_memdump.out}, a \gls{littleendian}
+CPU would interpret the contents as follows:
 
 \begin{itemize}
-\item The 8-bit value stored at address \hex{00002658} is \hex{76}.
-\item The 16-bit value stored at address \hex{00002658} is \hex{6176}.
-\item The 32-bit value stored at address \hex{00002658} is \hex{3d6c6176}.
+\item An 8-bit value read from address \colorbox{c_lightblue}{\hex{00002658}} would be \verb@0x@{\color{red}\verb@76@}.
+\item An 8-bit value read from address \hex{00002659} would be \hex{61}.
+\item An 8-bit value read from address \hex{0000265a} would be \hex{6c}.
+\item An 8-bit value read from address \hex{0000265b} would be \hex{3d}.
+\item A 16-bit value read from address \colorbox{c_lightblue}{\hex{00002658}} would be \verb@0x61@{\color{red}\verb@76@}.
+\item A 16-bit value read from address \hex{0000265a} would be \hex{3d6c}.
+\item A 32-bit value read from address \colorbox{c_lightblue}{\hex{00002658}} would be \verb@0x3d6c61@{\color{red}\verb@76@}.
 \end{itemize}
+
+Notice that in a little-endian system, the {\em\gls{place-value}s} of the bits 
+comprising the \verb@0x@{\color{red}\verb@76@}
+(located at memory address \colorbox{c_lightblue}{\hex{00002658}})
+are the {\em same} regardless of the the number of bytes representing the value that is being read.
+
+Unlike the behavior of a big-endian machine, when little-endian machine 
+reads a 16-bit value from \colorbox{c_lightblue}{\hex{00002658}} the 
+{\color{red}\verb@76@} represents the binary place values from $2^{7}$ to $2^0$.
+When a 32-bit value is read then the {\color{red}\verb@76@} (still) represents
+the binary place values from $2^{7}$ to $2^{0}$.  
+In other words the value read from the first memory location (with the 
+lowest address), of the plurality of addresses containing the complete 
+value being read, is always placed on the {\em right end}, into the 
+Least Significant Bits.  One might say that the {\color{red}\verb@76@} 
+is placed at the end with the {\em little} place values.
+
+Also notice that it is the {\em bytes} are what are ``reversed'' in a little-endian
+system ({\em not} the hex digits.)
+
+More examples:
+
+\begin{itemize}
+\item The 8-bit value read from address \colorbox{c_lightgreen}{\hex{00002624}} would be \verb@0x@{\color{red}\verb@23@}.
+\item The 8-bit value read from address \hex{00002625} would be \hex{24}.
+\item The 8-bit value read from address \hex{00002626} would be \hex{81}.
+\item The 8-bit value read from address \hex{00002627} would be \hex{00}.
+\item The 16-bit value read from address \colorbox{c_lightgreen}{\hex{00002624}} would be \verb@0x24@{\color{red}\verb@23@}.
+\item The 16-bit value read from address \hex{00002626} would be \hex{0081}.
+\item The 32-bit value read from address \colorbox{c_lightgreen}{\hex{00002624}} would be \verb@0x008124@{\color{red}\verb@23@}.
+\end{itemize}
+
+As above, notice that the byte from memory address \colorbox{c_lightgreen}{\hex{00002624}}, 
+regardless of the {\em number} of bytes comprising the complete value being 
+fetched, will always appear on the right/{\em little} end of the final value.
+
+
 
 \begin{tcolorbox}
 On a little-endian system, the bytes in the dump are in reverse order as 
 they would be used by the CPU if it were to read them as a multi-byte value.
 \end{tcolorbox}
 
-Note that in a little-endian system, the number of bytes used to represent
-the value does not change the place value of the first byte(s).  In this
-example, the \hex{76} at address \hex{00002658} is the least significant
-byte in all representations.  
 
-In the Risc-V ISA it is noted that ``A minor point is that we have also found 
+In the RISC-V ISA it is noted that 
+\begin{quote}
+A minor point is that we have also found 
 little-endian memory systems to be more natural for hardware 
 designers. However, certain application areas, such as IP networking, operate
 on big-endian data structures, and so we leave open the possibility of 
 non-standard big-endian or bi-endian systems.''\cite[p.~6]{rvismv1v22:2017}
+\end{quote}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Arrays and Character Strings}
