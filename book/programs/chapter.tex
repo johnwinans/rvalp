@@ -589,7 +589,7 @@ Examples of using the \verb@auipc@ \& \verb@addi@ together with \verb@%pcrel_hi(
 
 {\small
 \begin{verbatim}
-xxx:    auipc   t1,%pcrel_hi(yyy)     // (yyy-xxx) >>U 12) + ((yyy-xxx) & 0x00000800 ? 1 : 0)
+xxx:    auipc   t1,%pcrel_hi(yyy)     // (yyy-.) >>U 12) + ((yyy-.) & 0x00000800 ? 1 : 0)
         addi    t1,t1,%pcrel_lo(xxx)  // ((yyy-xxx) & 0x00000fff)
 ...
 yyy:                                  // the address: yyy is saved into t1 above
@@ -598,14 +598,15 @@ yyy:                                  // the address: yyy is saved into t1 above
 }
 
 
-Things like this are legal:
+Referencing the same \verb@%pcrel_hi@ in multiple subsequent uses of \verb@%pcrel_lo@ is legal:
 {\small
 \begin{verbatim}
-label:  auipc   t1,%pcrel_hi(symbol)     
-        addi    t2,t1,%pcrel_lo(label)
-        addi    t3,t1,%pcrel_lo(label)
-        lw      t4,%pcrel_lo(label)(t1)
-        sw      t5,%pcrel_lo(label)(t1)
+label:  auipc   t1,%pcrel_hi(symbol)
+        addi    t2,t1,%pcrel_lo(label)   // t2 = symbol
+        addi    t3,t1,%pcrel_lo(label)   // t3 = symbol
+        lw      t4,%pcrel_lo(label)(t1)  // t4 = fetch value from memory at 'symbol'
+        addi    t4,t4,123                // t4 = t4 + 123
+        sw      t4,%pcrel_lo(label)(t1)  // store t4 back into memory at 'symbol'
 \end{verbatim}
 }
 
