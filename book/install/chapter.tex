@@ -1,12 +1,12 @@
 \chapter{Installing a RISC-V Toolchain}
 \label{chapter:install}
 
-All of the software presented in this text was assembled using the
-GNU toolchain and executed using the rvddt simulator on a Linux
-(Ubuntu 18.04 LTS) operating system.
+All of the software presented in this text was assembled/compiled 
+using the GNU toolchain and executed using the rvddt simulator on 
+a Linux (Ubuntu 20.04 LTS) operating system.
 
-The installation instructions provided here were tested on a
-clean OS install on June 9, 2018.
+The installation instructions provided here were last tested on 
+on March 5, 2021.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -35,11 +35,13 @@ If typed incorrectly, it could irreversibly remove many of your files!
 Before building the toolchain, a number of utilities must be present on 
 your system.  The following will install those that are needed:
 
+\begin{minipage}{\textwidth}
 \begin{tty}
 sudo apt install autoconf automake autotools-dev curl libmpc-dev \
     libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf \
     libtool patchutils bc zlib1g-dev libexpat-dev
 \end{tty}
+\end{minipage}
 
 Note that the above \verb@apt@ command is the only operation that should
 be performed as root.  All other commands should be executed as a regular 
@@ -50,15 +52,17 @@ should not be touched when tinkering with the toolchain applications.
 would do.}%
 To download, compile and install the toolchain:
 
+\begin{minipage}{\textwidth}
 \begin{tty}
 mkdir -p ~/projects/riscv
 cd ~/projects/riscv
-git clone --recursive https://github.com/riscv/riscv-gnu-toolchain
+git clone https://github.com/riscv/riscv-gnu-toolchain
 cd riscv-gnu-toolchain
 INS_DIR=~/projects/riscv/install/rv32i
 ./configure --prefix=$INS_DIR --with-arch=rv32i --with-abi=ilp32
 make
 \end{tty}
+\end{minipage}
 
 After building the toolchain, make it available by putting it into
 your PATH by adding the following to the end of your \verb@.bashrc@ file:
@@ -82,6 +86,7 @@ commands.
 Building the rvddt example programs will verify that the GNU toolchain
 has been built and installed properly.
 
+\begin{minipage}{\textwidth}
 %git clone git@github.com:johnwinans/rvddt.git
 \begin{tty}
 cd ~/projects/riscv
@@ -91,6 +96,7 @@ make world
 cd ../examples
 make world
 \end{tty}
+\end{minipage}
 
 After building rvddt, make it available by putting it into your PATH 
 by adding the following to the end of your \verb@.bashrc@ file:
@@ -105,6 +111,7 @@ same \verb@export@ command into your existing terminal.
 
 Test the rvddt build by executing one of the examples:
 
+\begin{minipage}{\textwidth}
 \begin{tty}
 winans@ux410:~/projects/riscv/rvddt/examples$ rvddt -f counter/counter.bin
 sp initialized to top of memory: 0x0000fff0
@@ -123,3 +130,4 @@ ddt> ti 0 1000
 ddt> x
 winans@ux410:~/projects/riscv/rvddt/examples$ 
 \end{tty}
+\end{minipage}
