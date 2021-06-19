@@ -520,13 +520,17 @@ applied to source registers \verb@rs1@ and \verb@rs2@.
 
 Note that instruction bit 30 (part of the the \verb@funct7@ field) 
 is used to select between the \verb@add@ and \verb@sub@ instructions 
-as well as to select between arithmetic and logical shifting.
+as well as to select between \verb@srl@ and \verb@sra@.
 
 \begin{itemize}
 \item\instructionHeader{add\ \ \ rd,rs1,rs2}
 \label{insn:add}
 
 Set register \verb@rd@ to \verb@rs1 + rs2@.
+
+Note that the value of \verb@funct7@ must be zero for this instruction.
+(The value of \verb@funct7@ is how the \verb@add@ instruction is differentiated 
+from the \verb@sub@ instruction.)
 
 \item\instructionHeader{and\ \ \ rd,rs1,rs2}
 \label{insn:and}
@@ -550,8 +554,10 @@ value \verb@0xff55ff11@.
 \label{insn:sll}
 
 Shift \verb@rs1@ left by the number of bits specified in the least significant
-five bits of \verb@rs2@ and store the result in \verb@rd@.\footnote{For
-more information on how shifting works, see \autoref{shifting}.}
+5 bits of \verb@rs2@ and store the result in \verb@rd@.\footnote{\label{shift:xlen}
+When XLEN is 64 or 128, the shift distance will be given by the least-significant 
+6 or 7 bits of {\tt rs2} respectively. 
+For more information on how shifting works, see \autoref{shifting}.}
 
 For example, if \verb@x17@ = \verb@0x12345678@ and \verb@x18@ = \verb@0x08@
 then the instruction \verb@sll x12,x17,x18@ will set \verb@x12@ to the
@@ -590,9 +596,9 @@ value \verb@0x00000001@.
 \item\instructionHeader{sra\ \ \ rd,rs1,rs2}
 \label{insn:sra}
 
-Arithmetic-shift \verb@rs1@ right by the number of bits given in \verb@rs2@ and
-store the result in \verb@rd@.\footnote{For
-more information on how shifting works, see \autoref{shifting}.}
+Arithmetic-shift \verb@rs1@ right by the number of bits given in the least-significant 
+5 bits of the \verb@rs2@ register and store the result in 
+\verb@rd@.\footref{shift:xlen}
 
 For example, if \verb@x17@ = \verb@0x87654321@ and \verb@x18@ = \verb@0x08@
 then the instruction \verb@sra x12,x17,x18@ will set \verb@x12@ to the
@@ -602,12 +608,16 @@ If \verb@x17@ = \verb@0x76543210@ and \verb@x18@ = \verb@0x08@
 then the instruction \verb@sra x12,x17,x18@ will set \verb@x12@ to the
 value \verb@0x00765432@.
 
+Note that the value of \verb@funct7@ must be zero for this instruction.
+(The value of \verb@funct7@ is how the \verb@sra@ instruction is differentiated 
+from the \verb@srl@ instruction.)
+
 \item\instructionHeader{srl\ \ \ rd,rs1,rs2}
 \label{insn:srl}
 
-Logic-shift \verb@rs1@ right by the number of bits given in \verb@rs2@ and
-store the result in \verb@rd@.\footnote{For
-more information on how shifting works, see \autoref{shifting}.}
+Logic-shift \verb@rs1@ right by the number of bits given in the least-significant 
+5 bits of the \verb@rs2@ register and store the result in 
+\verb@rd@.\footref{shift:xlen}
 
 For example, if \verb@x17@ = \verb@0x87654321@ and \verb@x18@ = \verb@0x08@
 then the instruction \verb@srl x12,x17,x18@ will set \verb@x12@ to the
@@ -617,10 +627,18 @@ If \verb@x17@ = \verb@0x76543210@ and \verb@x18@ = \verb@0x08@
 then the instruction \verb@srl x12,x17,x18@ will set \verb@x12@ to the
 value \verb@0x00765432@.
 
+Note that the value of \verb@funct7@ must be \verb@0b0100000@ for this instruction.
+(The value of \verb@funct7@ is how the \verb@srl@ instruction is differentiated 
+from the \verb@sra@ instruction.)
+
 \item\instructionHeader{sub\ \ \ rd,rs1,rs2}
 \label{insn:sub}
 
 Set register \verb@rd@ to \verb@rs1 - rs2@.
+
+Note that the value of \verb@funct7@ must be \verb@0b0100000@ for this instruction.
+(The value of \verb@funct7@ is how the \verb@sub@ instruction is differentiated 
+from the \verb@add@ instruction.)
 
 \item\instructionHeader{xor\ \ \ rd,rs1,rs2}
 \label{insn:xor}
@@ -661,9 +679,12 @@ A special case of the I-type is used for shift-immediate instructions
 where the imm field is used to represent the number of bit positions 
 to shift as shown in \autoref{Figure:shamt_i_type_decode}.
 In this variation, the least significant five bits of the imm field are 
-zero-extended to form the \verb@shamt_i@ 
+extracted to form the \verb@shamt_i@ 
 value.\footnote{When XLEN is 64 or 128, the {\tt shamt\_i} field will 
 consist of 6 or 7 bits respectively.}
+
+Note also that bit 30 (the imm instruction field bit labeled `\verb@b@') is used to select 
+between arithmetic and logical shifting.
 
 \begin{figure}[ht]
 \centering
@@ -674,7 +695,6 @@ consist of 6 or 7 bits respectively.}
 \index{shamt\protect\_i}
 \end{figure}
 
-Note that bit 30 is used to select between arithmetic and logical shifting.
 
 \begin{figure}[ht]
 \centering
@@ -795,8 +815,12 @@ Therefore if \verb@x17@ = \verb@0x55551111@ then the instruction
 \item\instructionHeader{slli\ \ rd,rs1,imm}
 \label{insn:slli}
 
-Shift \verb@rs1@ left by the number of bits given in \verb@shamt_i@ 
-(as shown in \autoref{shamt.i:decode}) and store the result in \verb@rd@.
+Shift \verb@rs1@ left by the number of bits specified in \verb@shamt_i@ 
+(as shown in \autoref{shamt.i:decode})
+and store the result in \verb@rd@.\footnote{\label{shifti:xlen}
+When XLEN is 64 or 128, the shift distance will be given by the least-significant 
+6 or 7 bits of the imm field respectively. 
+For more information on how shifting works, see \autoref{shifting}.}
 
 For example, if \verb@x17@ = \verb@0x12345678@ then the instruction 
 \verb@slli x12,x17,4@ will set \verb@x12@ to the value \verb@0x23456780@.
@@ -825,20 +849,30 @@ $[\text{\tt 0}..\text{\tt 0x7ff}]$ and $[\text{\tt 0xfffff800}..\text{\tt 0xffff
 \item\instructionHeader{srai\ \ rd,rs1,imm}
 \label{insn:srai}
 
-Arithmetic-shift \verb@rs1@ right by the number of bits given in \verb@shamt_i@
-(as shown in \autoref{shamt.i:decode}) and store the result in \verb@rd@.
+Arithmetic-shift \verb@rs1@ right by the number of bits specified in \verb@shamt_i@ 
+(as shown in \autoref{shamt.i:decode})
+and store the result in \verb@rd@.\footref{shifti:xlen}
 
 For example, if \verb@x17@ = \verb@0x87654321@ then the instruction 
 \verb@srai x12,x17,4@ will set \verb@x12@ to the value \verb@0xf8765432@.
 
+Note that the value of bit 30 must be 1 for this instruction.
+(The value of bit 30 is how the \verb@srai@ instruction is differentiated 
+from the \verb@srli@ instruction.)
+
 \item\instructionHeader{srli\ \ rd,rs1,imm}
 \label{insn:srli}
 
-Logic-shift \verb@rs1@ right by the number of bits given in \verb@shamt_i@
-(as shown in \autoref{shamt.i:decode}) and store the result in \verb@rd@.
+Logic-shift \verb@rs1@ right by the number of bits specified in \verb@shamt_i@ 
+(as shown in \autoref{shamt.i:decode})
+and store the result in \verb@rd@.\footref{shifti:xlen}
 
 For example, if \verb@x17@ = \verb@0x87654321@ then the instruction 
 \verb@srli x12,x17,4@ will set \verb@x12@ to the value \verb@0x08765432@.
+
+Note that the value of bit 30 must be 0 for this instruction.
+(The value of bit 30 is how the \verb@srli@ instruction is differentiated 
+from the \verb@srai@ instruction.)
 
 \item\instructionHeader{xori\ \ rd,rs1,imm}
 \label{insn:xori}
