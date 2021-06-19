@@ -646,6 +646,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Draw hex markers with a baseline at zero
 % #1 The number of bits in the box
+\newcommand\TheHexMark[1]{
+	\draw [line width=.5mm] (#1+.5,0) -- (#1+.5, .4);
+}
+
 \newcommand\DrawHexMarkersRel[1]{
 	\pgfmathsetmacro\num{int(#1-1)}
 	\foreach \x in {4,8,...,\num}
@@ -1460,65 +1464,80 @@
 
 	\begin{scope}[shift={(0,-1.5)}]
 
-	\DrawInsnTypeI{0100000hijkl00011000001110000011}
+	\DrawInsnTypeI{0b00000hijkl00011000001110000011}
 
 	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowTailInset}
 	\pgfmathsetmacro\ArrowSouth{\BitBoxArrowHeadInset}
 	\pgfmathsetmacro\ZeroNodeY{\ArrowSouth+4}
 	\pgfmathsetmacro\ZeroNodeX{1}
 
-	\node at (\ZeroNodeX,\ZeroNodeY) {0};
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=90](1,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=90](2,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=90](3,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](4,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](5,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](6,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](7,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](8,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](9,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](10,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](11,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](12,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](13,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](14,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](15,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](16,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](17,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](18,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](19,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](20,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](21,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](22,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](23,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](24,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](25,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](26,\ArrowSouth);	
-	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](27,\ArrowSouth);	
+%	\node at (\ZeroNodeX,\ZeroNodeY) {0};
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=90](1,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=90](2,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=90](3,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](4,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](5,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](6,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](7,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](8,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](9,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](10,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](11,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](12,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](13,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](14,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](15,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](16,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](17,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](18,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](19,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](20,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](21,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](22,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](23,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](24,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](25,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](26,\ArrowSouth);	
+%	\draw[red,->](\ZeroNodeX+.5,\ZeroNodeY)to[out=0,in=110](27,\ArrowSouth);	
 
-	\draw[blue,->](8,\ArrowNorth)to[out=270,in=90](28,\ArrowSouth);		% 4
-	\draw[blue,->](9,\ArrowNorth)to[out=270,in=90](29,\ArrowSouth);		% 3
-	\draw[blue,->](10,\ArrowNorth)to[out=270,in=90](30,\ArrowSouth);	% 2
-	\draw[blue,->](11,\ArrowNorth)to[out=270,in=90](31,\ArrowSouth);	% 1
-	\draw[blue,->](12,\ArrowNorth)to[out=270,in=90](32,\ArrowSouth);	% 0
+	\draw[blue,->](8,\ArrowNorth)to[out=270,in=90](28-8,\ArrowSouth);		% 4
+	\draw[blue,->](9,\ArrowNorth)to[out=270,in=90](29-8,\ArrowSouth);		% 3
+	\draw[blue,->](10,\ArrowNorth)to[out=270,in=90](30-8,\ArrowSouth);	% 2
+	\draw[blue,->](11,\ArrowNorth)to[out=270,in=90](31-8,\ArrowSouth);	% 1
+	\draw[blue,->](12,\ArrowNorth)to[out=270,in=90](32-8,\ArrowSouth);	% 0
+
+	\draw[blue,->](2,\ArrowNorth)to[out=270,in=90](8,\ArrowSouth);		% diff btw logical/arith
 
 	\begin{scope}[shift={(0,0)}]\DrawHexMarkersRel{32}\end{scope}
 	\end{scope}
 
-	\begin{scope}[shift={(0,-19.75)}]
+	% shamt_i box
+	\begin{scope}[shift={(-8,-19.75)}]
 		\begin{scope}[shift={(0,1.5)}]
-			\DrawInsnBoxCastle{31}{5}
 			\DrawInsnBoxCastle{4}{0}
 		\end{scope}
-		\DrawInsnBoxRel{31}{0}{}
+		\DrawInsnBoxRel{4}{0}{}
 		\draw(33,.5) node[text width = 10, text height = 1, right]{shamt\_i};
 
-		\begin{scope}[shift={(0,0)}]\DrawBitstringX{000000000000000000000000000hijkl}\end{scope}
+		\begin{scope}[shift={(27,0)}]\DrawBitstringX{hijkl}\end{scope}
 
-		\begin{scope}[shift={(0,0)}]\DrawHexMarkersRel{32}\end{scope}
+		%\begin{scope}[shift={(24,0)}]\DrawHexMarkersRel{0}\end{scope}
+		\begin{scope}[shift={(28,0)}]\TheHexMark{0}\end{scope}
 
-		\InsnBoxFieldWidthArrow{31}{5}
 		\InsnBoxFieldWidthArrow{4}{0}
+	\end{scope}
+
+	% logical/arith box -- this demonstrates the lack of sane coordinate standards in this file :-/ 
+	\begin{scope}[shift={(-24,-19.75)}]
+		\begin{scope}[shift={(0,1.5)}]
+			\DrawInsnBoxCastle{0}{0}
+		\end{scope}
+		\DrawInsnBoxRel{0}{0}{}
+		\draw(33,.5) node[text width = 10, text height = 1, right]{srai/srli};
+
+		\begin{scope}[shift={(31,0)}]\DrawBitstringX{b}\end{scope}
+
+		\InsnBoxFieldWidthArrow{0}{0}
 	\end{scope}
 
 	\EndTikzPicture
