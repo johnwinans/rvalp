@@ -16,7 +16,7 @@ You can find the rvddt simulator mentioned in the text here: https://github.com/
 I developed this using LaTeX via texlive.  LaTeX is very portable.  You should 
 be able to tinker with it on most any platform.  
 
-On Ubuntu 18.04 LTS, loading the following packages worked for me:
+On Ubuntu 20.04 and 18.04 LTS, loading the following packages worked for me:
 
 	sudo apt install make      
 	sudo apt install git
@@ -29,3 +29,21 @@ Then clone and build this repo:
     git clone git@github.com:johnwinans/rvalp.git
     cd rvalp
     make world
+
+# Related Projects
+
+The RISC-V simulator that I use to generate figures: https://github.com/johnwinans/rvddt
+
+A RISC-V simulator with more advanced features (but is also more complicated): https://www.qemu.org
+
+The toolchain used to assemble and compile programs in this book: https://github.com/riscv/riscv-gnu-toolchain
+
+See Appendix A for the precise details on how I downloaded and build each of these tools on my 
+Linux workstations.
+
+Note: During the great on-line COVID school year I recorded some lectures 
+on RISC-V that use this book as a reference.  
+These lectures appear in the following YouTube playlists:
+
+* (RISC-V Lectures From NIU CSCI 463)[https://www.youtube.com/playlist?list=PL3by7evD3F53Dz2RiB47Ztp9l_piGVuus]
+* (The Whole NIU CSCI 463 Spring 2021 Playlist)[https://www.youtube.com/playlist?list=PL3by7evD3F50NMukhaMqNdOt4pUHXT2Vo]
