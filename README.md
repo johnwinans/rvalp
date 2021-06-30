@@ -38,12 +38,11 @@ A RISC-V simulator with more advanced features (but is also more complicated): h
 
 The toolchain used to assemble and compile programs in this book: https://github.com/riscv/riscv-gnu-toolchain
 
-See Appendix A for the precise details on how I downloaded and build each of these tools on my 
-Linux workstations.
+See Appendix A of rvalp for the precise details on how I downloaded and build each of these tools on Linux.
 
 Note: During the great on-line COVID school year I recorded some lectures 
 on RISC-V that use this book as a reference.  
 These lectures appear in the following YouTube playlists:
 
-* (RISC-V Lectures From NIU CSCI 463)[https://www.youtube.com/playlist?list=PL3by7evD3F53Dz2RiB47Ztp9l_piGVuus]
-* (The Whole NIU CSCI 463 Spring 2021 Playlist)[https://www.youtube.com/playlist?list=PL3by7evD3F50NMukhaMqNdOt4pUHXT2Vo]
+* [RISC-V Lectures From NIU CSCI 463](https://www.youtube.com/playlist?list=PL3by7evD3F53Dz2RiB47Ztp9l_piGVuus)
+* [The Whole NIU CSCI 463 Spring 2021 Playlist](https://www.youtube.com/playlist?list=PL3by7evD3F50NMukhaMqNdOt4pUHXT2Vo)
