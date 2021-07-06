@@ -26,7 +26,7 @@ I suspect the same (above) would work on 16.04 as well.
 
 Then clone and build this repo:
 
-    git clone git@github.com:johnwinans/rvalp.git
+    git clone https://github.com/johnwinans/rvalp.git
     cd rvalp
     make world
 
