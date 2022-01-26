@@ -43,66 +43,71 @@ is the portion of the {\em mantissa} that is to the right of the binary-point.
 point numbers will start that way.  Thus we can save memory when storing
 normalized values by inserting a `1.' to the left of significand.
 
-{
-\small
-\setlength{\unitlength}{.15in}
-\begin{picture}(32,4)(0,0)
-	\put(0,1){\line(1,0){32}}		% bottom line
-	\put(0,2){\line(1,0){32}}		% top line
 
-	\put(0,1){\line(0,1){2}}		% left vertical
-	\put(0,2){\makebox(1,1){\tiny 31}}	% left end bit number marker 
 
-	\put(32,1){\line(0,1){2}}		% vertical right end 
-	\put(31,2){\makebox(1,1){\tiny 0}}	% right end bit number marker
+\DrawBitBoxIEEEFloat{11000000001010000000000000000000}
 
-	\put(0,0){\makebox(1,1){\small sign}}
-	\put(1,0){\makebox(8,1){\small exponent}}
-	\put(9,0){\makebox(23,1){\small significand}}
 
-    \put(0,1){\makebox(1,1){1}}		% sign
-
-	\put(1,1){\line(0,1){2}}		% seperator
-	\put(1,2){\makebox(1,1){\tiny 30}}	% bit marker
-
-    \put(1,1){\makebox(1,1){1}}		% exponent
-    \put(2,1){\makebox(1,1){0}}
-    \put(3,1){\makebox(1,1){0}}
-    \put(4,1){\makebox(1,1){0}}
-    \put(5,1){\makebox(1,1){0}}
-    \put(6,1){\makebox(1,1){0}}
-    \put(7,1){\makebox(1,1){0}}
-    \put(8,1){\makebox(1,1){0}}
-
-	\put(8,2){\makebox(1,1){\tiny 23}}	% bit marker
-	\put(9,1){\line(0,1){2}}		% seperator
-	\put(9,2){\makebox(1,1){\tiny 22}}	% bit marker
-
-    \put(9,1){\makebox(1,1){0}}
-    \put(10,1){\makebox(1,1){1}}
-    \put(11,1){\makebox(1,1){0}}
-    \put(12,1){\makebox(1,1){1}}
-    \put(13,1){\makebox(1,1){0}}
-    \put(14,1){\makebox(1,1){0}}
-    \put(15,1){\makebox(1,1){0}}
-    \put(16,1){\makebox(1,1){0}}
-    \put(17,1){\makebox(1,1){0}}
-    \put(18,1){\makebox(1,1){0}}
-    \put(19,1){\makebox(1,1){0}}
-    \put(20,1){\makebox(1,1){0}}
-    \put(21,1){\makebox(1,1){0}}
-    \put(22,1){\makebox(1,1){0}}
-    \put(23,1){\makebox(1,1){0}}
-    \put(24,1){\makebox(1,1){0}}
-    \put(25,1){\makebox(1,1){0}}
-    \put(26,1){\makebox(1,1){0}}
-    \put(27,1){\makebox(1,1){0}}
-    \put(28,1){\makebox(1,1){0}}
-    \put(29,1){\makebox(1,1){0}}
-    \put(30,1){\makebox(1,1){0}}
-    \put(31,1){\makebox(1,1){0}}
-\end{picture}
-}
+%{
+%\small
+%\setlength{\unitlength}{.15in}
+%\begin{picture}(32,4)(0,0)
+%	\put(0,1){\line(1,0){32}}		% bottom line
+%	\put(0,2){\line(1,0){32}}		% top line
+%
+%	\put(0,1){\line(0,1){2}}		% left vertical
+%	\put(0,2){\makebox(1,1){\tiny 31}}	% left end bit number marker 
+%
+%	\put(32,1){\line(0,1){2}}		% vertical right end 
+%	\put(31,2){\makebox(1,1){\tiny 0}}	% right end bit number marker
+%
+%	\put(0,0){\makebox(1,1){\small sign}}
+%	\put(1,0){\makebox(8,1){\small exponent}}
+%	\put(9,0){\makebox(23,1){\small significand}}
+%
+%    \put(0,1){\makebox(1,1){1}}		% sign
+%
+%	\put(1,1){\line(0,1){2}}		% seperator
+%	\put(1,2){\makebox(1,1){\tiny 30}}	% bit marker
+%
+%    \put(1,1){\makebox(1,1){1}}		% exponent
+%    \put(2,1){\makebox(1,1){0}}
+%    \put(3,1){\makebox(1,1){0}}
+%    \put(4,1){\makebox(1,1){0}}
+%    \put(5,1){\makebox(1,1){0}}
+%    \put(6,1){\makebox(1,1){0}}
+%    \put(7,1){\makebox(1,1){0}}
+%    \put(8,1){\makebox(1,1){0}}
+%
+%	\put(8,2){\makebox(1,1){\tiny 23}}	% bit marker
+%	\put(9,1){\line(0,1){2}}		% seperator
+%	\put(9,2){\makebox(1,1){\tiny 22}}	% bit marker
+%
+%    \put(9,1){\makebox(1,1){0}}
+%    \put(10,1){\makebox(1,1){1}}
+%    \put(11,1){\makebox(1,1){0}}
+%    \put(12,1){\makebox(1,1){1}}
+%    \put(13,1){\makebox(1,1){0}}
+%    \put(14,1){\makebox(1,1){0}}
+%    \put(15,1){\makebox(1,1){0}}
+%    \put(16,1){\makebox(1,1){0}}
+%    \put(17,1){\makebox(1,1){0}}
+%    \put(18,1){\makebox(1,1){0}}
+%    \put(19,1){\makebox(1,1){0}}
+%    \put(20,1){\makebox(1,1){0}}
+%    \put(21,1){\makebox(1,1){0}}
+%    \put(22,1){\makebox(1,1){0}}
+%    \put(23,1){\makebox(1,1){0}}
+%    \put(24,1){\makebox(1,1){0}}
+%    \put(25,1){\makebox(1,1){0}}
+%    \put(26,1){\makebox(1,1){0}}
+%    \put(27,1){\makebox(1,1){0}}
+%    \put(28,1){\makebox(1,1){0}}
+%    \put(29,1){\makebox(1,1){0}}
+%    \put(30,1){\makebox(1,1){0}}
+%    \put(31,1){\makebox(1,1){0}}
+%\end{picture}
+%}
 
 %\item $-((1 + \frac{1}{4} + \frac{1}{16}) \times 2^{128-127}) = -(1 \frac{5}{16} \times 2^{1}) = -(1.3125 \times 2^{1}) = -2.625$
 \item $-((1 + \frac{1}{4} + \frac{1}{16}) \times 2^{128-127}) = -((1 + \frac{1}{4} + \frac{1}{16}) \times 2^1) = -(2 + \frac{1}{2} + \frac{1}{8}) = -(2 + .5 + .125) = -2.625$
@@ -127,12 +132,25 @@ the sign is zero, the number represents positive infinity.
 \item When the exponent is all ones, the significand is all zeros, and
 the sign is one, the number represents negative infinity.
 
-\item Note that the binary representation of an IEEE-754 number in memory
-can be compared for magnitude with another one using the same logic as for
-comparing two's complement signed integers because the magnitude of an 
-IEEE number grows upward and downward in the same fashion as signed integers.
-This is why we use excess notation and locate the significand's sign bit on
-the left of the exponent.
+\item Observe that the binary representation of a pair of IEEE-754 numbers
+(when one or both are positive) can be compared for magnitude 
+by treating them as if they are two's complement signed integers.  
+This is because an IEEE number is stored in {\em signed magnitude} format and 
+therefore positive floating point values will grow upward and downward in the 
+same fashion as for unsigned integers and that since negative floating point 
+values will have its MSB set, they will `appear` to be less than a positive 
+floating point value.  
+
+When comparing two negative IEEE float values by treating them both as two's
+complement signed integers, the order will be reversed because IEEE float values 
+with larger (that is, increasingly negative) magnitudes will appear to decrease 
+in value when interpreted as signed integers.
+
+This works this way because excess notation is used in the format of the 
+exponent and why the significand's sign bit is located on the left of 
+the exponent.\footnote{I know this is true and was done on purpose because
+Bill Cody, chairman of IEEE committee P754 that designed the IEEE-754 standard, 
+told me so personally circa 1991.}
 
 \item Note that zero is a special case number.  Recall that a normalized
 number has an implied 1-bit to the left of the significand\ldots\ which

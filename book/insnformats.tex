@@ -1626,3 +1626,69 @@
 \newcommand\rvddt{{\tt rvddt}}
 
 \newcommand\hex[1]{{\tt 0x#1}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% IEEE-754 Floating Point Number
+%
+% #1 sign
+% #2 exponent
+% #3 significand
+\newcommand\DrawIEEEFloat[1]{
+	\StrLen{#1}[\numchars]
+	\begin{scope}[shift={(0,.75)}]
+	\DrawInsnBitstring{\numchars}{#1}{}
+    \DrawInsnBoxSeg{\numchars}{31}{31}{sign}
+    \DrawInsnBoxSeg{\numchars}{30}{23}{exponent}
+    \DrawInsnBoxSeg{\numchars}{22}{0}{significand}
+    \draw {[rounded corners=\SignBoxCornerRadius] (1.35, -.6) -- (1.35, .6) -- (.65, .6) -- (.65, -.6) -- cycle};   % sign bit
+	\end{scope}
+
+	\DrawHexMarkersRel{\numchars}
+
+
+	
+
+%	\DrawInsnBoxRel{31}{31}{}
+%	\DrawInsnBoxRel{30}{23}{exponent}
+%	\DrawInsnBoxRel{22}{0}{significand}
+%	\draw(\InsnBoxTypePosY,.75) node[right]{\hyperref[insnformat:rtype]{R-type}};
+%	\draw(\InsnBoxMnemonicPosY,.75) node[right]{\tt #4};
+%	\draw(\InsnBoxMnemonicArgPosY,.75) node[right]{\tt #5};
+
+%	\begin{scope}[shift={(31-31,0)}]\DrawBitstringX{#1}\end{scope}
+%	\begin{scope}[shift={(31-30,0)}]\DrawBitstringX{#2}\end{scope}
+%	\begin{scope}[shift={(31-22,0)}]\DrawBitstringX{#3}\end{scope}
+}
+
+\newcommand\DrawBitBoxIEEEFloat[1]{
+	\BeginTikzPicture
+	\begin{scope}[shift={(0,0)}]\DrawIEEEFloat{#1}\end{scope}
+	\EndTikzPicture
+}
+
+
+
+%
+%\newcommand\DrawInsnTypeB[1]{
+%    \StrLen{#1}[\numchars]
+%    \begin{scope}[shift={(0,.75)}]
+%    \DrawInsnBitstring{\numchars}{#1}{\hyperref[insnformat:btype]{B-type}}
+%    \DrawInsnBoxSeg{\numchars}{31}{25}{imm[12\textbar10:5]}
+%    \DrawInsnBoxSeg{\numchars}{24}{20}{rs2}
+%    \DrawInsnBoxSeg{\numchars}{19}{15}{rs1}
+%    \DrawInsnBoxSeg{\numchars}{14}{12}{funct3}
+%    \DrawInsnBoxSeg{\numchars}{11}{7}{imm[4:1\textbar11]}
+%    \DrawInsnBoxSeg{\numchars}{6}{0}{opcode}
+%
+%    % add some hint bits in for imm fields
+%    \draw {[rounded corners=\SignBoxCornerRadius] (1.35, -.6) -- (1.35, .6) -- (.65, .6) -- (.65, -.6) -- cycle};   % sign bit
+%    \draw (32-7-.5, -.75) -- (32-7-.5, .1);     % imm[11]
+%    \draw (32-30-.5, -.75) -- (32-30.5, .1);    % imm[12]
+%
+%    \end{scope}
+%
+%    \DrawHexMarkersRel{\numchars}
+%}
