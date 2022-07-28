@@ -1,6 +1,6 @@
 # rvalp
 
-RISC-V Assemly Language Programming
+RISC-V Assembly Language Programming
 
 This is an attempt to create a book on RISC-V programming in assembly language.
 
