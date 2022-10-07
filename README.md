@@ -34,9 +34,10 @@ Then clone and build this repo:
 
 The RISC-V simulator that I use to generate figures: https://github.com/johnwinans/rvddt
 
-A RISC-V simulator with more advanced features (but is also more complicated): https://www.qemu.org
+A RISC-V simulator with more advanced features (but is also more complicated): https://github.com/johnwinans/riscv-toolchain-install-guide
 
 The toolchain used to assemble and compile programs in this book: https://github.com/riscv/riscv-gnu-toolchain
+
 
 See Appendix A of rvalp for the precise details on how I downloaded and build each of these tools on Linux.
 
