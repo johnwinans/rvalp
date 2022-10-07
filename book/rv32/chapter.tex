@@ -1091,9 +1091,10 @@ with less need to store register values on the stack in order to use them
 to perform the operations of the function.
 
 The lack of grouping the temporary and saved registers is due to the
-fact that the C extension %See \autoref{rv32:c}
-provides access to only the first 16 registers when executing instructions 
-in the compressed format.  
+fact that the E extension %\cite{XXX}
+only has the first 16 registers
+and some of the instructions in the C extension %See \autoref{rv32:c}
+can only refer to the first 16 registers.
 
 
 \begin{center}
@@ -1138,7 +1139,8 @@ boundaries.\cite[p.~68]{rvismv1v22:2017}
 Data alignment is not necessary but unaligned data can be inefficient.  
 Accessing unaligned data using any of the load or store instructions can 
 also prevent a memory access from operating 
-atomically.~\cite[p.19]{rvismv1v22:2017}  See also \autoref{RV32A}.
+atomically.~\cite[p.19]{rvismv1v22:2017}
+%See also \autoref{RV32A}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
