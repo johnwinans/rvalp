@@ -1,8 +1,7 @@
-\chapter{RV32I Reference Card}
-
-{
-\small
-
+\chapter{RV32I Reference Card}%
+\nolinenumbers%
+\vspace{-1cm}
+{\small%
 \begin{tabular}{|ll|c|l|l|}
 \hline
 \multicolumn{2}{|c|}{Usage Template}	& Type	& Description	& Detailed Description \\
@@ -30,9 +29,25 @@ bltu  & rs1, rs2, \hyperref[pcrel.13]{pcrel\_13} & \hyperref[insnformat:btype]{B
 \hline
 bne   & rs1, rs2, \hyperref[pcrel.13]{pcrel\_13} & \hyperref[insnformat:btype]{B} & \hyperref[insn:bne]{Branch Not Equal}           & {\tt pc $\leftarrow$ pc + (\verb@(rs1!=rs2) ? @\hyperref[imm.b:decode]{imm\_b}\verb@ : 4@)}\\
 \hline
+csrrw & rd, csr, rs1  & \hyperref[insnformat:itype]{I} & \hyperref[insn:csrrw]{Atomic Read/Write} & {\tt rd $\leftarrow$ csr,  csr $\leftarrow$ rs1, pc $\leftarrow$ pc+4}\\
+\hline
+csrrs & rd, csr, rs1  & \hyperref[insnformat:itype]{I} & \hyperref[insn:csrrs]{Atomic Read and Set Bits} & {\tt rd $\leftarrow$ csr,  csr $\leftarrow$ csr | rs1, pc $\leftarrow$ pc+4}\\
+\hline
+csrrc & rd, csr, rs1  & \hyperref[insnformat:itype]{I} & \hyperref[insn:csrrc]{Atomic Read and Clear} & {\tt rd $\leftarrow$ csr,  csr $\leftarrow$ csr \& \textasciitilde{}rs1, pc $\leftarrow$ pc+4}\\
+\hline
+csrrwi & rd, csr, zimm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:csrrwi]{Atomic Read/Write Immediate} & {\tt rd $\leftarrow$ csr,  csr $\leftarrow$ zimm, pc $\leftarrow$ pc+4}\\
+\hline
+csrrsi & rd, csr, zimm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:csrrsi]{Atomic Read and Set Immediate} & {\tt rd $\leftarrow$ csr,  csr $\leftarrow$ csr | zimm, pc $\leftarrow$ pc+4}\\
+\hline
+csrrci & rd, csr, zimm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:csrrci]{Atomic Read and Clear Immediate} & {\tt rd $\leftarrow$ csr,  csr $\leftarrow$ csr \& \textasciitilde{}zimm, pc $\leftarrow$ pc+4}\\
+\hline
+ecall & & \hyperref[insnformat:itype]{I} & \hyperref[insn:ecall]{Environment Call} & Transfer Control to Debugger \\
+\hline
+ebreak & & \hyperref[insnformat:itype]{I} & \hyperref[insn:ebreak]{Environment Break} & Transfer Control to Operating System \\
+\hline
 jal   & rd, \hyperref[pcrel.21]{pcrel\_21}     & \hyperref[insnformat:jtype]{J} & \hyperref[insn:jal]{Jump And Link}               & {\tt rd $\leftarrow$ pc+4, pc $\leftarrow$ pc+\hyperref[imm.j:decode]{imm\_j}}\\
 \hline
-jalr  & rd, imm(rs1) & \hyperref[insnformat:itype]{I} & \hyperref[insn:jalr]{Jump And Link Register}     & {\tt rd $\leftarrow$ pc+4, pc $\leftarrow$ (rs1+\hyperref[imm.i:decode]{imm\_i})\&\textasciitilde{}1}\\
+jalr  & rd, imm(rs1) & \hyperref[insnformat:itype]{I} & \hyperref[insn:jalr]{Jump And Link Register}     & {\tt rd $\leftarrow$ pc+4, pc $\leftarrow$ (rs1+\hyperref[imm.i:decode]{imm\_i}) \& \textasciitilde{}1}\\
 \hline
 lb    & rd, imm(rs1)  & \hyperref[insnformat:itype]{I} & \hyperref[insn:lb]{Load Byte}                   & {\tt rd $\leftarrow$ \hyperref[extension:sx]{sx}(\hyperref[memory:m8]{m8}(rs1+\hyperref[imm.i:decode]{imm\_i})), pc $\leftarrow$ pc+4}\\
 \hline
@@ -83,10 +98,17 @@ xor   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:xor]{Ex
 xori  & rd, rs1, imm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:xori]{Exclusive Or Immediate}    & {\tt rd $\leftarrow$ rs1 \^{} \hyperref[imm.i:decode]{imm\_i}, pc $\leftarrow$ pc+4}\\
 \hline
 \end{tabular}
-}
-
+}%
 \newpage
 {\Large RV32I Base Instruction Set Encoding}~\cite[p.~104]{rvismv1v22:2017}
 
-%\DrawAllInsnTypes\\
+%\DrawAllInsnTypes
 \DrawAllInsnOps
+\newpage%
+\thispagestyle{empty}%
+%\newgeometry{left=1.3in,width=8.1in,height=13in,top=1in,bottom=0in}%
+\newgeometry{left=0in,width=8in,height=10.5in,vmargin=0in,hmargin=0in,layouthoffset=1.35in,layoutvoffset=1in}%
+%\resizebox{8in}{!}{\rotatebox{90}{\DrawAllInsnOps}}
+%\resizebox{8in}{!}{\rotatebox{90}{\DrawGCAllInsnOps}}
+\resizebox{8in}{10.75in}{\rotatebox{90}{\DrawGCAllInsnOps}}
+\restoregeometry
