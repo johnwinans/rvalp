@@ -482,8 +482,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % #1 the binary encoding
-\newcommand\DrawInsnTypeRTikz[1]{
-	\BeginTikzPicture
+\newcommand\DrawInsnTypeR[1]{
 	\StrLen{#1}[\numchars]
 	\DrawInsnBitstring{\numchars}{#1}{\hyperref[insnformat:rtype]{R-type}}
 	\DrawInsnBoxSeg{\numchars}{31}{25}{funct7}
@@ -494,6 +493,13 @@
 	\DrawInsnBoxSeg{\numchars}{6}{0}{opcode}
 
 	\DrawHexMarkers{\numchars}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% #1 the binary encoding
+\newcommand\DrawInsnTypeRTikz[1]{
+	\BeginTikzPicture
+	\DrawInsnTypeR{#1}
 	\EndTikzPicture
 }
 
@@ -1201,7 +1207,7 @@
 \newcommand\GCInsnMnemonicPosX{0}		% the template instruction source
 \newcommand\GCInsnDescriptionPosX{13}	% the long-form description
 \newcommand\GCInsnRTLPosX{29.7}			% the detailed RTL description
-\newcommand\GCInsnTypePosX{52}			% R,I,U,B,...
+\newcommand\GCInsnTypePosX{52.5}			% R,I,U,B,...
 \newcommand\GCInsnEncodingPosX{53}		% the box, sans-castle
 
 % #1 opcode
@@ -1211,7 +1217,7 @@
 % #5 RTL
 \newcommand\DrawGCInsnOpU[5]{
 	\begin{scope}[shift={(\GCInsnMnemonicPosX,.6)}]\DrawInsnSrc{#2}{#3}\end{scope}
-	\draw(\GCInsnTypePosX,.75) node[right]{U};
+	\draw(\GCInsnTypePosX,.75) node {U};
 	\draw(\GCInsnDescriptionPosX,.6) node[right]{#4};
 	\draw(\GCInsnRTLPosX,.6) node[right]{#5};
 	\begin{scope}[shift={(\GCInsnEncodingPosX,0)}]\DrawInsnOpUBox{imm[31:12]}{rd}{#1}\end{scope}
@@ -1224,7 +1230,7 @@
 % #5 RTL
 \newcommand\DrawGCInsnOpJ[5]{
 	\begin{scope}[shift={(\GCInsnMnemonicPosX,.6)}]\DrawInsnSrc{#2}{#3}\end{scope}
-	\draw(\GCInsnTypePosX,.75) node[right]{J};
+	\draw(\GCInsnTypePosX,.75) node {J};
 	\draw(\GCInsnDescriptionPosX,.6) node[right]{#4};
 	\draw(\GCInsnRTLPosX,.6) node[right]{#5};
 	\begin{scope}[shift={(\GCInsnEncodingPosX,0)}]\DrawInsnOpJBox{imm[20\textbar10:1\textbar11\textbar19:12]}{rd}{#1}\end{scope}
@@ -1238,7 +1244,7 @@
 % #6 RTL
 \newcommand\DrawGCInsnOpI[6]{
 	\begin{scope}[shift={(\GCInsnMnemonicPosX,.6)}]\DrawInsnSrc{#3}{#4}\end{scope}
-	\draw(\GCInsnTypePosX,.75) node[right]{I};
+	\draw(\GCInsnTypePosX,.75) node {I};
 	\draw(\GCInsnDescriptionPosX,.6) node[right]{#5};
 	\draw(\GCInsnRTLPosX,.6) node[right]{#6};
 	\begin{scope}[shift={(\GCInsnEncodingPosX,0)}]\DrawInsnOpIBox{imm[11:0]}{rs1}{#1}{rd}{#2}\end{scope}
@@ -1253,7 +1259,7 @@
 % #7 RTL
 \newcommand\DrawGCInsnOpIShift[7]{
 	\begin{scope}[shift={(\GCInsnMnemonicPosX,.6)}]\DrawInsnSrc{#4}{#5}\end{scope}
-	\draw(\GCInsnTypePosX,.75) node[right]{I};
+	\draw(\GCInsnTypePosX,.75) node {I};
 	\draw(\GCInsnDescriptionPosX,.6) node[right]{#6};
 	\draw(\GCInsnRTLPosX,.6) node[right]{#7};
 	\begin{scope}[shift={(\GCInsnEncodingPosX,0)}]\DrawInsnOpIFunctBox{#1}{shamt}{rs1}{#2}{rd}{#3}\end{scope}
@@ -1268,7 +1274,7 @@
 % #7 RTL
 \newcommand\DrawGCInsnOpICSR[7]{
 	\begin{scope}[shift={(\GCInsnMnemonicPosX,.6)}]\DrawInsnSrc{#3}{#4}\end{scope}
-	\draw(\GCInsnTypePosX,.75) node[right]{I};
+	\draw(\GCInsnTypePosX,.75) node {I};
 	\draw(\GCInsnDescriptionPosX,.6) node[right]{#6};
 	\draw(\GCInsnRTLPosX,.6) node[right]{#7};
 	\begin{scope}[shift={(\GCInsnEncodingPosX,0)}]\DrawInsnOpIBox{csr[11:0]}{#5}{#1}{rd}{#2}\end{scope}
@@ -1282,7 +1288,7 @@
 % #6 RTL
 \newcommand\DrawGCInsnOpB[6]{
 	\begin{scope}[shift={(\GCInsnMnemonicPosX,.6)}]\DrawInsnSrc{#3}{#4}\end{scope}
-	\draw(\GCInsnTypePosX,.75) node[right]{B};
+	\draw(\GCInsnTypePosX,.75) node {B};
 	\draw(\GCInsnDescriptionPosX,.6) node[right]{#5};
 	\draw(\GCInsnRTLPosX,.6) node[right]{#6};
 	\begin{scope}[shift={(\GCInsnEncodingPosX,0)}]\DrawInsnOpBBox{imm[12\textbar10:5]}{rs2}{rs1}{#1}{imm[4:1\textbar11]}{#2}\end{scope}
@@ -1296,7 +1302,7 @@
 % #6 RTL
 \newcommand\DrawGCInsnOpS[6]{
 	\begin{scope}[shift={(\GCInsnMnemonicPosX,.6)}]\DrawInsnSrc{#3}{#4}\end{scope}
-	\draw(\GCInsnTypePosX,.75) node[right]{S};
+	\draw(\GCInsnTypePosX,.75) node {S};
 	\draw(\GCInsnDescriptionPosX,.6) node[right]{#5};
 	\draw(\GCInsnRTLPosX,.6) node[right]{#6};
 	\begin{scope}[shift={(\GCInsnEncodingPosX,0)}]\DrawInsnOpBBox{imm[11:5]}{rs2}{rs1}{#1}{imm[4:0]}{#2}\end{scope}
@@ -1311,7 +1317,7 @@
 % #7 RTL
 \newcommand\DrawGCInsnOpR[7]{
 	\begin{scope}[shift={(\GCInsnMnemonicPosX,.6)}]\DrawInsnSrc{#4}{#5}\end{scope}
-	\draw(\GCInsnTypePosX,.75) node[right]{R};
+	\draw(\GCInsnTypePosX,.75) node {R};
 	\draw(\GCInsnDescriptionPosX,.6) node[right]{#6};
 	\draw(\GCInsnRTLPosX,.6) node[right]{#7};
 	\begin{scope}[shift={(\GCInsnEncodingPosX,0)}]\DrawInsnOpRBox{#3}{rs2}{rs1}{#2}{rd}{#1}\end{scope}
@@ -1323,7 +1329,7 @@
 % #4 description
 \newcommand\DrawGCInsnOpSys[4]{
 	\begin{scope}[shift={(\GCInsnMnemonicPosX,.6)}]\DrawInsnSrc{#3}{}\end{scope}
-	\draw(\GCInsnTypePosX,.75) node[right]{I};
+	\draw(\GCInsnTypePosX,.75) node {I};
 	\draw(\GCInsnDescriptionPosX,.6) node[right]{#4};
 %	\draw(\GCInsnRTLPosX,.6) node[right]{#4};
 	\begin{scope}[shift={(\GCInsnEncodingPosX,0)}]\DrawInsnOpIBinBox{#20000000000000#1}\end{scope}
@@ -1340,7 +1346,7 @@
 
 \newcommand\DrawGCAllInsnOpsJAL{
 	\begin{scope}[shift={(0,0)}]\DrawGCInsnOpJ{1101111}{jal}{rd,pcrel\_21}{Jump And Link}{\tt rd $\leftarrow$ pc+4, pc $\leftarrow$ pc+imm\_j}\end{scope}
-	\begin{scope}[shift={(0,-1.5)}]\DrawGCInsnOpI{1100111}{000}{jalr}{rd,imm(rs1)}{Jump And Link Register}{\tt rd $\leftarrow$ pc+4, pc $\leftarrow$ (rs1+imm\_i) \& \textasciitilde{}1}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawGCInsnOpI{1100111}{000}{jalr}{rd,imm(rs1)}{Jump And Link Register}{\tt rd $\leftarrow$ pc+4, pc $\leftarrow$ (rs1+imm\_i) $\land$ $\sim$1}\end{scope}
 }
 
 \newcommand\DrawGCAllInsnOpsBranch{
@@ -1363,9 +1369,9 @@
 	\begin{scope}[shift={(0,0)}]\DrawGCInsnOpI{0010011}{000}{addi}{rd,rs1,imm}{Add Immediate}{\tt rd $\leftarrow$ rs1 + imm\_i, pc $\leftarrow$ pc+4}\end{scope}
 	\begin{scope}[shift={(0,-1.5)}]\DrawGCInsnOpI{0010011}{010}{slti}{rd,rs1,imm}{Set Less Than Immediate}{\tt rd $\leftarrow$ (rs1 < imm\_i) ?\ 1 :\ 0, pc $\leftarrow$ pc+4}\end{scope}
 	\begin{scope}[shift={(0,-3.0)}]\DrawGCInsnOpI{0010011}{011}{sltiu}{rd,rs1,imm}{Set Less Than Immediate Unsigned}{\tt rd $\leftarrow$ (rs1 < imm\_i) ?\ 1 :\ 0, pc $\leftarrow$ pc+4}\end{scope}
-	\begin{scope}[shift={(0,-4.5)}]\DrawGCInsnOpI{0010011}{100}{xori}{rd,rs1,imm}{Exclusive Or Immediate}{\tt rd $\leftarrow$ rs1 \^{} imm\_i, pc $\leftarrow$ pc+4}\end{scope}
-	\begin{scope}[shift={(0,-6.0)}]\DrawGCInsnOpI{0010011}{110}{ori}{rd,rs1,imm}{Or Immediate}{\tt rd $\leftarrow$ rs1 | imm\_i, pc $\leftarrow$ pc+4}\end{scope}
-	\begin{scope}[shift={(0,-7.5)}]\DrawGCInsnOpI{0010011}{111}{andi}{rd,rs1,imm}{And Immediate}{\tt rd $\leftarrow$ rs1 \& imm\_i, pc $\leftarrow$ pc+4}\end{scope}
+	\begin{scope}[shift={(0,-4.5)}]\DrawGCInsnOpI{0010011}{100}{xori}{rd,rs1,imm}{Exclusive Or Immediate}{\tt rd $\leftarrow$ rs1 $\oplus$ imm\_i, pc $\leftarrow$ pc+4}\end{scope}
+	\begin{scope}[shift={(0,-6.0)}]\DrawGCInsnOpI{0010011}{110}{ori}{rd,rs1,imm}{Or Immediate}{\tt rd $\leftarrow$ rs1 $\lor$ imm\_i, pc $\leftarrow$ pc+4}\end{scope}
+	\begin{scope}[shift={(0,-7.5)}]\DrawGCInsnOpI{0010011}{111}{andi}{rd,rs1,imm}{And Immediate}{\tt rd $\leftarrow$ rs1 $\land$ imm\_i, pc $\leftarrow$ pc+4}\end{scope}
 }
 
 % note that the S-Type insns have the same field-format as the B-type
@@ -1381,20 +1387,20 @@
 	\begin{scope}[shift={(0,-3.0)}]\DrawGCInsnOpR{0110011}{001}{0000000}{sll}{rd,rs1,rs2}{Shift Left Logical}{\tt rd $\leftarrow$ rs1 << (rs2\%XLEN), pc $\leftarrow$ pc+4}\end{scope}
 	\begin{scope}[shift={(0,-4.5)}]\DrawGCInsnOpR{0110011}{010}{0000000}{slt}{rd,rs1,rs2}{Set Less Than}{\tt rd $\leftarrow$ (rs1 < rs2) ?\ 1 :\ 0, pc $\leftarrow$ pc+4}\end{scope}
 	\begin{scope}[shift={(0,-6.0)}]\DrawGCInsnOpR{0110011}{011}{0000000}{sltu}{rd,rs1,rs2}{Set Less Than Unsigned}{\tt rd $\leftarrow$ (rs1 < rs2) ?\ 1 :\ 0, pc $\leftarrow$ pc+4}\end{scope}
-	\begin{scope}[shift={(0,-7.5)}]\DrawGCInsnOpR{0110011}{100}{0000000}{xor}{rd,rs1,rs2}{Exclusive Or}{\tt rd $\leftarrow$ rs1 \^{} rs2, pc $\leftarrow$ pc+4}\end{scope}
+	\begin{scope}[shift={(0,-7.5)}]\DrawGCInsnOpR{0110011}{100}{0000000}{xor}{rd,rs1,rs2}{Exclusive Or}{\tt rd $\leftarrow$ rs1 $\oplus$ rs2, pc $\leftarrow$ pc+4}\end{scope}
 	\begin{scope}[shift={(0,-9.0)}]\DrawGCInsnOpR{0110011}{101}{0000000}{srl}{rd,rs1,rs2}{Shift Right Logical}{\tt rd $\leftarrow$ rs1 >> (rs2\%XLEN), pc $\leftarrow$ pc+4}\end{scope}
 	\begin{scope}[shift={(0,-10.5)}]\DrawGCInsnOpR{0110011}{101}{0100000}{sra}{rd,rs1,rs2}{Shift Right Arithmetic}{\tt rd $\leftarrow$ rs1 >> (rs2\%XLEN), pc $\leftarrow$ pc+4}\end{scope}
-	\begin{scope}[shift={(0,-12.0)}]\DrawGCInsnOpR{0110011}{110}{0000000}{or}{rd,rs1,rs2}{Or}{\tt rd $\leftarrow$ rs1 | rs2, pc $\leftarrow$ pc+4}\end{scope}
-	\begin{scope}[shift={(0,-13.5)}]\DrawGCInsnOpR{0110011}{111}{0000000}{and}{rd,rs1,rs2}{And}{\tt rd $\leftarrow$ rs1 \& rs2, pc $\leftarrow$ pc+4}\end{scope}
+	\begin{scope}[shift={(0,-12.0)}]\DrawGCInsnOpR{0110011}{110}{0000000}{or}{rd,rs1,rs2}{Or}{\tt rd $\leftarrow$ rs1 $\lor$ rs2, pc $\leftarrow$ pc+4}\end{scope}
+	\begin{scope}[shift={(0,-13.5)}]\DrawGCInsnOpR{0110011}{111}{0000000}{and}{rd,rs1,rs2}{And}{\tt rd $\leftarrow$ rs1 $\land$ rs2, pc $\leftarrow$ pc+4}\end{scope}
 }
 
 \newcommand\DrawGCAllInsnOpsSystem{
 	\begin{scope}[shift={(0,0)}]\DrawGCInsnOpICSR{1110011}{001}{csrrw}{rd,csr,rs1}{rs1}{Atomic Read/Write}{\tt rd $\leftarrow$ csr, csr $\leftarrow$ rs1, pc $\leftarrow$ pc+4}\end{scope}
-	\begin{scope}[shift={(0,-1.5)}]\DrawGCInsnOpICSR{1110011}{010}{csrrs}{rd,csr,rs1}{rs1}{Atomic Read and Set Bits}{\tt rd $\leftarrow$ csr, csr $\leftarrow$ csr | rs1, pc $\leftarrow$ pc+4}\end{scope}
-	\begin{scope}[shift={(0,-3.0)}]\DrawGCInsnOpICSR{1110011}{011}{csrrc}{rd,csr,rs1}{rs1}{Atomic Read and Clear}{\tt rd $\leftarrow$ csr, csr $\leftarrow$ csr \& \textasciitilde{}rs1, pc $\leftarrow$ pc+4}\end{scope}
+	\begin{scope}[shift={(0,-1.5)}]\DrawGCInsnOpICSR{1110011}{010}{csrrs}{rd,csr,rs1}{rs1}{Atomic Read and Set}{\tt rd $\leftarrow$ csr, csr $\leftarrow$ csr $\lor$ rs1, pc $\leftarrow$ pc+4}\end{scope}
+	\begin{scope}[shift={(0,-3.0)}]\DrawGCInsnOpICSR{1110011}{011}{csrrc}{rd,csr,rs1}{rs1}{Atomic Read and Clear}{\tt rd $\leftarrow$ csr, csr $\leftarrow$ csr $\land$ $\sim$rs1, pc $\leftarrow$ pc+4}\end{scope}
 	\begin{scope}[shift={(0,-4.5)}]\DrawGCInsnOpICSR{1110011}{101}{csrrwi}{rd,csr,zimm}{zimm[4:0]}{Atomic Read/Write Immediate}{\tt rd $\leftarrow$ csr, csr $\leftarrow$ zimm, pc $\leftarrow$ pc+4}\end{scope}
-	\begin{scope}[shift={(0,-6.0)}]\DrawGCInsnOpICSR{1110011}{110}{csrrsi}{rd,csr,zimm}{zimm[4:0]}{Atomic Read and Set Immediate}{\tt rd $\leftarrow$ csr, csr $\leftarrow$ csr | zimm, pc $\leftarrow$ pc+4}\end{scope}
-	\begin{scope}[shift={(0,-7.5)}]\DrawGCInsnOpICSR{1110011}{111}{csrrci}{rd,csr,zimm}{zimm[4:0]}{Atomic Read and Clear Immediate}{\tt rd $\leftarrow$ csr, csr $\leftarrow$ csr \& \textasciitilde{}zimm, pc $\leftarrow$ pc+4}\end{scope}
+	\begin{scope}[shift={(0,-6.0)}]\DrawGCInsnOpICSR{1110011}{110}{csrrsi}{rd,csr,zimm}{zimm[4:0]}{Atomic Read and Set Immediate}{\tt rd $\leftarrow$ csr, csr $\leftarrow$ csr $\lor$ zimm, pc $\leftarrow$ pc+4}\end{scope}
+	\begin{scope}[shift={(0,-7.5)}]\DrawGCInsnOpICSR{1110011}{111}{csrrci}{rd,csr,zimm}{zimm[4:0]}{Atomic Read and Clear Immediate}{\tt rd $\leftarrow$ csr, csr $\leftarrow$ csr $\land$ $\sim$zimm, pc $\leftarrow$ pc+4}\end{scope}
 }
 
 \newcommand\DrawGCAllInsnOpsSim{
@@ -1408,6 +1414,24 @@
 	\begin{scope}[shift={(0,-3.0)}]\DrawGCInsnOpIShift{0010011}{101}{0100000}{srai}{rd,rs1,shamt}{Shift Right Arithmetic Immediate}{\tt rd $\leftarrow$ rs1 >> shamt\_i, pc $\leftarrow$ pc+4}\end{scope}
 }
 
+\newcommand\DrawGCAllInsnOpsPseudo{
+	\draw(0,    0) node[right]{p1};
+	\draw(0, -1.5) node[right]{p1};
+	\draw(0, -3.0) node[right]{p1};
+	\draw(0, -4.5) node[right]{p1};
+	\draw(0, -6.0) node[right]{p1};
+	\draw(0, -7.5) node[right]{p1};
+	\draw(0, -9.0) node[right]{p1};
+	\draw(0,-10.5) node[right]{p1};
+	\draw(0,-12.0) node[right]{p1};
+	\draw(0,-13.5) node[right]{p1};
+	\draw(0,-15.0) node[right]{p1};
+	\draw(0,-16.5) node[right]{p1};
+	\draw(0,-18.0) node[right]{p1};
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % a color to hilight the rows on the card
 \definecolor{GCBarColorBG}{RGB}{200,255,200}
 \definecolor{GCBarColorFG}{RGB}{128,220,128}
@@ -1437,7 +1461,7 @@
 	\draw node at (\GCInsnMnemonicPosX+6,2.75) {\small Instruction};
 	\draw node at (\GCInsnDescriptionPosX+8,2.75) {\small Description};
 	\draw node at (\GCInsnRTLPosX+12,2.75) {\small Operation};
-	\draw node at (\GCInsnTypePosX+1,2.25) {\small Type};
+	\draw node at (\GCInsnTypePosX,2.75) {\small Type};
 
 	%\node [draw, rotate=90] at (0,60) {\small RV32I Reference Card (\href{https://github.com/johnwinans/rvalp}{https://github.com/johnwinans/rvalp})};
 	%\draw node[rotate=90,right] at (\GCPageWidth+.7,-66) {\small RV32I Reference Card};
@@ -1456,6 +1480,13 @@
 	\begin{scope}[shift={(0,-40.5)}]\DrawGCAllInsnOpsALUR\end{scope}
 	\begin{scope}[shift={(0,-55.5)}]\DrawGCAllInsnOpsSim\end{scope}
 	\begin{scope}[shift={(0,-58.5)}]\DrawGCAllInsnOpsSystem\end{scope}
+
+	% stub in some space for pseudo-instruictions to see what it might look like
+	%\begin{scope}[shift={(0,-67)}]\DrawGCAllInsnOpsPseudo\end{scope}
+
+	% show markers to indicate where to fold it  
+	\draw [line width=.1mm,draw=GCSlugColorFG] (29.5,1) -- (29.5, 1.5);
+	\draw [line width=.1mm,draw=GCSlugColorFG] (29.5,-65.5) -- (29.5, -66);
 
 	\EndTikzPicture
 }
@@ -1510,8 +1541,17 @@
 \newcommand\BitBoxArrowHeadInset{-16.7-\BitBoxArrowTailInset}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand\DrawInsnOpJTypeDecoding{
-	\BeginTikzPicture
+% special case for R type instructions for consistency
+\newcommand\InsnOpRTypeDecoding{
+
+	\begin{scope}[shift={(0,-1.5)}]
+	\DrawInsnTypeR{abcdefghijklmnopqrstuvwxy1101111}
+	\end{scope}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand\InsnOpJTypeDecoding{
 
 	\begin{scope}[shift={(0,-1.5)}]
 
@@ -1585,13 +1625,16 @@
 		\InsnBoxFieldWidthArrow{10}{1}
 		\InsnBoxFieldWidthArrow{0}{0}
 	\end{scope}
+}
 
+\newcommand\DrawInsnOpJTypeDecoding{
+	\BeginTikzPicture
+	\InsnOpJTypeDecoding
 	\EndTikzPicture
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand\DrawInsnOpBTypeDecoding{
-	\BeginTikzPicture
+\newcommand\InsnOpBTypeDecoding{
 
 	\begin{scope}[shift={(0,-1.5)}]
 
@@ -1667,13 +1710,16 @@
 		\InsnBoxFieldWidthArrow{4}{1}
 		\InsnBoxFieldWidthArrow{0}{0}
 	\end{scope}
+}
 
+\newcommand\DrawInsnOpBTypeDecoding{
+	\BeginTikzPicture
+	\InsnOpBTypeDecoding
 	\EndTikzPicture
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand\DrawInsnOpSTypeDecoding{
-	\BeginTikzPicture
+\newcommand\InsnOpSTypeDecoding{
 
 	\begin{scope}[shift={(0,-1.5)}]
 
@@ -1737,13 +1783,16 @@
 		\InsnBoxFieldWidthArrow{11}{5}
 		\InsnBoxFieldWidthArrow{4}{0}
 	\end{scope}
+}
 
+\newcommand\DrawInsnOpSTypeDecoding{
+	\BeginTikzPicture
+	\InsnOpSTypeDecoding
 	\EndTikzPicture
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand\DrawInsnOpITypeDecoding{
-	\BeginTikzPicture
+\newcommand\InsnOpITypeDecoding{
 
 	\begin{scope}[shift={(0,-1.5)}]
 
@@ -1804,13 +1853,16 @@
 		\InsnBoxFieldWidthArrow{31}{12}
 		\InsnBoxFieldWidthArrow{11}{0}
 	\end{scope}
+}
 
+\newcommand\DrawInsnOpITypeDecoding{
+	\BeginTikzPicture
+	\InsnOpITypeDecoding
 	\EndTikzPicture
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand\DrawInsnOpIShiftTypeDecoding{
-	\BeginTikzPicture
+\newcommand\InsnOpIShiftTypeDecoding{
 
 	\begin{scope}[shift={(0,-1.5)}]
 
@@ -1889,16 +1941,19 @@
 
 		\InsnBoxFieldWidthArrow{0}{0}
 	\end{scope}
+}
 
+\newcommand\DrawInsnOpIShiftTypeDecoding{
+	\BeginTikzPicture
+	\InsnOpIShiftTypeDecoding
 	\EndTikzPicture
 }
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand\DrawInsnOpUTypeDecoding{
-	\BeginTikzPicture
+\newcommand\InsnOpUTypeDecoding{
 
 	\begin{scope}[shift={(0,-1.5)}]
-
 	\DrawInsnTypeU{abcdefghijklmnopqrst001010110111}
 
 	\pgfmathsetmacro\ArrowNorth{\BitBoxArrowTailInset}
@@ -1957,9 +2012,29 @@
 		\InsnBoxFieldWidthArrow{31}{12}
 		\InsnBoxFieldWidthArrow{11}{0}
 	\end{scope}
-
+}
+\newcommand\DrawInsnOpUTypeDecoding{
+	\BeginTikzPicture
+	\InsnOpUTypeDecoding
 	\EndTikzPicture
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Draw all the ribbons in a stack for a reference card
+\newcommand\DrawInsnRibbons{
+	\BeginTikzPicture
+	\begin{scope}[yscale=.75]
+		\begin{scope}[shift={(0,0)}]\InsnOpUTypeDecoding\end{scope}
+		\begin{scope}[shift={(0,-25)}]\InsnOpITypeDecoding\end{scope}
+		\begin{scope}[shift={(0,-50)}]\InsnOpIShiftTypeDecoding\end{scope}
+		\begin{scope}[shift={(0,-75)}]\InsnOpSTypeDecoding\end{scope}
+		\begin{scope}[shift={(0,-100)}]\InsnOpBTypeDecoding\end{scope}
+		\begin{scope}[shift={(0,-125)}]\InsnOpJTypeDecoding\end{scope}
+		\begin{scope}[shift={(0,-150)}]\InsnOpRTypeDecoding\end{scope}
+	\end{scope}
+	\EndTikzPicture
+}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

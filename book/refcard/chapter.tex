@@ -1,4 +1,4 @@
-\chapter{RV32I Reference Card}%
+\chapter{RV32I Reference Cards}%
 \nolinenumbers%
 \vspace{-1cm}
 {\small%
@@ -11,9 +11,9 @@ add   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:add]{Ad
 \hline
 addi  & rd, rs1, imm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:addi]{Add Immediate}             & {\tt rd $\leftarrow$ rs1 + \hyperref[imm.i:decode]{imm\_i}, pc $\leftarrow$ pc+4}\\
 \hline
-and   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:and]{And}                       & {\tt rd $\leftarrow$ rs1 \& rs2, pc $\leftarrow$ pc+4}\\
+and   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:and]{And}                       & {\tt rd $\leftarrow$ rs1 $\land$ rs2, pc $\leftarrow$ pc+4}\\
 \hline
-andi  & rd, rs1, imm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:andi]{And Immediate}             & {\tt rd $\leftarrow$ rs1 \& \hyperref[imm.i:decode]{imm\_i}, pc $\leftarrow$ pc+4}\\
+andi  & rd, rs1, imm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:andi]{And Immediate}             & {\tt rd $\leftarrow$ rs1 $\land$ \hyperref[imm.i:decode]{imm\_i}, pc $\leftarrow$ pc+4}\\
 \hline
 auipc & rd, imm        & \hyperref[insnformat:utype]{U} & \hyperref[insn:auipc]{Add Upper Immediate to PC} & {\tt rd $\leftarrow$ pc + \hyperref[imm.u:decode]{imm\_u}, pc $\leftarrow$ pc+4}\\
 \hline
@@ -31,15 +31,15 @@ bne   & rs1, rs2, \hyperref[pcrel.13]{pcrel\_13} & \hyperref[insnformat:btype]{B
 \hline
 csrrw & rd, csr, rs1  & \hyperref[insnformat:itype]{I} & \hyperref[insn:csrrw]{Atomic Read/Write} & {\tt rd $\leftarrow$ csr,  csr $\leftarrow$ rs1, pc $\leftarrow$ pc+4}\\
 \hline
-csrrs & rd, csr, rs1  & \hyperref[insnformat:itype]{I} & \hyperref[insn:csrrs]{Atomic Read and Set Bits} & {\tt rd $\leftarrow$ csr,  csr $\leftarrow$ csr | rs1, pc $\leftarrow$ pc+4}\\
+csrrs & rd, csr, rs1  & \hyperref[insnformat:itype]{I} & \hyperref[insn:csrrs]{Atomic Read and Set} & {\tt rd $\leftarrow$ csr,  csr $\leftarrow$ csr $\lor$ rs1, pc $\leftarrow$ pc+4}\\
 \hline
-csrrc & rd, csr, rs1  & \hyperref[insnformat:itype]{I} & \hyperref[insn:csrrc]{Atomic Read and Clear} & {\tt rd $\leftarrow$ csr,  csr $\leftarrow$ csr \& \textasciitilde{}rs1, pc $\leftarrow$ pc+4}\\
+csrrc & rd, csr, rs1  & \hyperref[insnformat:itype]{I} & \hyperref[insn:csrrc]{Atomic Read and Clear} & {\tt rd $\leftarrow$ csr,  csr $\leftarrow$ csr $\land$ $\sim$rs1, pc $\leftarrow$ pc+4}\\
 \hline
 csrrwi & rd, csr, zimm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:csrrwi]{Atomic Read/Write Immediate} & {\tt rd $\leftarrow$ csr,  csr $\leftarrow$ zimm, pc $\leftarrow$ pc+4}\\
 \hline
-csrrsi & rd, csr, zimm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:csrrsi]{Atomic Read and Set Immediate} & {\tt rd $\leftarrow$ csr,  csr $\leftarrow$ csr | zimm, pc $\leftarrow$ pc+4}\\
+csrrsi & rd, csr, zimm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:csrrsi]{Atomic Read and Set Immediate} & {\tt rd $\leftarrow$ csr,  csr $\leftarrow$ csr $\lor$ zimm, pc $\leftarrow$ pc+4}\\
 \hline
-csrrci & rd, csr, zimm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:csrrci]{Atomic Read and Clear Immediate} & {\tt rd $\leftarrow$ csr,  csr $\leftarrow$ csr \& \textasciitilde{}zimm, pc $\leftarrow$ pc+4}\\
+csrrci & rd, csr, zimm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:csrrci]{Atomic Read and Clear Immediate} & {\tt rd $\leftarrow$ csr,  csr $\leftarrow$ csr $\land$ $\sim$zimm, pc $\leftarrow$ pc+4}\\
 \hline
 ecall & & \hyperref[insnformat:itype]{I} & \hyperref[insn:ecall]{Environment Call} & Transfer Control to Debugger \\
 \hline
@@ -47,7 +47,7 @@ ebreak & & \hyperref[insnformat:itype]{I} & \hyperref[insn:ebreak]{Environment B
 \hline
 jal   & rd, \hyperref[pcrel.21]{pcrel\_21}     & \hyperref[insnformat:jtype]{J} & \hyperref[insn:jal]{Jump And Link}               & {\tt rd $\leftarrow$ pc+4, pc $\leftarrow$ pc+\hyperref[imm.j:decode]{imm\_j}}\\
 \hline
-jalr  & rd, imm(rs1) & \hyperref[insnformat:itype]{I} & \hyperref[insn:jalr]{Jump And Link Register}     & {\tt rd $\leftarrow$ pc+4, pc $\leftarrow$ (rs1+\hyperref[imm.i:decode]{imm\_i}) \& \textasciitilde{}1}\\
+jalr  & rd, imm(rs1) & \hyperref[insnformat:itype]{I} & \hyperref[insn:jalr]{Jump And Link Register}     & {\tt rd $\leftarrow$ pc+4, pc $\leftarrow$ (rs1+\hyperref[imm.i:decode]{imm\_i}) \& $\sim$1}\\
 \hline
 lb    & rd, imm(rs1)  & \hyperref[insnformat:itype]{I} & \hyperref[insn:lb]{Load Byte}                   & {\tt rd $\leftarrow$ \hyperref[extension:sx]{sx}(\hyperref[memory:m8]{m8}(rs1+\hyperref[imm.i:decode]{imm\_i})), pc $\leftarrow$ pc+4}\\
 \hline
@@ -61,9 +61,9 @@ lui   & rd, imm        & \hyperref[insnformat:utype]{U} & \hyperref[insn:lui]{Lo
 \hline
 lw    & rd, imm(rs1)  & \hyperref[insnformat:itype]{I} & \hyperref[insn:lw]{Load Word}                   & {\tt rd $\leftarrow$ \hyperref[extension:sx]{sx}(\hyperref[memory:m32]{m32}(rs1+\hyperref[imm.i:decode]{imm\_i})), pc $\leftarrow$ pc+4}\\
 \hline
-or    & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:or]{Or}                         & {\tt rd $\leftarrow$ rs1 | rs2, pc $\leftarrow$ pc+4}\\
+or    & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:or]{Or}                         & {\tt rd $\leftarrow$ rs1 $\lor$ rs2, pc $\leftarrow$ pc+4}\\
 \hline
-ori   & rd, rs1, imm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:ori]{Or Immediate}               & {\tt rd $\leftarrow$ rs1 | \hyperref[imm.i:decode]{imm\_i}, pc $\leftarrow$ pc+4}\\
+ori   & rd, rs1, imm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:ori]{Or Immediate}               & {\tt rd $\leftarrow$ rs1 $\lor$ \hyperref[imm.i:decode]{imm\_i}, pc $\leftarrow$ pc+4}\\
 \hline
 sb    & rs2, imm(rs1) & \hyperref[insnformat:stype]{S} & \hyperref[insn:sb]{Store Byte}                  & {\tt \hyperref[memory:m8]{m8}(rs1+\hyperref[imm.s:decode]{imm\_s}) $\leftarrow$ rs2[7:0], pc $\leftarrow$ pc+4}\\
 \hline
@@ -73,13 +73,13 @@ sll   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:sll]{Sh
 \hline
 slli  & rd, rs1, shamt & \hyperref[insnformat:itype]{I} & \hyperref[insn:slli]{Shift Left Logical Immediate} & {\tt rd $\leftarrow$ rs1 << \hyperref[shamt.i:decode]{shamt\_i}, pc $\leftarrow$ pc+4}\\
 \hline
-slt   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:slt]{Set Less Than}             & {\tt rd $\leftarrow$ (rs1 < rs2) ? 1 : 0, pc $\leftarrow$ pc+4}\\
+slt   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:slt]{Set Less Than}             & {\tt rd $\leftarrow$ (rs1 < rs2) ?\ 1 :\ 0, pc $\leftarrow$ pc+4}\\
 \hline
-slti  & rd, rs1, imm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:slti]{Set Less Than Immediate}   & {\tt rd $\leftarrow$ (rs1 < \hyperref[imm.i:decode]{imm\_i}) ? 1 : 0, pc $\leftarrow$ pc+4}\\
+slti  & rd, rs1, imm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:slti]{Set Less Than Immediate}   & {\tt rd $\leftarrow$ (rs1 < \hyperref[imm.i:decode]{imm\_i}) ?\ 1 :\ 0, pc $\leftarrow$ pc+4}\\
 \hline
-sltiu & rd, rs1, imm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:sltiu]{Set Less Than Immediate Unsigned} & {\tt rd $\leftarrow$ (rs1 < \hyperref[imm.i:decode]{imm\_i}) ? 1 : 0, pc $\leftarrow$ pc+4}\\
+sltiu & rd, rs1, imm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:sltiu]{Set Less Than Immediate Unsigned} & {\tt rd $\leftarrow$ (rs1 < \hyperref[imm.i:decode]{imm\_i}) ?\ 1 :\ 0, pc $\leftarrow$ pc+4}\\
 \hline
-sltu  & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:sltu]{Set Less Than Unsigned}   & {\tt rd $\leftarrow$ (rs1 < rs2) ? 1 : 0, pc $\leftarrow$ pc+4}\\
+sltu  & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:sltu]{Set Less Than Unsigned}   & {\tt rd $\leftarrow$ (rs1 < rs2) ?\ 1 :\ 0, pc $\leftarrow$ pc+4}\\
 \hline
 sra   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:sra]{Shift Right Arithmetic}    & {\tt rd $\leftarrow$ rs1 >> (rs2\%\hyperref[XLEN]{XLEN}), pc $\leftarrow$ pc+4}\\
 \hline
@@ -93,9 +93,9 @@ sub   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:sub]{Su
 \hline
 sw    & rs2, imm(rs1) & \hyperref[insnformat:stype]{S} & \hyperref[insn:sw]{Store Word}                  & {\tt \hyperref[memory:m32]{m32}(rs1+\hyperref[imm.s:decode]{imm\_s}) $\leftarrow$ rs2[31:0], pc $\leftarrow$ pc+4}\\
 \hline
-xor   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:xor]{Exclusive Or}              & {\tt rd $\leftarrow$ rs1 \^{} rs2, pc $\leftarrow$ pc+4}\\
+xor   & rd, rs1, rs2   & \hyperref[insnformat:rtype]{R} & \hyperref[insn:xor]{Exclusive Or}              & {\tt rd $\leftarrow$ rs1 $\oplus$ rs2, pc $\leftarrow$ pc+4}\\
 \hline
-xori  & rd, rs1, imm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:xori]{Exclusive Or Immediate}    & {\tt rd $\leftarrow$ rs1 \^{} \hyperref[imm.i:decode]{imm\_i}, pc $\leftarrow$ pc+4}\\
+xori  & rd, rs1, imm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:xori]{Exclusive Or Immediate}    & {\tt rd $\leftarrow$ rs1 $\oplus$ \hyperref[imm.i:decode]{imm\_i}, pc $\leftarrow$ pc+4}\\
 \hline
 \end{tabular}
 }%
@@ -110,5 +110,13 @@ xori  & rd, rs1, imm  & \hyperref[insnformat:itype]{I} & \hyperref[insn:xori]{Ex
 \newgeometry{left=0in,width=8in,height=10.5in,vmargin=0in,hmargin=0in,layouthoffset=1.35in,layoutvoffset=1in}%
 %\resizebox{8in}{!}{\rotatebox{90}{\DrawAllInsnOps}}
 %\resizebox{8in}{!}{\rotatebox{90}{\DrawGCAllInsnOps}}
-\resizebox{8in}{10.75in}{\rotatebox{90}{\DrawGCAllInsnOps}}
+\resizebox{8in}{10.7in}{\rotatebox{90}{\DrawGCAllInsnOps}}
+
+\newpage%
+\thispagestyle{empty}%
+\resizebox{8in}{!}{
+\rotatebox{-90}{
+\DrawInsnRibbons
+}
+}
 \restoregeometry
