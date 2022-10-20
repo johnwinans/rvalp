@@ -2022,9 +2022,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Draw something useful for the cover portion of the tri-fold green-card
 \newcommand\DrawCardTitlePage{
+	\draw[line width=1.5mm] (111-18,-1) -- (111+18,-1);
 	\draw(111,-5) node {\textbf{\Huge RVALP}};
 	\draw(111,-10) node {\textbf{\Huge RV32I Reference Card}};
-	\draw(111,-152) node {\GitRevision};
+	\draw[line width=1.5mm] (111-18,-14) -- (111+18,-14);
+	\draw(111,-150) node {https://github.com/johnwinans/rvalp};
+	\draw(111,-152) node {\small \GitRevision};
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
