@@ -47,7 +47,7 @@ ebreak & & \hyperref[insnformat:itype]{I} & \hyperref[insn:ebreak]{Environment B
 \hline
 jal   & rd, \hyperref[pcrel.21]{pcrel\_21}     & \hyperref[insnformat:jtype]{J} & \hyperref[insn:jal]{Jump And Link}               & {\tt rd $\leftarrow$ pc+4, pc $\leftarrow$ pc+\hyperref[imm.j:decode]{imm\_j}}\\
 \hline
-jalr  & rd, imm(rs1) & \hyperref[insnformat:itype]{I} & \hyperref[insn:jalr]{Jump And Link Register}     & {\tt rd $\leftarrow$ pc+4, pc $\leftarrow$ (rs1+\hyperref[imm.i:decode]{imm\_i}) \& $\sim$1}\\
+jalr  & rd, imm(rs1) & \hyperref[insnformat:itype]{I} & \hyperref[insn:jalr]{Jump And Link Register}     & {\tt rd $\leftarrow$ pc+4, pc $\leftarrow$ (rs1+\hyperref[imm.i:decode]{imm\_i}) $\land$ $\sim$1}\\
 \hline
 lb    & rd, imm(rs1)  & \hyperref[insnformat:itype]{I} & \hyperref[insn:lb]{Load Byte}                   & {\tt rd $\leftarrow$ \hyperref[extension:sx]{sx}(\hyperref[memory:m8]{m8}(rs1+\hyperref[imm.i:decode]{imm\_i})), pc $\leftarrow$ pc+4}\\
 \hline
