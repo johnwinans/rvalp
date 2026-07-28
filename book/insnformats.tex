@@ -19,6 +19,7 @@
 % #2 The string to print
 \newcommand\DrawBitstring[2]{
 \foreach \x in {1,...,#1}%
+	%\draw(\x,0) node{\tt\substring{#2}{\x}{\x}};%
 	\draw(\x,0) node{\substring{#2}{\x}{\x}};%
 %	\draw(\x,.5) node[text width = 10, text height = 1]{\substring{#2}{\x}{\x}};%	Improve vertical text alignment
 }
@@ -232,8 +233,8 @@
 \newcommand\DrawInsnBitstring[3]{
 	\pgfmathsetmacro\num{int(#1-1)}
 	\foreach \x in {1,2,...,#1}
-    	\draw(\x+.25,-.3) node[text width = 10, text height = 1]{\substring{#2}{\x}{\x}};
-	\draw(#1+1,0) node[right]{#3};
+    	\draw(\x+.25,-.3) node[text width = 10, text height = 1]{\tt\substring{#2}{\x}{\x}};
+	\draw(#1+1,0) node[right]{\tt#3};
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -266,7 +267,7 @@
 
 	\pgfmathsetmacro\posn{#1-#2+(#2-#3)/2}
 	\pgfmathsetmacro\range{int(#2-#3+1)}
-	\node at (\posn,1.2) {\small#4};			% the field label
+	\node at (\posn,1.2) {\small\tt#4};			% the field label
 
 %	\node at (\posn,-1.4) {\small\range};		% the field width
 	\begin{scope}[shift={(0,-.7)}]\InsnBoxFieldWidthArrow{#2}{#3}\end{scope}
@@ -675,7 +676,7 @@
 	\draw (\leftpos-.5,0) -- (\leftpos-.5, 1.5);	% left end
 	\draw (\rightpos+.5,0) -- (\rightpos+.5, 1.5);	% right end
 	\pgfmathsetmacro\posn{32-#1+(#1-#2)/2}
-	\node at (\posn,.75) {\small#3};				% the field label
+	\node at (\posn,.75) {\small\tt#3};				% the field label
 }
 
 % Draw only the bottom line of an instruction box with a baseline at zero
@@ -828,7 +829,7 @@
 	\pgfmathsetmacro\num{int(\numchars-1)}
 	\foreach \x in {1,2,...,\numchars}
 %    	\draw(\x,0) node{\substring{\strut #1}{\x}{\x}};
-		\draw(\x+.25,.5) node[text width = 10, text height = 1]{\substring{#1}{\x}{\x}};
+		\draw(\x+.25,.5) node[text width = 10, text height = 1]{\tt\substring{#1}{\x}{\x}};
 }
 
 
@@ -1596,7 +1597,7 @@
 	\draw[blue,->](11,\ArrowNorth)to[out=270,in=90](31,\ArrowSouth);	% 1
 
 	\draw[red,->](34,\ArrowSouth+5)to[out=180,in=90](32,\ArrowSouth);	% 0 (special case)
-	\node at (34.5,\ArrowSouth+5) {0};
+	\node at (34.5,\ArrowSouth+5) {\tt 0};
 %	\draw[blue,->](32,\ArrowSouth+1)to[out=270,in=90](32,\ArrowSouth);	% 0 (special case)
 %	\node at (32,\ArrowSouth+2) {0};
 
@@ -1613,7 +1614,7 @@
 			\DrawInsnBoxCastle{0}{0}
 		\end{scope}
 		\DrawInsnBoxRel{31}{0}{}
-		\draw(33,.5) node[text width = 10, text height = 1, right]{imm\_j};
+		\draw(33,.5) node[text width = 10, text height = 1, right]{\tt imm\_j};
 
 		\begin{scope}[shift={(0,0)}]\DrawBitstringX{aaaaaaaaaaaamnopqrstlbcdefghijk0}\end{scope}
 		\begin{scope}[shift={(0,0)}]\DrawHexMarkersRel{32}\end{scope}
@@ -1680,7 +1681,7 @@
 	\draw[blue,->](24,\ArrowNorth)to[out=270,in=90](31,\ArrowSouth);	% 1
 
 	\draw[red,->](34,\ArrowSouth+5)to[out=180,in=90](32,\ArrowSouth);	% 0 (special case)
-	\node at (34.5,\ArrowSouth+5) {0};
+	\node at (34.5,\ArrowSouth+5) {\tt 0};
 %	\draw[blue,->](32,\ArrowSouth+1)to[out=270,in=90](32,\ArrowSouth);	% 0 (special case)
 %	\node at (32,\ArrowSouth+2) {0};
 
@@ -1697,7 +1698,7 @@
 			\DrawInsnBoxCastle{0}{0}
 		\end{scope}
 		\DrawInsnBoxRel{31}{0}{}
-		\draw(33,.5) node[text width = 10, text height = 1, right]{imm\_b};
+		\draw(33,.5) node[text width = 10, text height = 1, right]{\tt imm\_b};
 
 		\begin{scope}[shift={(0,0)}]\DrawBitstringX{aaaaaaaaaaaaaaaaaaaaybcdefguvwx0}\end{scope}
 
@@ -1773,7 +1774,7 @@
 			\DrawInsnBoxCastle{4}{0}
 		\end{scope}
 		\DrawInsnBoxRel{31}{0}{}
-		\draw(33,.5) node[text width = 10, text height = 1, right]{imm\_s};
+		\draw(33,.5) node[text width = 10, text height = 1, right]{\tt imm\_s};
 
 		\begin{scope}[shift={(0,0)}]\DrawBitstringX{aaaaaaaaaaaaaaaaaaaaabcdefguvwxy}\end{scope}
 
@@ -1844,7 +1845,7 @@
 			\DrawInsnBoxCastle{11}{0}
 		\end{scope}
 		\DrawInsnBoxRel{31}{0}{}
-		\draw(33,.5) node[text width = 10, text height = 1, right]{imm\_i};
+		\draw(33,.5) node[text width = 10, text height = 1, right]{\tt imm\_i};
 
 		\begin{scope}[shift={(0,0)}]\DrawBitstringX{aaaaaaaaaaaaaaaaaaaaabcdefghijkl}\end{scope}
 
@@ -1919,7 +1920,7 @@
 			\DrawInsnBoxCastle{4}{0}
 		\end{scope}
 		\DrawInsnBoxRel{4}{0}{}
-		\draw(33,.5) node[text width = 10, text height = 1, right]{shamt\_i};
+		\draw(33,.5) node[text width = 10, text height = 1, right]{\tt shamt\_i};
 
 		\begin{scope}[shift={(27,0)}]\DrawBitstringX{hijkl}\end{scope}
 
@@ -1935,7 +1936,7 @@
 			\DrawInsnBoxCastle{0}{0}
 		\end{scope}
 		\DrawInsnBoxRel{0}{0}{}
-		\draw(33,.5) node[text width = 10, text height = 1, right]{srai/srli};
+		\draw(33,.5) node[text width = 10, text height = 1, right]{\tt srai/srli};
 
 		\begin{scope}[shift={(31,0)}]\DrawBitstringX{b}\end{scope}
 
@@ -1992,7 +1993,7 @@
 	\draw[red,->](34,\ArrowSouth+5)to[out=180,in=90](30,\ArrowSouth);	% 
 	\draw[red,->](34,\ArrowSouth+5)to[out=180,in=90](31,\ArrowSouth);	% 
 	\draw[red,->](34,\ArrowSouth+5)to[out=180,in=90](32,\ArrowSouth);	% 0 (special case)
-	\node at (34.5,\ArrowSouth+5) {0};
+	\node at (34.5,\ArrowSouth+5) {\tt 0};
 
 	\begin{scope}[shift={(0,0)}]\DrawHexMarkersRel{32}\end{scope}
 	\end{scope}
@@ -2003,7 +2004,7 @@
 			\DrawInsnBoxCastle{11}{0}
 		\end{scope}
 		\DrawInsnBoxRel{31}{0}{}
-		\draw(33,.5) node[text width = 10, text height = 1, right]{imm\_u};
+		\draw(33,.5) node[text width = 10, text height = 1, right]{\tt imm\_u};
 
 		\begin{scope}[shift={(0,0)}]\DrawBitstringX{abcdefghijklmnopqrst000000000000}\end{scope}
 
